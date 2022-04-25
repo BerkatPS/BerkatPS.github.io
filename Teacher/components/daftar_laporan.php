@@ -153,10 +153,9 @@ $tbl_daftar_laporan = $confg->query("SELECT tbl_laporan_guru.id , tbl_guru.id_gu
                 <div class="button py-10">
                     <div class="md:flex gap-5">
                         <button type="button"type="submit" onclick="window.location.href= 'buat_laporan'"name="submitabsen" class="flex gap-2 font-medium text-white rounded-md p-2 bg-indigo-500 focus:outline-none hover:shadow-lg shadow-indigo-300/100"><img src="../../icons/plus.png" class="h-5 w-5 " alt="" srcset="">   Buat Laporan</button>
-                        <button type="button"type="submit" onclick="window.location.href= 'daftar_laporan_siswa'"name="submitabsen" class="flex gap-2 font-medium text-white rounded-md p-2 bg-indigo-500 focus:outline-none hover:shadow-lg shadow-indigo-300/100"><img src="../../icons/plus.png" class="h-5 w-5 " alt="" srcset="">   Daftar Laporan Siswa</button>
+                        <button type="button"type="submit" onclick="window.location.href= 'daftar_laporan_siswa'"name="submitabsen" class="flex gap-2 font-medium text-white rounded-md p-2 bg-indigo-500 focus:outline-none hover:shadow-lg shadow-indigo-300/100">Daftar Laporan Siswa</button>
                     </div>
                 <div class="py-2"></div>
-                
                 <div class="relative overflow-x-auto shadow-md bg-slate-800 rounded-lg text-gray-400 pt-7">
                     <table class="w-full text-sm text-gray-500 dark:text-gray-400 rounded-lg"
                         id="example"

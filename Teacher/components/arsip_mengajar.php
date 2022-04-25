@@ -6,7 +6,7 @@ if(!isset($_SESSION['Teacher'])){
 }
 
 
-$tbl_daftar_pelajaran = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_guru.id_guru, tbl_daftar_pelajaran.id, tbl_daftar_pelajaran.list_pelajaran AS daftar_pelajaran, tbl_guru.nama_guru, user.KELAS , tbl_pelajaran.jam_mulai , tbl_pelajaran.jam_akhir, tbl_pelajaran.status FROM tbl_pelajaran JOIN tbl_guru ON (tbl_pelajaran.id_mengajar = tbl_guru.id_guru) JOIN tbl_daftar_pelajaran ON(tbl_pelajaran.id_daftar_pelajaran = tbl_daftar_pelajaran.id) JOIN user ON (tbl_pelajaran.kelas_mengajar = user.KELAS) WHERE tbl_guru.id_guru = $_SESSION[id_Teacher] AND tbl_pelajaran.status != 'SELESAI' ORDER BY tbl_pelajaran.id DESC");
+$tbl_daftar_pelajaran = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_guru.id_guru, tbl_daftar_pelajaran.id, tbl_daftar_pelajaran.list_pelajaran AS daftar_pelajaran, tbl_guru.nama_guru, user.KELAS , tbl_pelajaran.jam_mulai , tbl_pelajaran.jam_akhir, tbl_pelajaran.status FROM tbl_pelajaran JOIN tbl_guru ON (tbl_pelajaran.id_mengajar = tbl_guru.id_guru) JOIN tbl_daftar_pelajaran ON(tbl_pelajaran.id_daftar_pelajaran = tbl_daftar_pelajaran.id) JOIN user ON (tbl_pelajaran.kelas_mengajar = user.KELAS) WHERE tbl_guru.id_guru = $_SESSION[id_Teacher] AND tbl_pelajaran.status = 'SELESAI' ORDER BY tbl_pelajaran.id DESC");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +23,7 @@ $tbl_daftar_pelajaran = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_s
     src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
     <script src="../../js/sideToggle.js"></script>
     <?php require '../../assets/header.php';?>
-    <title>APP KESISWAAN - JADWAL MENGAJAR</title>
+    <title>APP KESISWAAN - ARSIP MENGAJAR</title>
 </head>
 <body class="bg-slate-900 overflow-x-hidden " onload="startTime();">
 <div class="md:flex md:flex-row md:min-h-screen">
@@ -137,6 +137,7 @@ $tbl_daftar_pelajaran = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_s
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7" />
                             </svg>
                         </button>
+                        
                         </div>
                     </ul>
                 </div>
@@ -149,8 +150,8 @@ $tbl_daftar_pelajaran = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_s
                     })
                 </script>
                 <div class="button py-3"></div>
-                <button class="bg-indigo-500 p-2 focus:outline-none flex gap-2 rounded-md" onclick="window.location.href= 'arsip_mengajar'"><img src="../../icons/eye.png" class="h-6 w-6 " alt="eye" srcset="">Lihat Arsip Mengajar</button>
-                <div class="py-2"></div>
+                    <button type="button"type="submit" onclick="window.location.href= 'jadwal_mengajar'"name="submitabsen" class="flex gap-2 font-medium text-white rounded-md p-2 bg-indigo-500 focus:outline-none hover:shadow-lg shadow-indigo-300/100"><<<< Kembali ke Jadwal Mengajar</button>
+                <div class="py-2">
                 <div class="relative overflow-x-auto shadow-md bg-slate-800 rounded-lg text-gray-400 pt-7">
                 <?php 
                     if(isset($_GET['act'])){
