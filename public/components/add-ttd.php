@@ -5,7 +5,31 @@ if(!isset($_SESSION['user'])){
     header('Location: ../../auth/login?act=notlogin');
     exit();
 }
-$dataLaporan = $confg->query("SELECT tbl_laporan.id , user.id AS id_siswa_laporan, user.name , user.NIS , tbl_laporan.jenis_pelanggaran , user.poin AS poin_siswa , tbl_laporan.date ,tbl_guru.nama_guru AS guru_pelapor , tbl_laporan.keterangan FROM tbl_laporan JOIN user ON (tbl_laporan.id_laporan_siswa = user.id) JOIN tbl_guru ON ( tbl_laporan.id_guru_pelapor = tbl_guru.id_guru ) WHERE user.id = $_SESSION[userId] ")
+
+if(isset($_POST['submitabsen'])){
+    $tanggal = date('Y-m-d H:i:s');
+    $hari = date('l');
+    $name = stripslashes(htmlspecialchars(htmlentities($_POST['nama'])));
+    $kelas = stripslashes(htmlspecialchars(htmlentities( $_POST['kelas'])));
+    $NIS = stripslashes(htmlspecialchars(htmlentities($_POST['NIS'])));
+    $time = localtime(time(), true);
+    $status = "HADIR";
+    if($time['tm_hour'] > 12 &&  $time['tm_hour'] < 13){
+        $statement = mysqli_stmt_init($confg);
+        $insert = "INSERT INTO tbl_absensi_siswa(tanggal,Hari,nis,nama,kelas,status,poin) VALUES($tanggal,$hari,$name,$kelas,$NIS,$status,0)";
+        if(!mysql_query($confg,$insert)){
+            header('Location: absensi-form?act=failAdd');
+        }else if(mysqli_query($confg,$insert)){
+            header('Location: absensi-form?act=successAdd');
+        }else if($insert > 1){
+            header('Location: absensi-form?act=forbiddenSubmit');
+        }else if($time['tm_hour'] > 7 && $time['tm_hour'] < 8){
+            header('Location: absensi-form?act=lateSubmit');
+        }
+    }else if($time['tm_hour'] < 12){
+        header('Location: absensi-form?act=closed');
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,19 +40,15 @@ $dataLaporan = $confg->query("SELECT tbl_laporan.id , user.id AS id_siswa_lapora
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../../icons/world-book-day.png"/>
     <script src="../../js/timer.js"></script>
+    
     <script src="../../js/sideToggle.js"></script>
-    <link rel="stylesheet" type="text/css" href="../../admin/css/dataTable.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script type="text/javascript" charset="utf8"
-    src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
     <?php require '../../assets/header.php';?>
-    <title>APP KESISWAAN - DAFTAR LAPORAN</title>
+    <title>APP KESISWAAN - MENAMBAHKAN TANDA TANGAN SISWA</title>
 </head>
-<body class="bg-slate-900" onload="startTime();">
-<div class="md:flex md:flex-row md:min-h-screen top-0 left-0 h-screen ">
+<body class="bg-slate-900 overflow-x-hidden " onload="startTime();">
+<div class="md:flex md:flex-row md:min-h-screen overflow-y-auto">
         <!-- Mobile Menu -->
-        <!--  -->
-        <div class="bg-slate-800 w-72 text-purple-600 font-mono z-20 px-6 py-9 absolute inset-y-0 left-0 transform -translate-x-full transition duration-500 ease-in-out lg:relative lg:translate-x-0" id="sidebar" x-data="{open : false}">
+        <div class="bg-slate-800 w-72 text-purple-600 font-mono h-screen z-20 px-6 py-9 absolute inset-y-0 left-0 transform -translate-x-full transition duration-500 ease-in-out lg:relative lg:translate-x-0" id="sidebar">
             <a href="" title="meta icons" class="mb-[rem] font-extrabold text-2xl text-indigo-500 flex items-center space-x-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" cli p-rule="evenodd" />
@@ -80,9 +100,9 @@ $dataLaporan = $confg->query("SELECT tbl_laporan.id , user.id AS id_siswa_lapora
             </nav>
         </div>
         <div class="w-full h-[4rem] m-6 p-4 rounded-lg bg-slate-800 text-zinc-300">
-        <div class="container flex justify-end items-center mx-auto">
+            <div class="container flex justify-end items-center mx-auto">
                     <ul class="flex space-x-5 bottom-0">
-                        <div class="relative cursor-pointer =">
+                        <div class="relative cursor-pointer ">
                             <div class="absolute flex items-center justify-center top-0 right-0 h-5 w-5 bg-red-600 rounded-full">
                                 <span class="flex pb-1">1</span>
                             </div>
@@ -111,7 +131,7 @@ $dataLaporan = $confg->query("SELECT tbl_laporan.id , user.id AS id_siswa_lapora
                                 @click.away="isOpen = false"
                                 x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95"
                                 class="absolute overflow-hidden rounded-md font-normal right-0 z-10 w-40 bg-slate-800 shadow-lg text-zinc-400 shadow-black space-y-4 divide-y-2 divide-indigo-800 gap-2">
-                                    <li class="">
+                                <li class="">
                                             <a href="./Profile" class="hover:bg-blue-600 hover:text-white hover:transition duration-200 flex items-center px-4 py-3 gap-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                                     <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
@@ -146,141 +166,81 @@ $dataLaporan = $confg->query("SELECT tbl_laporan.id , user.id AS id_siswa_lapora
                     side.classList.toggle("-translate-x-full");
                     })
                 </script>
-                <div class="py-5"></div>
-                <div class="relative overflow-x-auto min-w-min bg-slate-800  rounded-lg text-gray-400 pt-7">
-                    <table class="w-full text-sm text-gray-500 dark:text-gray-400 rounded-lg"
-                        id="example"
-                    >
-                        <thead class="text-xs text-center text-gray-700 uppercase  dark:bg-gray-700 dark:text-gray-400">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3">
-                                        Id
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Nama Siswa
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        NIS
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Jenis Pelanggaran
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Poin
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Tanggal
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        TTD PESERTA DIDIK    
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        NAMA GURU PELAPOR    
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        TTD GURU PIKET    
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        TTD WALI KELAS   
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        KETERANGAN   
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        TTD GURU BK   
-                                    </th>
-                                    <th scope="col" class="">
-                                        ACTION   
-                                    </th>
-                                </tr>
-                        </thead>
-                        <tbody>
-                        <?php
-                        while($row = mysqli_fetch_array($dataLaporan)){
+                <div class="py-3">
+                    <form action="" class="bg-slate-800 grid grid-cols-1 p-5 py-6 gap-y-12 gap-x-5 mi-h-full relative" method="POST">
+                    <?php 
+                    if(isset($_GET['act'])){
+                        if($_GET['act'] == "successAdd"){
+                    ?>
+                        <div class='w-full p-4 mb-4 text-base text-center flex justify-center bg-blue-dark text-blue-600 rounded-lg' role='alert' id="success">
+                            
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg><span class='font-bold'>&nbspSUCCESS MELAKUKAN ABSENSI&nbspAnda Akan Diarahkan ke Table absensi&nbsp</span>
+                        <span class="flex items-center" id='waktu'>3</span>
+                        <script type="text/javascript">
+                            var waktu = 3;
+                            setInterval(function() {
+                            waktu--;
+                            if(waktu < 0) {
+                                document.getElementById("success").innerHTML = 'Redirecting...';
+                                window.location = 'absensi';
+                            }else{
+                            document.getElementById("waktu").innerHTML = waktu;
+                            }
+                            }, 1000);
+                            </script>
+                        </div>
+                    <?php
+                    }else if($_GET['act'] == "closed"){
+                    ?>
+                        <div class='w-full p-4 mb-4 text-base text-center flex justify-center bg-yellow-dark text-yellow-500 rounded-lg' role='alert' id="gagal">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <span class='font-bold'>&nbspMAAF ANDA HANYA BISA ABSEN PADA PUKUL 6 SAMPAI 7 PAGI </span>
+                        </div>
+                    <?php
+                    }else if($_GET['act'] == "forbiddenSubmit"){
                         ?>
-                            <tr class="text-center">
-                                <td class="px-6 py-4 bg-slate-800 font-medium"><?= $row['id'] ?></td>
-                                <td class="px-6 py-4 bg-slate-800 font-medium text-indigo-500"><?= $row['name'] ?></td>
-                                <td class="px-6 py-4 bg-slate-800 font-medium text-indigo-500"><?= $row['NIS'] ?></td>
-                                <td class="px-6 py-4 bg-slate-800 font-medium "><?= $row['jenis_pelanggaran'] ?></td>
-                                <td class="px-6 py-4 bg-slate-800 font-medium ">
-                                <?php
-                                    if($row['poin_siswa'] > 0){
-                                        echo'<span class="text-red-600 p-2">+'.$row['poin_siswa'].'</span>';
-                                    }else{
-                                        echo'<span class="text-green-500 p-2">'.$row['poin_siswa'].'</span>';
-                                    }
-                                ?>
-                                </td>
-                                <td class="px-6 py-4 bg-slate-800 font-medium "><?= $row['date'] ?></td>
-                                <td class="px-6 py-4 bg-slate-800 font-medium "></td>
-                                <td class="px-6 py-4 bg-slate-800 font-medium text-indigo-500"><?= $row['guru_pelapor'] ?></td>
-                                <td class="px-6 py-4 bg-slate-800 font-medium "></td>
-                                <td class="px-6 py-4 bg-slate-800 font-medium "></td>
-                                <td class="px-6 py-4 bg-slate-800 font-medium "><?= $row['keterangan'] ?></td>
-                                <td class="px-6 py-4 bg-slate-800 font-medium "></td>
-                                <td class="">
-                                    <button class="bg-yellow-dark text-yellow-500 p-2 uppercase font-mono" onclick="window.location.href= 'add-ttd'">edit</button>
-                                </td>
-                            </tr>
+                            <div class='w-full p-4 mb-4 text-base text-center flex justify-center bg-red-600 text-white rounded-lg' role='alert' id="gagal">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
+                            <span class='font-bold'>&nbspMAAF ANDA HANYA BISA ABSEN 1 KALI DALAM SEHARI</span>
+                            </div>
                         <?php
-                        }
-                        ?>
-                        </tbody>
-                        <tfoot class="text-xs text-gray-700 uppercase  dark:bg-gray-700 dark:text-gray-400">
-                                 <tr>
-                                    <th scope="col" class="px-6 py-3">
-                                        Id
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Nama Siswa
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        NIS
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Jenis Pelanggaran
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Poin
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Tanggal
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        TTD PESERTA DIDIK    
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        NAMA GURU PELAPOR    
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        TTD GURU PIKET    
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        TTD WALI KELAS   
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        KETERANGAN   
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        TTD GURU BK   
-                                    </th>
-                                    <th scope="col" class="">
-                                        ACTION   
-                                    </th>
-                                </tr>
-                        </tfoot>
-                    </table>
+                        }else if($_GET['act'] == "lateSubmit"){
+                            ?>
+                                <div class='w-full p-4 mb-4 text-base text-center flex justify-center bg-yellow-dark text-yellow-500 rounded-lg' role='alert' id="gagal">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                </svg>
+                                <span class='font-bold'>&nbspANDA TELAH ABSEN DENGAN STATUS TERLAMBAT</span>
+                                </div>
+                            <?php
+                            }else{
+                         ?>  
+                        <div class='w-full p-4 mb-4 text-base text-center flex justify-center bg-red-600 text-white rounded-lg' role='alert' id="gagal">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <span class='font-bold'>&nbspGAGAL MELAKUKAN ABSENSI SILAHKAN PERIKSA DATA ANDA KEMBALI</span> 
+                        </div>
+                    <?php
+                    }
+                }
+                    ?>
+                        <h2 class="font-bold text-2xl sm:text-xl">FORM MENAMBAHKAN TANDA TANGAN SISWA</h2>
+                        <div class="relative">
+                            <textarea name="ttd" id="ttd" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Tanda tangan Anda" data-mdb-clear-button="true" required"></textarea>
+                        </div>
+                        <div class="py-2"></div>
+                        <button type="submit"name="submitabsen" class="bg-purple-dark text-purple-600 p-2 hover:bg-purple-500 hover:text-white hover:transform duration-300">Simpan Data</button>
+                    </form>
                 </div>
             </div>
     </div>
-    <script>
-$(document).ready(function(){
-$('#example').DataTable({
-    autoFill: true
-});
-})
-
-</script>
+    
 </body>
 </html>

@@ -206,7 +206,8 @@ if(!isset($_SESSION['Teacher'])){
                     }
                 }
                     ?>
-                        <h2 class="font-bold text-2xl sm:text-xl">FORM ABSENSI GURU</h2>
+                        <h2 class="font-bold text-2xl sm:text-xl">
+                            <button class="px-3 py-2 bg-indigo-500 hover:bg-slate-900" onclick="window.location.href='daftar_absensi'"><</button>&nbspFORM ABSENSI GURU</h2>
                         <div class="relative">
                             <label for="">GURU</label>
                             <?php

@@ -6,7 +6,8 @@ if(!isset($_SESSION['user'])){
     exit();
 }
 
-$dataMapel = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_guru.id_guru, tbl_daftar_pelajaran.id, tbl_daftar_pelajaran.list_pelajaran AS daftar_pelajaran, tbl_guru.nama_guru, user.KELAS , tbl_pelajaran.jam_mulai , tbl_pelajaran.jam_akhir, tbl_pelajaran.status FROM tbl_pelajaran JOIN tbl_guru ON (tbl_pelajaran.id_mengajar = tbl_guru.id_guru) JOIN tbl_daftar_pelajaran ON(tbl_pelajaran.id_daftar_pelajaran = tbl_daftar_pelajaran.id) JOIN user ON (tbl_pelajaran.kelas_mengajar = user.KELAS) WHERE user.id = $_SESSION[userId] AND tbl_pelajaran.status != 'SELESAI'");
+$kelas = $_SESSION['kelas'];
+$dataArsip = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_guru.id_guru, tbl_daftar_pelajaran.id, tbl_daftar_pelajaran.list_pelajaran AS daftar_pelajaran, tbl_guru.nama_guru, user.KELAS , tbl_pelajaran.jam_mulai , tbl_pelajaran.jam_akhir, tbl_pelajaran.status FROM tbl_pelajaran JOIN tbl_guru ON (tbl_pelajaran.id_mengajar = tbl_guru.id_guru) JOIN tbl_daftar_pelajaran ON(tbl_pelajaran.id_daftar_pelajaran = tbl_daftar_pelajaran.id) JOIN user ON (tbl_pelajaran.kelas_mengajar = user.KELAS) WHERE user.id = $_SESSION[userId] AND tbl_pelajaran.status = 'SELESAI'");
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +24,7 @@ $dataMapel = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_
     <script type="text/javascript" charset="utf8"
     src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
     <?php require '../../assets/header.php'; ?>
-    <title>APP KESISWAAN - MATA PELAJARAN HARI INI</title>
+    <title>APP KESISWAAN - SISWA KELAS ANDA</title>
 </head>
 <body class="bg-slate-900 " onload="startTime();">
 <div class="md:flex md:flex-row md:min-h-screen">
@@ -138,17 +139,14 @@ $dataMapel = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_
                     </ul>
                 </div>
                 <div class="py-5"></div>
-                    <div class="md:flex gap-5">
-                        <button class="bg-indigo-500 p-2 focus:outline-none flex gap-2 rounded-md" onclick="window.location.href= 'siswa-kelas'"><img src="../../icons/eye.png" class="h-6 w-6 " alt="eye" srcset="">Lihat Siswa Sesuai Kelas Anda</button>
-                        <button class="bg-indigo-500 p-2 focus:outline-none flex gap-2 rounded-md md:gap-2"onclick="window.location.href= 'arsip-pembelajaran'"><img src="../../icons/eye.png" class="h-6 w-6 " alt="eye" srcset="">Lihat Arsip Pembelajaran</button>
-                    </div>
+                <button class="bg-indigo-500 p-2 focus:outline-none flex gap-2 rounded-md" onclick="window.location.href= 'mata-pelajaran'"><<< Kembali Ke Pelajaran</button>
                 <div class="py-2"></div>
                 <div class="relative overflow-x-auto bg-slate-800 shadow-md rounded-lg text-gray-400 pt-7">
                     <table class="w-full text-sm text-gray-500 dark:text-gray-400 rounded-lg"
                         id="example"
                     >
                         <thead class="text-xs text-center text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
-                                <tr>
+                        <tr>
                                     <th scope="col" class="px-6 py-3">
                                         id
                                     </th>
@@ -174,7 +172,7 @@ $dataMapel = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_
                         </thead>
                         <tbody>
                         <?php
-                        while($row = mysqli_fetch_array($dataMapel)){
+                        while($row = mysqli_fetch_array($dataArsip)){
                         ?>
                             <tr class="text-center">
                                 <td class="px-6 py-4 dark:bg-gray-800 font-medium"><?= $row['id_pelajaran_siswa'] ?></td>

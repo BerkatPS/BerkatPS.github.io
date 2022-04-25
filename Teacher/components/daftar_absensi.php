@@ -166,7 +166,7 @@ $tbl_absensi_guru = $confg->query("SELECT tbl_absensi_guru.id AS id_guru_absensi
                         element.parentNode.parentNode.removeChild(element.parentNode);
                     }
                     </script>
-                <div class="relative overflow-x-auto shadow-md rounded-lg text-gray-400 pt-5">
+                <div class="relative overflow-x-auto bg-slate-800 shadow-md rounded-lg text-gray-400 pt-5">
                     <table class="w-full text-sm text-center bg-slate-800 text-gray-500 dark:text-gray-400 rounded-lg" id="example">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>

@@ -9,6 +9,9 @@ $field = mysqli_fetch_assoc($countLaporan);
 
 $countKehadiran = $confg->query("SELECT COUNT(id_absensi_guru) AS id_absensi FROM tbl_absensi_guru WHERE status='HADIR' AND id_absensi_guru = $id");
 $field2 = mysqli_fetch_assoc($countKehadiran);
+
+$countTerlambat = $confg->query("SELECT COUNT(id_absensi_guru) AS id_absensi2 FROM tbl_absensi_guru WHERE status='TERLAMBAT' AND id_absensi_guru = $id");
+$field3 = mysqli_fetch_assoc($countTerlambat);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -63,7 +66,15 @@ $field2 = mysqli_fetch_assoc($countKehadiran);
             <img src="../icons/timer.png" class="h-9 my-3 w-9" alt="report all">
         </div>
         <span class="flex items-end justify-end py-5 mr-3">TOTAL Keterlambatan</span>
-        <span class="flex flex-row-reverse -my-7 mx-24 text-2xl">0</span>
+        <span class="flex flex-row-reverse -my-7 mx-24 text-2xl">
+        <?php
+            if($field3['id_absensi2'] == 0){
+                echo'<span class="text-green-500">'.$field3['id_absensi2'].'</span>';
+            }else{
+                echo'<span class="text-red-600">'.$field3['id_absensi2'].'</span>';
+            }
+        ?>
+        </span>
     </div>
 </div>
 <div class="grid grid-cols-1 gap-5 shadow-xl font-mono md:grid-cols-2 lg:grid-cols-4">
@@ -102,13 +113,14 @@ $field2 = mysqli_fetch_assoc($countKehadiran);
                     const myChart = new Chart(chartjs, {
                         type: 'bar',
                         data: {
-                            labels: ['USER', 'Laporan', 'Kehadiran'],
+                            labels: ['USER', 'Laporan', 'Kehadiran','Keterlambatan'],
                             datasets: [{
                                 label: '<?= date('F Y'); ?>',
                                 data: [
                                     <?= mysqli_num_rows($countData);?>,
                                     <?= $field['id_laporan']; ?>,
-                                    <?= $field2['id_absensi']; ?>
+                                    <?= $field2['id_absensi']; ?>,
+                                    <?= $field3['id_absensi2']; ?>
 
                                 ],
                                 backgroundColor: [

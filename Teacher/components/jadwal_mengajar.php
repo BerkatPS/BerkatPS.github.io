@@ -173,7 +173,6 @@ $tbl_daftar_pelajaran = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_s
                     }
                 }
                 ?>
-                <button class="">Lihat Siswa Sesuai Kelas</button>
                     <table class="w-full  text-sm text-gray-500 dark:text-gray-400 rounded-lg"
                         id="example"
                     >

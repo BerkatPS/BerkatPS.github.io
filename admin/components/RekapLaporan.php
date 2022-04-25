@@ -263,7 +263,7 @@ if(!isset($_SESSION['admin'])){
                     </div>
                 </ul>
             </div>
-            <div class="relative overflow-x-auto scroll-auto shadow-md  rounded-lg text-gray-400 pt-7">
+            <div class="relative overflow-x-auto scroll-auto shadow-md bg-slate-900 rounded-lg text-gray-400 pt-7">
                 <table class="w-full text-sm text-gray-500 dark:text-gray-400 rounded-lg"
                     id="example"
                 >
