@@ -113,20 +113,10 @@ require_once('../connection/conf.php');
                 </div>
                 <div class="w-full mb-2">
                     <div class="flex items-center">
-                        <?php
-                            $sql = "SHOW columns FROM user LIKE 'jenis_kelamin'";
-                            $query = $confg->query($sql);
-                            $row = mysqli_fetch_assoc($query);
-                            
-                            $values = array_map('trim', explode(',', trim(substr($row['Type'], 4), '()')));
-                            $del = str_replace(array("'","\"","&quot;"),"",$values);
-                        ?>
                         <select name="jenis_kelamin" id="" class="appearance-none px-8 w-full py-2 text-zinc-400 border-b focus:border-purple-700 focus:transition duration-200 bg-transparent outline-none" data-mdb-clear-button="true" required>
                         <option class="bg-slate-800 hover:bg-indigo-500">Pilih Jenis Kelamin</option>
-                        <?php
-                        foreach($del as $color):?>
-                             <option class="bg-slate-800 hover:bg-indigo-500"value=<?= $color?>><?= $color ?></option> <?php. "\r\n"; ?>
-                        <?php endforeach; ?>
+                        <option class="bg-slate-800 hover:bg-indigo-500">Laki-Laki</option>
+                        <option class="bg-slate-800 hover:bg-indigo-500">Perempuan</option>
                         </select>
                     </div>
                 </div>
@@ -143,9 +133,9 @@ require_once('../connection/conf.php');
                         <select name="walas" id="" class="appearance-none px-8 w-full py-2 text-zinc-400 border-b focus:border-purple-700 focus:transition duration-200 bg-transparent outline-none" required>
                         <option class="bg-slate-800 hover:bg-indigo-500">Pilih Wali Kelas</option>
                         <?php
-                        foreach($del as $color):
-                            echo '<option class="bg-slate-800 hover:bg-indigo-500" value="' . $color . '">' . $color . '</option>' . "\r\n";
-                        endforeach; 
+                        foreach($del as $color): ?>
+                            <option class="bg-slate-800 hover:bg-indigo-500" value="<?= $color ?>"><?= $color ?></option>
+                        <?php endforeach;
                         ?>
                         </select>
                     </div>

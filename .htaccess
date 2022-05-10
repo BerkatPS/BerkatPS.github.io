@@ -8,6 +8,8 @@ ErrorDocument 404 http://localhost/Project-Work/404
 ErrorDocument 403 http://localhost/Project-Work/403
 ErrorDocument 500 http://localhost/Project-Work/500
 
+DirectoryIndex index.php
+
 Options -Indexes
 
 </IfModule>

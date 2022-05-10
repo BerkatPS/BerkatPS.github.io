@@ -35,14 +35,14 @@ $selectNews = $confg->query("SELECT * FROM news ORDER BY id DESC LIMIT 3");
 </head>
 <body>
 <div class="grid grid-cols-1 pt-5 relative pb-5 gap-5 shadow-xl font-mono md:grid-cols-2 lg:text-sm mx-auto">
-    <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
+    <div class="bg-slate-800 h-20 w-full rounded-md grid-cols-1">
         <div class="absolute p-3 bg-transparent">
             <img src="../icons/group.png" class="h-7 my-5 w-8" alt="user group all">
         </div>
         <span class="flex items-end justify-end py-5 mr-3">TOTAL Siswa SAAT INI</span>
         <span class="flex flex-row-reverse -my-7 mx-20 text-2xl text-green-500"><?= mysqli_num_rows($countData);?></span>
     </div>
-    <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
+    <div class="bg-slate-800 h-20 w-full rounded-md grid-cols-1">
         <div class="absolute p-3 bg-transparent">
             <img src="../icons/report.png" class="h-7 my-5 w-8" alt="report all">
         </div>
@@ -57,7 +57,7 @@ $selectNews = $confg->query("SELECT * FROM news ORDER BY id DESC LIMIT 3");
         ?>
         </span>
     </div>
-    <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
+    <div class="bg-slate-800 h-20 w-full rounded-md grid-cols-1">
         <div class="absolute p-3 bg-transparent">
             <img src="../icons/report.png" class="h-7 my-5 w-8" alt="report all">
         </div>
@@ -72,7 +72,7 @@ $selectNews = $confg->query("SELECT * FROM news ORDER BY id DESC LIMIT 3");
         ?>
         </span>
     </div>
-    <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
+    <div class="bg-slate-800 h-20 w-full rounded-md grid-cols-1">
         <div class="absolute p-3 bg-transparent">
             <img src="../icons/report.png" class="h-7 my-5 w-8" alt="report all">
         </div>
@@ -87,7 +87,7 @@ $selectNews = $confg->query("SELECT * FROM news ORDER BY id DESC LIMIT 3");
         ?>
         </span>
     </div>
-    <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
+    <div class="bg-slate-800 h-20 w-full rounded-md grid-cols-1">
         <div class="absolute p-3 bg-transparent">
             <img src="../icons/calendar.png" class="h-7 my-5 w-8" alt="report all">
         </div>
@@ -102,7 +102,7 @@ $selectNews = $confg->query("SELECT * FROM news ORDER BY id DESC LIMIT 3");
         ?>
         </span>
     </div>
-    <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
+    <div class="bg-slate-800 h-20 w-full rounded-md grid-cols-1">
         <div class="absolute p-3 bg-transparent">
             <img src="../icons/timer.png" class="h-9 my-3 w-9" alt="report all">
         </div>

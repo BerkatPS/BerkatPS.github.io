@@ -15,30 +15,31 @@ if(isset($_POST['simpan'])){
     $jam_mulai = htmlspecialchars(htmlentities($_POST['jam_mulai']));
     $jam_akhir = htmlspecialchars(htmlentities($_POST['jam_akhir']));
     $tanggal = date('d F Y');
-    $selectDuplikatData = $confg->query("SELECT tbl_pelajaran.mata_pelajaran , tbl_pelajaran.pengajar, tbl_pelajaran.kelas_mengajar,tbl_pelajaran.link_virtual FROM tbl_pelajaran WHERE tbl_pelajaran.mata_pelajaran = '$mapel', tbl_pelajaran.pengajar = '$pengajar' , tbl_pelajaran.kelas_mengajar = '$kelasMengajar' tbl_pelajaran.link_virtual = '$link_virtual'");
+    $selectDuplikatData = $confg->query("SELECT tbl_pelajaran.mata_pelajaran , tbl_pelajaran.pengajar, tbl_pelajaran.kelas_mengajar,tbl_pelajaran.link_virtual FROM tbl_pelajaran WHERE tbl_pelajaran.mata_pelajaran = '$mapel', tbl_pelajaran.pengajar = '$_SESSION[Teacher]' , tbl_pelajaran.kelas_mengajar = '$kelasMengajar' , tbl_pelajaran.link_virtual = '$link_virtual'");
     $date_create = date('d F Y H:i:s');
     $idMapel = $confg->query("SELECT id FROM tbl_daftar_pelajaran WHERE list_pelajaran = '$mapel'");
     $fetch = mysqli_fetch_assoc($idMapel);
 
-    if($mapel != '' OR $pengajar != '' OR $kelasMengajar != '' OR $link_virtual != '' OR $pass_link != '' OR $agenda != '' OR $jam_mulai != '' OR $jam_akhir != ''){
+    if($mapel != '' OR $kelasMengajar != '' OR $link_virtual != '' OR $pass_link != '' OR $agenda != '' OR $jam_mulai != '' OR $jam_akhir != ''){
         if($selectDuplikatData == 0 ){
-            // if($time['tm_hour'] == 6 OR $time['tm_hour'] <= 12){
+            if($time['tm_hour'] == 6 OR $time['tm_hour'] <= 12){
                 if(date('H:i:s') <= $jam_mulai){
-                    $insertDataMengajarPending = $confg->query("INSERT INTO tbl_pelajaran(id_mengajar,id_daftar_pelajaran,mata_pelajaran,pengajar,kelas_mengajar,link_virtual,pass_link_virtual,agenda,jam_mulai,jam_akhir,tanggal,status) VALUES('$_SESSION[id_Teacher]','$fetch[id]','$mapel','$_SESSION[Teacher]','$kelasMengajar','$link_virtual','$pass_link','$agenda','$jam_mulai','$jam_akhir','$tanggal','MENUNGGU') ");
+                    $insertDataMengajarPending = $confg->query("INSERT INTO tbl_pelajaran(id_mengajar,id_daftar_pelajaran,mata_pelajaran,pengajar,kelas_mengajar,link_virtual,pass_link_virtual,agenda,jam_mulai,jam_akhir,tanggal,status) VALUES('$_SESSION[id_Teacher]','$fetch[id]','$mapel','$_SESSION[Teacher]','$kelasMengajar','$link_virtual','$pass_link','$agenda','$jam_mulai','$jam_akhir','$tanggal','MENUNGGU')");
                     $insertHistory = $confg->query("INSERT INTO history_siswa(id_kelas,msgnotif,username,action,information,date_create,status) VALUES('$kelasMengajar','ADA PESAN DARI GURU MU : ','$_SESSION[Teacher]','MATA PELAJARAN','GURU $_SESSION[Teacher] TELAH MEMBUAT JADWAL PELAJARAN $mapel UNTUK KELAS $kelasMengajar DENGAN STATUS MENUNGGU SILAHKAN CEK DI TABLE PELAJARAN','$date_create',0)");
+                    var_dump($insertDataMengajarPending);
                     header('Location: tambahJadwalMengajar?act=successAdd');
                 }else if(date('H:i:s') == $jam_mulai){
-                    $insertDataMengajarBerlangsung = $confg->query("INSERT INTO tbl_pelajaran(id_mengajar,id_daftar_pelajaran,mata_pelajaran,pengajar,kelas_mengajar,link_virtual,pass_link_virtual,agenda,jam_mulai,jam_akhir,tanggal,status) VALUES('$_SESSION[id_Teacher]','$fetch[id]','$mapel','$_SESSION[Teacher]','$kelasMengajar','$link_virtual','$pass_link','$agenda','$jam_mulai','$jam_akhir','$tanggal','BERLANGSUNG') ");
-                    $insertHistory = $confg->query("INSERT INTO history_siswa(id_kelas,msgnotif,username,action,information,date_create,status) VALUES('$kelasMengajar','ADA PESAN DARI GURU MU : ','$_SESSION[Teacher]','MATA PELAJARAN','GURU $_SESSION[Teacher] TELAH MEMBUAT JADWAL PELAJARAN UNTUK KELAS $kelasMengajar DENGAN STATUS BERLANGSUNG SILAHKAN CEK DI TABLE PELAJARAN','$date_create',0)");
+                    $insertDataMengajarBerlangsung = $confg->query("INSERT INTO tbl_pelajaran(id_mengajar,id_daftar_pelajaran,mata_pelajaran,pengajar,kelas_mengajar,link_virtual,pass_link_virtual,agenda,jam_mulai,jam_akhir,tanggal,status) VALUES('$_SESSION[id_Teacher]','$fetch[id]','$mapel','$_SESSION[Teacher]','$kelasMengajar','$link_virtual','$pass_link','$agenda','$jam_mulai','$jam_akhir','$tanggal','BERLANGSUNG')");
+                    $insertHistory2 = $confg->query("INSERT INTO history_siswa(id_kelas,msgnotif,username,action,information,date_create,status) VALUES('$kelasMengajar','ADA PESAN DARI GURU MU : ','$_SESSION[Teacher]','MATA PELAJARAN','GURU $_SESSION[Teacher] TELAH MEMBUAT JADWAL PELAJARAN UNTUK KELAS $kelasMengajar DENGAN STATUS BERLANGSUNG SILAHKAN CEK DI TABLE PELAJARAN','$date_create',0)");
                     header('Locatiom: tambahJadwalMengajar?act=successAdd');
                 }else if(date('H:i:s') > $jam_mulai){
                     header('Locatiom: tambahJadwalMengajar?act=forbiddenTimee');
                 }else if($jam_mulai == $jam_akhir){
                     header('Locatiom: tambahJadwalMengajar?act=sameTime');
                 }
-            // }else{
-            //     header('Location: tambahJadwalMengajar?act=closed');
-            // }
+            }else{
+                header('Location: tambahJadwalMengajar?act=closed');
+            }
         }else{
             header('Location: tambahJadwalMengajar?act=duplikatData');
         }
