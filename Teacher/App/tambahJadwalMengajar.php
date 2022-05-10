@@ -321,13 +321,14 @@ if(isset($_POST['simpan'])){
                             $values = array_map('trim', explode(',', trim(substr($row['Type'], 4), '()')));
                             $del = str_replace(array("'","\"","&quot;"),"",$values);
                             ?>
-                            <select name="kelas" id="kelas" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Kelas Anda" data-mdb-clear-button="true" required>
-                            <option class="bg-slate-800 hover:bg-indigo-500">Pilih KELAS MENGAJAR</option>
+                            <select name="kelas" class="px-8 w-full appearance-none py-2 bg-transparent text-zinc-400 border-b focus:border-purple-700 focus:transition duration-200 outline-none" id="kelas" placeholder="Pilih Kelas Anda" required>
+                            <option class="bg-slate-800 hover:bg-indigo-500">Pilih Kelas</option>
                             <?php
-                            foreach($del as $color):?>
-                                <option class="bg-slate-800 hover:bg-indigo-500"><?= $color ?></option> <?php. "\r"?><hr><?php. "\n"; ?>
-                            <?php endforeach; ?>
-                        </select>
+                            foreach($del as $color):
+                                echo '<option class="bg-slate-800 hover:bg-indigo-500" value="' . $color . '">' . $color . '</option>' . "\r\n";
+                            endforeach; 
+                            ?>
+                            </select>
                         </div>
                         <div class="relative">
                             <label for="link_virtual">LINK VIRTUAL</label>
