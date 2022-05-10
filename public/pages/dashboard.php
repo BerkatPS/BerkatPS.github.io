@@ -4,6 +4,8 @@ $id = $_SESSION['userId'];
 $countData2 = $confg->query("SELECT * FROM user WHERE id = $id");
 $row = mysqli_fetch_assoc($countData2);
 
+
+
 $countLaporan = $confg->query("SELECT COUNT(id) AS id_laporan FROM tbl_laporan WHERE id_laporan_siswa = $id");
 $field = mysqli_fetch_assoc($countLaporan);
 
@@ -15,6 +17,19 @@ $field3 = mysqli_fetch_assoc($countTerlambat);
 
 $countAlpha = $confg->query("SELECT COUNT(id_absensi_siswa) AS id_absensi3 FROM tbl_absensi_siswa WHERE status='ALPHA' AND id_absensi_siswa = $id");
 $field4 = mysqli_fetch_assoc($countAlpha);
+
+$countPelajaranMenunggu = $confg->query("SELECT COUNT(id) AS id_Pelajaran1 FROM tbl_pelajaran WHERE status ='MENUNGGU' AND kelas_mengajar = '$_SESSION[kelas]'");
+$field5 = mysqli_fetch_assoc($countPelajaranMenunggu);
+
+$countPelajaranBerlangsung = $confg->query("SELECT COUNT(id) AS id_Pelajaran FROM tbl_pelajaran WHERE status ='BERLANGSUNG' AND kelas_mengajar = '$_SESSION[kelas]'");
+$field6 = mysqli_fetch_assoc($countPelajaranBerlangsung);
+
+$countPelajaranSelesai = $confg->query("SELECT COUNT(id) AS id_Pelajaran2 FROM tbl_pelajaran WHERE status ='SELESAI' AND kelas_mengajar = '$_SESSION[kelas]'");
+$field7 = mysqli_fetch_assoc($countPelajaranSelesai);
+
+
+$selectNews = $confg->query("SELECT * FROM news ORDER BY id DESC LIMIT 3");
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,15 +41,15 @@ $field4 = mysqli_fetch_assoc($countAlpha);
     <title></title>
 </head>
 <body>
-<div class="grid grid-cols-1 pt-7 relative pb-5 gap-5 shadow-xl font-mono md:grid-cols-2 lg:grid-cols-4 lg:text-sm mx-auto">
-    <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
+<div class="grid grid-cols-1 pt-4 relative pb-5 gap-5 shadow-xl font-mono md:grid-cols-2  lg:text-sm mx-auto">
+    <div class="bg-slate-800 h-20 w-full rounded-md grid-cols-1">
         <div class="absolute p-3 bg-transparent">
             <img src="../icons/group.png" class="h-7 my-5 w-8" alt="user group all">
         </div>
-        <span class="flex items-end justify-end py-5 mr-3">TOTAL USER SAAT INI</span>
-        <span class="flex flex-row-reverse -my-7 mx-24 text-2xl text-green-500"><?= mysqli_num_rows($countData);?></span>
+        <span class="flex items-end justify-end py-5 mr-3">TOTAL SISWA SAAT INI</span>
+        <span class="flex flex-row-reverse -my-7 mx-20 text-2xl text-green-500"><?= mysqli_num_rows($countData);?></span>
     </div>
-    <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
+    <div class="bg-slate-800 h-20 w-full rounded-md grid-cols-1">
         <div class="absolute p-3 bg-transparent">
             <img src="../icons/report.png" class="h-7 my-5 w-8" alt="report all">
         </div>
@@ -49,7 +64,37 @@ $field4 = mysqli_fetch_assoc($countAlpha);
         ?>
         </span>
     </div>
-    <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
+    <div class="bg-slate-800 h-20 w-full rounded-md grid-cols-1">
+        <div class="absolute p-3 bg-transparent">
+            <img src="../icons/online-learning.png" class="h-7 my-5 w-8" alt="report all">
+        </div>
+        <span class="flex items-end justify-end pt-5 mr-3">TOTAL Pelajaran Pending</span>
+        <span class="flex flex-row-reverse -my-2 mx-20 text-2xl">
+        <?php
+            if($field5['id_Pelajaran1'] > 0){
+                echo'<span class="text-yellow-600">'.$field5['id_Pelajaran1'].'</span>';
+            }else{
+                echo'<span class="text-green-500">'.$field5['id_Pelajaran1'].'</span>';
+            }
+        ?>
+        </span>
+    </div>
+    <div class="bg-slate-800 h-20 w-full rounded-md grid-cols-1">
+        <div class="absolute p-3 bg-transparent">
+            <img src="../icons/online-learning.png" class="h-7 my-5 w-8" alt="report all">
+        </div>
+        <span class="flex items-end justify-end pt-5 mr-3">TOTAL Pelajaran Berlangsung</span>
+        <span class="flex flex-row-reverse -my-2 mx-20 text-2xl">
+        <?php
+            if($field6['id_Pelajaran'] > 0){
+                echo'<span class="text-yellow-600">'.$field6['id_Pelajaran'].'</span>';
+            }else{
+                echo'<span class="text-green-500">'.$field6['id_Pelajaran'].'</span>';
+            }
+        ?>
+        </span>
+    </div>
+    <div class="bg-slate-800 h-20 w-full rounded-md grid-cols-1">
         <div class="absolute p-3 bg-transparent">
             <img src="../icons/point.png" class="h-7 my-5 w-8" alt="report all">
         </div>
@@ -64,97 +109,43 @@ $field4 = mysqli_fetch_assoc($countAlpha);
         ?>
         </span>
     </div>
-    <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
+    <div class="bg-slate-800 h-20 w-full rounded-md grid-cols-1">
         <div class="absolute p-3 bg-transparent">
             <img src="../icons/timer.png" class="h-9 my-3 w-9" alt="report all">
         </div>
-        <span class="flex items-end justify-end py-5 mr-3">TOTAL Keterlambatan</span>
-        <span class="flex flex-row-reverse -my-7 mx-24 text-2xl">
+        <span class="flex items-end justify-end py-5 mr-3">TOTAL Pelajaran Selesai</span>
+        <span class="flex flex-row-reverse -my-7 mx-20 text-2xl">
         <?php
-            if($field3['id_absensi2'] > 0){
-                echo'<span class="text-red-600">'.$field3['id_absensi2'].'</span>';
+            if($field7['id_Pelajaran2'] > 0){
+                echo'<span class="text-green-500">'.$field7['id_Pelajaran2'].'</span>';
             }else{
-                echo'<span class="text-green-500">'.$field3['id_absensi2'].'</span>';
+                echo'<span class="text-red-600">'.$field7['id_Pelajaran2'].'</span>';
             }
         ?>
         </span>
     </div>
 </div>
-<div class="grid grid-cols-1 gap-5 shadow-xl font-mono md:grid-cols-2 lg:grid-cols-4">
-    <div class="bg-slate-800 col-span-1 sm:col-span-2 self-start">
-        <canvas id="Chartjs" class="sm:h-20">
-        </canvas>
-    </div>
+<div class="grid grid-cols-1 gap-5 shadow-xl font-mono ">
     <div class="bg-slate-800 w-full pl-3 col-span-2">
-            <span class="p-5 ">Informasi Hari Ini</span>
+    <span class="p-5">Mendapatkan 3 Informasi Terbaru</span>
+            <?php
+                while($news = mysqli_fetch_array($selectNews)){
+            ?>
                 <ol class="relative border-l border-gray-200 dark:border-gray-700 px-1 py-7">                  
-                    <li class="mb-10 ml-4">
-                        <div class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
-                        <time class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">February 2022</time>
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Application UI code in Tailwind CSS</h3>
-                        <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">Get access to over 20+ pages including a dashboard layout, charts, kanban board, calendar, and pre-order E-commerce & Marketing pages.</p>
-                        <a href="#" class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:outline-none focus:ring-gray-200 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-700">Learn more <svg class="ml-2 w-3 h-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></a>
-                    </li>
-                    <li class="mb-10 ml-4">
-                        <div class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
-                        <time class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">March 2022</time>
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Marketing UI design in Figma</h3>
-                        <p class="text-base font-normal text-gray-500 dark:text-gray-400">All of the pages and components are first designed in Figma and we keep a parity between the two versions even as we update the project.</p>
-                    </li>
-                    <li class="ml-4">
-                        <div class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
-                        <time class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">April 2022</time>
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">E-Commerce UI code in Tailwind CSS</h3>
-                        <p class="text-base font-normal text-gray-500 dark:text-gray-400">Get started with dozens of web components and interactive elements built on top of Tailwind CSS.</p>
+                    <li class="mb-10 ml-4 border border-rose-600 p-2">
+                        <div class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border  dark:bg-gray-700"></div>
+                        <div class="">
+                        <time class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">Publish At <?= $news['tanggal'] ?></time>
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white"><?= $news['title'] ?></h3>
+                        <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400"><?= $news['news'] ?></p>
+                        </div>
                     </li>
                 </ol>
+            <?php
+                }
+            ?>
     </div>
 </div>
-    
-                <script>
-                    const chartjs = document.getElementById('Chartjs').getContext('2d');
-                    const myChart = new Chart(chartjs, {
-                        type: 'bar',
-                        data: {
-                            labels: ['USER', 'Poin', 'Laporan', 'Kehadiran','Keterlambatan','Alpha'],
-                            datasets: [{
-                                label: '<?= date('F Y'); ?>',
-                                data: [
-                                    <?= mysqli_num_rows($countData);?>,
-                                    <?= $row['poin'];?>,
-                                    <?= $field['id_laporan']; ?>,
-                                    <?= $field2['id_absensi']; ?>,
-                                    <?= $field3['id_absensi2']; ?>,
-                                    <?= $field4['id_absensi3']; ?>
 
-                                ],
-                                backgroundColor: [
-                                    'rgba(255, 99, 132, 0.2)',
-                                    'rgba(54, 162, 235, 0.2)',
-                                    'rgba(255, 206, 86, 0.2)',
-                                    'rgba(75, 192, 192, 0.2)',
-                                    'rgba(153, 102, 255, 0.2)',
-                                    'rgba(255, 159, 64, 0.2)'
-                                ],
-                                borderColor: [
-                                    'rgba(255, 99, 132, 1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(153, 102, 255, 1)',
-                                    'rgba(255, 159, 64, 1)'
-                                ],
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
-                            }
-                        }
-                    });
-                </script>  
 </body>
 </html>

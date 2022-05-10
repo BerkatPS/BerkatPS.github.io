@@ -10,6 +10,7 @@ module.exports = {
   theme: {
     extend: {
       colors:{
+        'primary' : '#71e5b5',
         'purple-dark':'rgba(153, 102, 255, 0.2)',
         'red-dark':'rgba(255, 99, 132, 0.2)', 
         'green-dark':'rgba(75, 192, 192, 0.2)',

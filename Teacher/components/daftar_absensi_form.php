@@ -4,7 +4,39 @@ require_once('../../connection/conf.php');
 if(!isset($_SESSION['Teacher'])){
     header('Location: ../../auth/login?act=notlogin');
 }
-?>
+
+if(isset($_POST['submitabsen'])){
+    $tanggal = date('d F Y');
+    $waktu = date('H:i:s');
+    $name = stripslashes(htmlspecialchars(htmlentities($_POST['nama_guru'])));
+    $nuptk_guru = stripslashes(htmlspecialchars(htmlentities( $_POST['nuptk'])));
+    $keterangan = stripslashes(htmlspecialchars(htmlentities($_POST['keterangan'])));
+    $time = localtime(time(), true);
+    $status = "HADIR";
+    $statement = mysqli_stmt_init($confg);
+    if($name != '' OR $nuptk_guru != ''){
+        if($time['tm_hour'] > 6 &&  $time['tm_hour'] < 7){
+            $insert = "INSERT INTO tbl_absensi_guru(tanggal,waktu,nuptk_guru,nama,status,keterangan) VALUES('$tanggal','$waktu','$nuptk_guru','$name','HADIR','TIDAK ADA')";
+            if(!mysqli_query($confg,$insert)){
+                header('Location: daftar_absensi_form?act=failAdd');
+            }else if(mysqli_query($confg,$insert) == TRUE){
+                $insertAbsensiGuru = $confg->query("INSERT INTO tbl_absensi_guru(tanggal,waktu,nuptk_guru,nama,status,keterangan) VALUES('$tanggal','$waktu','$nuptk_guru','$name','HADIR','$keterangan')");
+                header('Location: daftar_absensi_form?act=successAdd');
+                header('Location: daftar_absensi_form?act=successAdd');
+            }else if($insertAbsensiGuru > 1){
+                header('Location: daftar_absensi_form?act=forbiddenSubmit');
+            }else if($time['tm_hour'] > 7 && $time['tm_hour'] < 8){
+                $insertAbsensiGuru = $confg->query("INSERT INTO tbl_absensi_guru(tanggal,waktu,nuptk_guru,nama,status,keterangan) VALUES('$tanggal','$waktu','$nuptk_guru','$name','TERLAMBAT','$keterangan')");
+                header('Location: daftar_absensi_form?act=successAdd');
+            }
+        }else if($time['tm_hour'] == 8){
+            $insertAbsensiGuru = $confg->query("INSERT INTO tbl_absensi_guru(tanggal,waktu,nuptk_guru,nama,status,keterangan) VALUES('$tanggal','$waktu','$nuptk_guru','$name','ALPHA','TIDAK MELAKUKAN ABSENSI')");
+        }
+    }else{
+        header('Location: daftar_absensi_form?act=empty');
+    }
+}
+    ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,13 +91,25 @@ if(!isset($_SESSION['Teacher'])){
                     <img src="../../icons/online-learning.png" class="h-6 w-6" alt="">
                 Pelajaran
                 </a>
+                <a href="../pages/semester" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200 ">
+                    <img src="../../icons/statistics.png" class="h-6 w-6" alt="">
+                Semester
+                </a>
                 <a href="./forum-chat" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/chat.png" alt="" class="h-6 w-6" srcset="">
                 Forum Chat
                 </a>
+                <a href="../App/Development" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    <img src="../../icons/software-development.png" alt="" class="h-6 w-6" srcset="">
+                Development
+                </a>
                 <a href="../history" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/history.png" alt="" class="h-6 w-6" srcset="">
                 History
+                </a>
+                <a href="./terms" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    <img src="../../icons/audit.png" alt="Terms" class="h-6 w-6" srcset="">
+                Ketentuan
                 </a>
                 <a href="../../auth/Logout" class="flex items-center text-zinc-300 gap-2  py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition-all duration-200 ease-in">
                     <img src="../../icons/logout.png" class="h-6 w-6" alt="" srcset="">
@@ -147,7 +191,7 @@ if(!isset($_SESSION['Teacher'])){
                     if(isset($_GET['act'])){
                         if($_GET['act'] == "successAdd"){
                     ?>
-                        <div class='w-full p-4 mb-4 text-base text-center flex justify-center bg-blue-dark text-blue-600 rounded-lg' role='alert' id="success">
+                        <div class='w-full p-4 mb-4 text-base text-center flex justify-center bg-green-800 text-green-400 rounded-lg' role='alert' id="success">
                             
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -206,29 +250,26 @@ if(!isset($_SESSION['Teacher'])){
                     }
                 }
                     ?>
-                        <h2 class="font-bold text-2xl sm:text-xl">
-                            <button class="px-3 py-2 bg-indigo-500 hover:bg-slate-900" onclick="window.location.href='daftar_absensi'"><</button>&nbspFORM ABSENSI GURU</h2>
+                        <h2 class="font-bold text-2xl sm:text-xl flex items-center ">
+                            <a class="bg-red-600 p-2 font-normal cursor-pointer text-white text-sm focus:outline-none flex items-center justify-center gap-2 rounded-md" onclick="window.location.href= 'daftar_absensi'"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>Kembali Ke ABSENSI</a>&nbspFORM ABSENSI GURU</h2>
                         <div class="relative">
-                            <label for="">GURU</label>
+                            <label for="">Guru</label>                            
+                            <select name="nama_guru" id="nama_guru" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Kelas Anda" data-mdb-clear-button="true" >
+                            <option class="bg-slate-800 hover:bg-indigo-500">Pilih Nama Anda</option>   
                             <?php
-                            $sql = "SHOW columns FROM user LIKE 'wali_kelas'";
+                            $sql = "SELECT * FROM tbl_guru";
                             $query = $confg->query($sql);
-                            $row = mysqli_fetch_assoc($query);
-                            
-                            $values = array_map('trim', explode(',', trim(substr($row['Type'], 4), '()')));
-                            $del = str_replace(array("'","\"","&quot;"),"",$values);
+                            while($row = mysqli_fetch_array($query)){
                             ?>
-                            <select name="kelas" id="" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Kelas Anda" data-mdb-clear-button="true" required>
-                            <option class="bg-slate-800 hover:bg-indigo-500">Pilih Nama Anda</option>
-                            <?php
-                            foreach($del as $color):?>
-                                <option class="bg-slate-800 hover:bg-indigo-500"value=<?= $color?>><?= $color ?></option> <?php. "\r\n"; ?>
-                            <?php endforeach; ?>
-                        </select>
+                            <option class="bg-slate-800 hover:bg-indigo-500"value=<?= $row['nama_guru'] ?>><?= $row['nama_guru'] ?></option>
+                            <?php  }?>
+                            </select>
                         </div>
                         <div class="relative">
                             <label for="">NUPTK</label>
-                            <input type="text" name="NIS" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan NUPTK Anda Dengan Benar">
+                            <input type="text" name="nuptk" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan NUPTK Anda Dengan Benar" >
                         </div>
                         <div class="relative">
                             <label for="">Keterangan</label>
@@ -236,40 +277,11 @@ if(!isset($_SESSION['Teacher'])){
                             </textarea>
                         </div>
                         <div class=""></div>
-                            <button type="submit"name="submitabsen" class="bg-purple-dark text-purple-600 p-2 hover:bg-purple-500 hover:text-white hover:transform duration-300">Simpan Data</button>
+                            <button type="submit"name="submitabsen" class="bg-blue-dark text-blue-600 p-2 hover:bg-blue-600 hover:text-white hover:transform duration-300">Simpan Data</button>
                     </form>
                 </div>
             </div>
     </div>
-    <?php
-
-    if(isset($_POST['submitabsen'])){
-        $tanggal = date('Y-m-d H:i:s');
-        $hari = date('l');
-        $name = stripslashes(htmlspecialchars(htmlentities($_POST['nama'])));
-        $kelas = stripslashes(htmlspecialchars(htmlentities( $_POST['kelas'])));
-        $NIS = stripslashes(htmlspecialchars(htmlentities($_POST['NIS'])));
-        $time = localtime(time(), true);
-        $status = "HADIR";
-        if($time['tm_hour'] > 12 &&  $time['tm_hour'] < 13){
-            $statement = mysqli_stmt_init($confg);
-            $insert = "INSERT INTO tbl_absensi_siswa(tanggal,Hari,nis,nama,kelas,status,poin) VALUES(?,?,?,?,?,?)";
-            if(!mysqli_stmt_prepare($insert)){
-                header('Location: absensi-form?act=failAdd');
-            }else if(mysqli_stmt_prepare($insert)){
-                mysqli_stmt_bind_param($statement,"sisssi",$tanggal,$hari,$NIS,$name,$kelas,"HADIR",0);
-                mysqli_stmt_execute($statement);
-                header('Location: absensi-form?act=successAdd');
-            }else if($insert > 1){
-                header('Location: absensi-form?act=forbiddenSubmit');
-            }else if($time['tm_hour'] > 7 && $time['tm_hour'] < 8){
-                header('Location: absensi-form?act=lateSubmit');
-            }
-        }else if($time['tm_hour'] < 12){
-            header('Location: absensi-form?act=closed');
-        }
-        mysqli_stmt_close($statement);
-    }
-    ?>
+    
 </body>
 </html>

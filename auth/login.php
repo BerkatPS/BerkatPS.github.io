@@ -1,7 +1,7 @@
 <?php
 require_once('../connection/conf.php');
 
-if(isset($_SESSION['user'])){
+if(isset($_SESSION['userId'])){
     header('Location: ../public');
     exit();
 }else if(isset($_SESSION['Teacher'])){
@@ -43,7 +43,7 @@ if(isset($_SESSION['user'])){
             if(isset($_GET['act'])){
                 if($_GET['act'] == "success"){
             ?>
-                <div class='p-4 mb-4 text-base text-center text-slate-200 bg-green-600 rounded-lg dark:bg-green-200 dark:text-green-800' role='alert' id="success">
+                <div class='p-4 mb-4 text-base text-center font-sans text-slate-200 bg-green-600 rounded-lg dark:bg-green-200 dark:text-green-800' role='alert' id="success">
                 <span class='font-bold'>SUCCESS LOGIN!!</span>  Anda Akan Diarahkan ke Dashboard User <span class="text-lg" id='waktu'>3</span>
                 </div>
                 <script type="text/javascript">
@@ -61,7 +61,7 @@ if(isset($_SESSION['user'])){
             <?php
             }elseif($_GET['act'] == "notlogin"){
             ?>
-                <div class="p-4 mb-4  text-base text-center text-slate-200 bg-red-500 rounded-lg " role="alert">
+                <div class="p-4 mb-4  text-base text-center font-sans text-slate-200 bg-red-600 rounded-lg " role="alert">
                             <span class="font-bold">GAGAL LOGIN!!</span> Anda Harus Login Terlebih Dahulu
                 </div>
             <?php
@@ -71,15 +71,21 @@ if(isset($_SESSION['user'])){
                                 <span class="font-medium text-yellow-400 flex gap-3"><img src="../icons/danger.png" alt="Warning" class="h-6 w-6 ">Sesi Anda Telah Berakhir Silahkan Login Kembali !!</span>
                     </div>
                 <?php
+            }elseif($_GET['act'] == "notactivate"){
+                ?>
+                    <div class="p-4 mb-4 flex items-center font-sans justify-center text-base text-center text-white bg-red-600 rounded-lg " role="alert">
+                                <span class="font-medium">GAGAL LOGIN!! AKUN ANDA BELUM DI AKTIVASI OLEH ADMIN SILAHKAN HUBUNGI ADMIN!! <a href='https://t.me/HyungUdin' target="_blank" class="text-white hover:underline">https://t.me/HyungUdin</a></span>
+                    </div>
+                <?php
             }elseif($_GET['act'] == "bannedAccount"){
                 ?>
-                    <div class="p-4 mb-4  text-base text-center text-slate-200 bg-red-500 rounded-lg " role="alert">
-                                <span class="font-medium">GAGAL LOGIN!! AKUN ANDA TELAH DI BANNED UNTUK BEBERAPA SAAT SILAHKAN HUBUNGI ADMIN!!  https://t.me/HyungUdin</span>
+                    <div class="p-4 mb-4  text-base font-sans text-center font-semibold text-white bg-red-600 rounded-lg " role="alert">
+                                <span class="font-medium">GAGAL LOGIN!! AKUN ANDA TELAH DI BANNED UNTUK BEBERAPA SAAT SILAHKAN HUBUNGI ADMIN!!  <a href='https://t.me/HyungUdin' target="_blank" class="text-white hover:underline">https://t.me/HyungUdin</a></span>
                     </div>
                 <?php
                 }elseif($_GET['act'] == "administrator"){  
             ?>
-                    <div class='p-4 mb-4 text-base text-center text-green-700 bg-green-300 rounded-lg dark:bg-green-200 dark:text-green-800' role='alert' id="success">
+                <div class='p-4 mb-4 text-base text-center font-sans font-medium text-green-700 bg-green-300 rounded-lg dark:bg-green-200 dark:text-green-800' role='alert' id="success">
                 <span class='font-bold'>SUCCESS LOGIN!!</span> Anda Akan Diarahkan Dashboard Admin <span class="text-lg" id='waktu'>3</span>
                 </div>
                 <script type="text/javascript">
@@ -97,7 +103,7 @@ if(isset($_SESSION['user'])){
             <?php 
             }elseif($_GET['act'] == "Teacher"){  
                 ?>
-                        <div class='p-4 mb-4 text-base text-center text-green-700 bg-green-300 rounded-lg dark:bg-green-200 dark:text-green-800' role='alert' id="success">
+                    <div class='p-4 mb-4 text-base text-center font-medium font-sans text-green-700 bg-green-300 rounded-lg dark:bg-green-200 dark:text-green-800' role='alert' id="success">
                     <span class='font-bold'>SUCCESS LOGIN!!</span> Anda Akan Diarahkan Dashboard GURU <span class="text-lg" id='waktu'>3</span>
                     </div>
                     <script type="text/javascript">
@@ -115,13 +121,13 @@ if(isset($_SESSION['user'])){
                 <?php 
                 }elseif($_GET['act'] == "passnotvalid"){
             ?>
-                <div class="p-4 mb-4 text-base text-center text-slate-200 bg-red-500" role="alert">
+                <div class="p-4 mb-4 text-base text-center font-sans font-medium text-white bg-red-600" role="alert">
                             <span class="font-bold">GAGAL LOGIN!!</span> Periksa Kembali Password Anda 
                 </div>
             <?php
             }elseif($_GET['act'] == "notfound"){
             ?>
-                <div class="p-4 mb-4 text-base text-center text-slate-200 bg-red-500" role="alert">
+                <div class="p-4 mb-4 text-base text-center font-sans font-medium text-white bg-red-600" role="alert">
                             <span class="font-bold">GAGAL LOGIN!!</span> Data yang Anda Input Tidak ada.. 
                 </div>
             <?php

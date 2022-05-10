@@ -6,6 +6,40 @@ if(!isset($_SESSION['admin'])){
     header('Location: ../../auth/login?act=notlogin');
     exit();
 }
+
+if(isset($_POST['simpan'])){
+    $mapel = $_POST['mapel'];
+    $pengajar = $_POST['pengajar'];
+    $kelasMengajar = $_POST['kelas'];
+    $link_virtual = htmlspecialchars(stripslashes(htmlentities($_POST['link_virtual'])));
+    $jam_Mulai = $_POST['jam_mulai'];
+    $jam_akhir = $_POST['jam_akhir'];
+    $date = date('Y-m-d H:i:s');
+
+    if($mapel != '' OR $pengajar != '' OR $kelasMengajar != '' OR $jam_Mulai != '' OR $jam_akhir != ''){
+
+        $selectDuplikatData = $confg->query("SELECT tbl_pelajaran.mata_pelajaran, tbl_pelajaran.pengajar, tbl_pelajaran.kelas_mengajar tbl_pelajaran.link_virtual WHERE tbl_pelajaran.mata_pelajaran='$mapel', tbl_pelajaran.pengajar= '$pengajar', tbl_pelajaran.kelas_mengajar='$kelasMengajar',tbl_pelajaran.link_virtual='$link_virtual'");
+
+        if($selectDuplikatData == 0){
+            if($jam_Mulai < $date){
+                $insertData .= $confg->query("INSERT INTO tbl_pelajaran(mata_pelajaran,pengajar,kelas_mengajar,link_virtual,jam_mulai,jam_akhir,status) VALUES('$mapel','$pengajar','$kelasMengajar','$link_virtual','$jam_Mulai','$jam_akhir','MENUNGGU')");
+                header('Location: tambahJadwalMengajar?act=successAdd');
+            }else if($jam_Mulai == $date){
+                $insertData .= $confg->query("INSERT INTO tbl_pelajaran(mata_pelajaran,pengajar,kelas_mengajar,link_virtual,jam_mulai,jam_akhir,status) VALUES('$mapel','$pengajar','$kelasMengajar','$link_virtual','$jam_Mulai','$jam_akhir','BERLANGSUNG')");
+                header('Location: tambahJadwalMengajar?act=successAdd');
+                }else if($jam_akhir > $date){
+                header('Location: tambahJadwalMengajar?act=forbiddenTime');
+            }
+        }else{
+            header('Location: tambahJadwalMengajar?act=duplikatData');
+        }
+        
+    }else{
+        header('Location: tambahJadwalMengajar?act=emtpy');
+    }
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +65,7 @@ if(!isset($_SESSION['admin'])){
              <span class="">Kesiswaan</span>
              </button>
              <nav class="text-slate-400 min-h-screen overflow-y-auto top-0 inset-x-0 font-mono text-[1.3rem] relative pt-7 gap-3 md:text-lg">
-                <a href="../../" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                <a href="../" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <div class="flex items-center">
                         <img src="../../icons/layout.png" class="h-6 w-6"alt="">
                     </div>
@@ -94,7 +128,7 @@ if(!isset($_SESSION['admin'])){
                                         Laporan Siswa</a>
                                     </li>
                                     <li>
-                                        <a href="../components/RekapAbsensi-guru" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <a href="../components/RekapLaporan-guru" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                         class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
                                         Laporan Guru</a>
@@ -161,7 +195,7 @@ if(!isset($_SESSION['admin'])){
                     <button
                     @click ="isOpen = !isOpen"
                     href="components/absensi" 
-                    class="flex items-center text-zinc-300 gap-2 py-2 px-3 -inset-x-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    class="flex items-center text-zinc-300 gap-2 py-2 px-3 -inset-x-5 bg-slate-900 rounded-md transition duration-200">
                         <img src="../../icons/online-learning.png" class="h-6 w-6" alt="" srcset="">
                     </svg>
                     <span>Pelajaran</span>
@@ -196,6 +230,58 @@ if(!isset($_SESSION['admin'])){
                             </ul>
                         <!-- End DropDown Menu -->
                 </div>
+                <a href="../components/add-news" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                        <img src="../../icons/news.png" alt="" class="h-6 w-6" srcset="">
+                    Add News
+                    </a>
+                    <a href="../components/App/Development" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                        <img src="../../icons/software-development.png" alt="" class="h-6 w-6" srcset="">
+                    Development
+                    </a>
+                    <div class="relative" x-data="{ isOpen : false }">
+                        <button
+                        @click="isOpen = !isOpen"
+                        href="components/absensi" 
+                        class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                        <img src="../../icons/exam.png" class="h-6 w-6" alt="">
+                        </svg>
+                        <span>Exam/Ujian</span>
+                        <div class="relative">
+                            <svg fill="currentColor" viewBox="0 0 20 20" :class="{'rotate-180': isOpen, 'rotate-0': !isOpen}" class="inline w-5 h-5 transition-transform duration-200 transform"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        </div>
+                        </button>
+                            <!-- Dropdown Menu -->
+                                <ul
+                                x-show="isOpen"
+                                @click.away="isOpen = false"
+                                class="space-y-2 text-sm px-3 py-2"
+                                x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95">
+                                    <li>
+                                        <a href="../App/soal-ujian" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="group-hover:bg-slate-200 fill-current"width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                        Paket Soal / Ujian</a>
+                                    </li>
+                                    <li>
+                                        <a href="../App/jadwal-Ujian" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                        Jadwal Ujian</a>
+                                    </li>
+                                    <li>
+                                        <a href="../App/rekap-ujian" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                        Data Ruangan</a>
+                                    </li>
+                                    <li>
+                                        <a href="../App/rekap-ujian" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                        Rekap Data Ujian</a>
+                                    </li>
+                                </ul>
+                            <!-- End DropDown Menu -->
+                    </div>
                 <a href="../components/forum-chat" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/chat.png" alt="" class="h-6 w-6" srcset="">
                 Forum Chat
@@ -272,107 +358,134 @@ if(!isset($_SESSION['admin'])){
                     side.classList.toggle("-translate-x-full");
                     })
                 </script>
-                <div class="py-3">
-                    <form action="" class="bg-slate-800 grid grid-cols-1 p-5 py-6 gap-y-12 gap-x-5 mi-h-full relative" method="POST">
-                    <?php 
-                    if(isset($_GET['act'])){
-                        if($_GET['act'] == "successAdd"){
-                    ?>
-                        <div class='w-full p-4 mb-4 text-base text-center flex justify-center bg-blue-dark text-blue-600 rounded-lg' role='alert' id="success">
-                            
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                        </svg><span class='font-bold'>&nbspSUCCESS MELAKUKAN TAMBAH JADWAL&nbspAnda Akan Diarahkan ke JADWAL MENGAJAR&nbsp</span>
-                        <span class="flex items-center" id='waktu'>3</span>
-                        <script type="text/javascript">
-                            var waktu = 3;
-                            setInterval(function() {
-                            waktu--;
-                            if(waktu < 0) {
-                                document.getElementById("success").innerHTML = 'Redirecting...';
-                                window.location = 'jadwalMengajar';
-                            }else{
-                            document.getElementById("waktu").innerHTML = waktu;
-                            }
-                            }, 1000);
-                            </script>
-                        </div>
-                    <?php
-                    }else{
-                         ?>  
+                    <div class="py-3">
+                        <form action="" class="bg-slate-800 grid grid-cols-1 p-5 py-6 gap-y-12 gap-x-5 mi-h-full relative" method="POST">
+                        <?php 
+                        if(isset($_GET['act'])){
+                            if($_GET['act'] == "successAdd"){
+                        ?>
+                            <div class='w-full p-4 mb-4 text-base text-center flex justify-center bg-green-800 text-green-400 rounded-lg' role='alert' id="success">
+                                
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg><span class='font-bold'>&nbspSUCCESS MELAKUKAN TAMBAH JADWAL MENGAJAR&nbspAnda Akan Diarahkan ke JADWAL MENGAJAR&nbsp</span>
+                            <span class="flex items-center" id='waktu'>3</span>
+                            <script type="text/javascript">
+                                var waktu = 3;
+                                setInterval(function() {
+                                waktu--;
+                                if(waktu < 0) {
+                                    document.getElementById("success").innerHTML = 'Redirecting...';
+                                    window.location = 'jadwalMengajar';
+                                }else{
+                                document.getElementById("waktu").innerHTML = waktu;
+                                }
+                                }, 1000);
+                                </script>
+                            </div>
+                        <?php
+                        }else if($_GET['act'] == "forbiddenTime"){
+                            ?>  
                         <div class='w-full p-4 mb-4 text-base text-center flex justify-center bg-red-600 text-white rounded-lg' role='alert' id="gagal">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                         </svg>
-                        <span class='font-bold'>&nbspGAGAL MELAKUKAN ABSENSI SILAHKAN PERIKSA DATA ANDA KEMBALI</span> 
+                        <span class='font-bold'>&nbspGAGAL MELAKUKAN TAMBAH JADWAL MENGAJAR , JAM AKHIR ANDA TELAH MELEWATI BATAS WAKTU</span> 
                         </div>
                     <?php
+                    }else if($_GET['act'] == "duplikatData"){
+                            ?>  
+                        <div class='w-full p-4 mb-4 text-base text-center flex justify-center bg-red-600 text-white rounded-lg' role='alert' id="gagal">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <span class='font-bold'>&nbspGAGAL MELAKUKAN TAMBAH JADWAL MENGAJAR , DATA YANG ANDA MASUKKAN SUDAH ADA SILAHKAN PERIKSA KEMBALI INPUTAN ANDA</span> 
+                        </div>
+                    <?php
+                    }else if($_GET['act'] == "emtpy"){
+                            ?>  
+                            <div class='w-full p-4 mb-4 text-base text-center flex justify-center bg-red-600 text-white rounded-lg' role='alert' id="gagal">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
+                            <span class='font-bold'>&nbspGAGAL MELAKUKAN TAMBAH JADWAL MENGAJAR DATA TIDAK BOLEH KOSONG</span> 
+                            </div>
+                        <?php
+                        }else{
+                            ?>  
+                            <div class='w-full p-4 mb-4 text-base text-center flex justify-center bg-red-600 text-white rounded-lg' role='alert' id="gagal">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
+                            <span class='font-bold'>&nbspGAGAL MELAKUKAN TAMBAH JADWAL MENGAJAR , SILAHKAN PERIKSA DATA ANDA KEMBALI</span> 
+                            </div>
+                        <?php
+                        }
                     }
-                }
-                    ?>
-                        <h2 class="font-bold text-2xl sm:text-xl">FORM TAMBAH JADWAL MENGAJAR</h2>
-                        <div class="relative">
-                            <label for="">Mata Pelajaran</label>                            
-                            <select name="kelas" id="" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Kelas Anda" data-mdb-clear-button="true" required>
-                            <?php
-                            $sql = "SELECT * FROM tbl_daftar_pelajaran";
-                            $query = $confg->query($sql);
-                            while($row = mysqli_fetch_array($query)){
-                            ?>
-                            <option class="bg-slate-800 hover:bg-indigo-500"value=<?= $row['list_pelajaran'] ?>><?= $row['list_pelajaran'] ?></option>
-                            <?php }?>
-                        </select>
-                        </div>
-                        <div class="relative">
-                            <label for="">PENGAJAR</label>
-                            <?php
-                            $sql = "SHOW columns FROM user LIKE 'wali_kelas'";
-                            $query = $confg->query($sql);
-                            $row = mysqli_fetch_assoc($query);
-                            
-                            $values = array_map('trim', explode(',', trim(substr($row['Type'], 4), '()')));
-                            $del = str_replace(array("'","\"","&quot;"),"",$values);
-                            ?>
-                            <select name="kelas" id="" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Kelas Anda" data-mdb-clear-button="true" required>
-                            <option class="bg-slate-800 hover:bg-indigo-500">Pilih PENGAJAR</option>
-                            <?php
-                            foreach($del as $color):?>
-                                <option class="bg-slate-800 hover:bg-indigo-500"value=<?= $color?>><?= $color ?></option> <?php. "\r"?><hr><?php. "\n"; ?>
-                            <?php endforeach; ?>
-                        </select>
-                        </div>
-                        <div class="relative">
-                            <label for="">KELAS MENGAJAR</label>
-                            <?php
-                            $sql = "SHOW columns FROM user LIKE 'KELAS'";
-                            $query = $confg->query($sql);
-                            $row = mysqli_fetch_assoc($query);
-                            
-                            $values = array_map('trim', explode(',', trim(substr($row['Type'], 4), '()')));
-                            $del = str_replace(array("'","\"","&quot;"),"",$values);
-                            ?>
-                            <select name="kelas" id="" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Kelas Anda" data-mdb-clear-button="true" required>
-                            <option class="bg-slate-800 hover:bg-indigo-500">Pilih KELAS MENGAJAR</option>
-                            <?php
-                            foreach($del as $color):?>
-                                <option class="bg-slate-800 hover:bg-indigo-500"value=<?= $color?>><?= $color ?></option> <?php. "\r"?><hr><?php. "\n"; ?>
-                            <?php endforeach; ?>
-                        </select>
-                        </div>
-                        <div class="relative">
-                            <label for="jam_mulai">JAM MULAI</label>
-                            <input type="time"class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Kelas Anda"">
-                        </div>
-                        <div class="relative">
-                            <label for="jam_mulai">JAM AKHIR</label>
-                            <input type="time"class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Kelas Anda"">
-                        </div>
-                        <div class=""></div>
-                            <button type="submit" class="bg-purple-dark text-purple-600 p-2 hover:bg-purple-500 hover:text-white hover:transform duration-300">Simpan Data</button>
-                    </form>
-                </div>
+                        ?>
+                            <h2 class="font-bold text-2xl sm:text-xl"><button class="px-4 py-1 bg-indigo-500 hover:bg-slate-900" onclick="window.location.href= 'jadwalMengajar'"><</button>&nbspFORM TAMBAH JADWAL MENGAJAR</h2>
+                            <div class="relative">
+                                <label for="">Mata Pelajaran</label>                            
+                                <select name="mapel" id="mapel" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Kelas Anda" data-mdb-clear-button="true" required>
+                                <option class="bg-slate-800 hover:bg-indigo-500">Pilih Mata Pelajaran</option>
+                                <?php
+                                $sql = "SELECT * FROM tbl_daftar_pelajaran";
+                                $query = $confg->query($sql);
+                                while($row = mysqli_fetch_array($query)){
+                                ?>
+                                <option class="bg-slate-800 hover:bg-indigo-500"value=<?= $row['list_pelajaran'] ?>><?= $row['list_pelajaran'] ?></option>
+                                <?php }?>
+                            </select>
+                            </div>
+                            <div class="relative">
+                                <label for="">PENGAJAR</label>                            
+                                <select name="pengajar" id="pengajar" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Kelas Anda" data-mdb-clear-button="true" required>
+                                <option class="bg-slate-800 hover:bg-indigo-500">Pilih Nama Pengajar</option>   
+                                <?php
+                                $sql = "SELECT * FROM tbl_guru";
+                                $query = $confg->query($sql);
+                                while($row = mysqli_fetch_array($query)){
+                                ?>
+                                <option class="bg-slate-800 hover:bg-indigo-500"value=<?= $row['nama_guru'] ?>><?= $row['nama_guru'] ?></option>
+                                <?php }?>
+                            </select>
+                            </div>
+                            <div class="relative">
+                                <label for="">KELAS MENGAJAR</label>
+                                <?php
+                                $sql = "SHOW columns FROM user LIKE 'KELAS'";
+                                $query = $confg->query($sql);
+                                $row = mysqli_fetch_assoc($query);
+                                
+                                $values = array_map('trim', explode(',', trim(substr($row['Type'], 4), '()')));
+                                $del = str_replace(array("'","\"","&quot;"),"",$values);
+                                ?>
+                                <select name="kelas" id="" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Kelas Anda" data-mdb-clear-button="true" required>
+                                <option class="bg-slate-800 hover:bg-indigo-500">Pilih KELAS MENGAJAR</option>
+                                <?php
+                                foreach($del as $color):?>
+                                    <option class="bg-slate-800 hover:bg-indigo-500"value=<?= $color?>><?= $color ?></option> <?php. "\r"?><hr><?php. "\n"; ?>
+                                <?php endforeach; ?>
+                            </select>
+                            </div>
+                            <div class="relative">
+                                <label for="link_virtual">LINK VIRTUAL</label>
+                                <input type="text"class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan LINK VIRTUAL "name="link_virtual">
+                            </div>
+                            <div class="relative">
+                                <label for="jam_mulai">JAM MULAI</label>
+                                <input type="datetime-local"class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Kelas Anda"name="jam_mulai">
+                            </div>
+                            <div class="relative">
+                                <label for="jam_akhir">JAM AKHIR</label>
+                                <input type="datetime-local"class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Kelas Anda"name="jam_akhir">
+                            </div>
+                            <div class=""></div>
+                                <button type="submit" class="bg-purple-dark text-purple-600 p-2 hover:bg-purple-500 hover:text-white hover:transform duration-300" name="simpan">Simpan Data</button>
+                        </form>
+                    </div>
             </div>
     </div>
 </div>
 </body>
-</html> 
+</html>

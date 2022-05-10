@@ -5,6 +5,25 @@ if(!isset($_SESSION['Teacher'])){
     header('Location: ../auth/login?act=notlogin');
 }
 
+if(isset($_SESSION['Teacher'])){
+    $updateStatus = $confg->query("UPDATE tbl_guru SET status ='Online' WHERE id_guru = $_SESSION[id_Teacher] ");
+}
+$time = localtime(time(), true);
+$tanggal = date('d F Y');
+$waktu = date('H:i:s');
+$date_create = date('d F Y H:i:s');
+
+if($time['tm_hour'] > 8){
+    $cekAbsensiTerbaru = $confg->query("SELECT * FROM tbl_absensi_guru WHERE nuptk_guru = $_SESSION[Teacher_nuptk] AND tanggal = '$tanggal'");
+    $countAbsensiTerbaru = mysqli_num_rows($cekAbsensiTerbaru);
+    if($countAbsensiTerbaru === 0){
+        $insertAlpha = $confg->query("INSERT INTO tbl_absensi_guru(id_absensi_guru,tanggal,waktu,nuptk_guru,nama,status,keterangan) VALUES('$_SESSION[id_Teacher]','$tanggal','$waktu','$_SESSION[Teacher_nuptk]','$_SESSION[Teacher]','ALPHA','TIDAK MELAKUKAN ABSENSI')");
+
+        $insertHistory = $confg->query("INSERT INTO history_guru(id_guru,id_admin,username,action,information,date_create,status) VALUES('$_SESSION[id_Teacher]',1,'ADMIN','ABSENSI','ANDA TIDAK MELAKUKAN ABSENSI DAN DINYATAKAN ALPHA','$date_create',0)");
+    }else{
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -57,13 +76,25 @@ if(!isset($_SESSION['Teacher'])){
                     <img src="../icons/online-learning.png" class="h-6 w-6" alt="">
                 Pelajaran
                 </a>
+                <a href="pages/semester" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200 ">
+                    <img src="../icons/statistics.png" class="h-6 w-6" alt="">
+                Semester
+                </a>
                 <a href="components/forum-chat" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../icons/chat.png" alt="" class="h-6 w-6" srcset="">
                 Forum Chat
                 </a>
+                <a href="../App/Development" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    <img src="../icons/software-development.png" alt="" class="h-6 w-6" srcset="">
+                Development
+                </a>
                 <a href="history" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../icons/history.png" alt="" class="h-6 w-6" srcset="">
                 History
+                </a>
+                <a href="components/terms" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    <img src="../icons/audit.png" alt="Terms" class="h-6 w-6" srcset="">
+                Ketentuan
                 </a>
                 <a href="../auth/Logout" class="flex items-center text-zinc-300 gap-2  py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition-all duration-200 ease-in">
                     <img src="../icons/logout.png" class="h-6 w-6" alt="" srcset="">
@@ -100,6 +131,13 @@ if(!isset($_SESSION['Teacher'])){
                                     </li>
                                 </ul>
                             </div>
+                        <div class="flex justify-start items-start content-start">
+                            <?php 
+                            $cekGuruOnline = $confg->query("SELECT * FROM tbl_guru WHERE status = 'Online'");
+                            $countGuruOnline = mysqli_num_rows($cekGuruOnline);
+                            ?>
+                            <span class="p-1 flex border-green-500 border-[0.5px] text-green-500">Guru Online : <?= $countGuruOnline ?></span>
+                        </div>
                         <div class="relative">
                         <span id="ct" class="p-1 flex  border-green-500 border-[0.5px] text-green-500"></span>
                         </div>

@@ -103,7 +103,7 @@ if(!isset($_SESSION['admin'])){
                                         Laporan Siswa</a>
                                     </li>
                                     <li>
-                                        <a href="../components/RekapAbsensi-guru" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <a href="../components/RekapLaporan-guru" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                         class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
                                         Laporan Guru</a>
@@ -199,6 +199,58 @@ if(!isset($_SESSION['admin'])){
                         </ul>
                     <!-- End DropDown Menu -->
             </div>
+            <a href="../components/add-news" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                        <img src="../../icons/news.png" alt="" class="h-6 w-6" srcset="">
+                    Add News
+                    </a>
+                    <a href="../components/App/Development" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                        <img src="../../icons/software-development.png" alt="" class="h-6 w-6" srcset="">
+                    Development
+                    </a>
+                    <div class="relative" x-data="{ isOpen : false }">
+                        <button
+                        @click="isOpen = !isOpen"
+                        href="components/absensi" 
+                        class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                        <img src="../../icons/exam.png" class="h-6 w-6" alt="">
+                        </svg>
+                        <span>Exam/Ujian</span>
+                        <div class="relative">
+                            <svg fill="currentColor" viewBox="0 0 20 20" :class="{'rotate-180': isOpen, 'rotate-0': !isOpen}" class="inline w-5 h-5 transition-transform duration-200 transform"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        </div>
+                        </button>
+                            <!-- Dropdown Menu -->
+                                <ul
+                                x-show="isOpen"
+                                @click.away="isOpen = false"
+                                class="space-y-2 text-sm px-3 py-2"
+                                x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95">
+                                    <li>
+                                        <a href="../App/soal-ujian" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="group-hover:bg-slate-200 fill-current"width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                        Paket Soal / Ujian</a>
+                                    </li>
+                                    <li>
+                                        <a href="../App/jadwal-Ujian" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                        Jadwal Ujian</a>
+                                    </li>
+                                    <li>
+                                        <a href="../App/rekap-ujian" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                        Data Ruangan</a>
+                                    </li>
+                                    <li>
+                                        <a href="../App/rekap-ujian" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                        Rekap Data Ujian</a>
+                                    </li>
+                                </ul>
+                            <!-- End DropDown Menu -->
+                    </div>
             <a href="../components/forum-chat" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                 <img src="../../icons/chat.png" alt="" class="h-6 w-6" srcset="">
             Forum Chat
@@ -268,10 +320,26 @@ if(!isset($_SESSION['admin'])){
                         </div>
                     </ul>
                 </div>
-                <div class="py-3">
-                <button type="button"onclick="window.location.href='tambahGuru'"type="submit" class="flex items-center uppercase gap-2 font-medium text-white rounded-md p-2 bg-indigo-500 focus:outline-none hover:shadow-lg shadow-indigo-300/100"><img src="../../icons/plus.png"class="h-5 w-5">Tambah Data GURU</button>
+                <div class="py-2">
+
                 </div>
                 <div class="relative overflow-x-auto bg-slate-800 shadow-md rounded-lg text-gray-400 pt-7">
+                    <div class="px-4 pb-5">
+                        <h2><b>DATA GURU</b></h2>
+                        <p>Anda Bisa Melihat Seluruh Data Siswa Saat ini</p>
+                    </div>
+                    <div class="px-4 pb-5">
+                        <button type="button"onclick="window.location.href='tambahGuru'"type="submit" class="flex items-center uppercase gap-2 font-medium text-white rounded-md p-2 bg-indigo-500 focus:outline-none hover:shadow-lg shadow-indigo-300/100"><img src="../../icons/plus.png"class="h-5 w-5">Tambah Data GURU</button>
+                    </div>
+                <div class="px-4 pb-5">
+                    <h1 class="font font-semibold uppercase text-lg">Filter Data Disini</h1>
+                </div>
+                <div class="px-4 pb-5 flex">
+                    <select name="" id="" class="flex items-center p-2 w-full bg-transparent border border-slate-500 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500">
+                        <option value="">Pilih Berdasarkan Status</option>
+                    </select>
+                        <button class=" bg-blue-dark text-blue-600 hover:bg-blue-600 hover:text-white p-2 tranform duration-300">Submit</button>
+                </div>
                 <?php 
                     if(isset($_GET['act'])){
                         if($_GET['act'] == "success"){
@@ -314,6 +382,9 @@ if(!isset($_SESSION['admin'])){
                                         EMAIL
                                     </th>
                                     <th scope="col" class="px-6 py-3">
+                                        STATUS
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
                                         ACTION  
                                     </th>
                                 </tr>
@@ -328,13 +399,22 @@ if(!isset($_SESSION['admin'])){
                                 <td class="px-6 py-4 dark:bg-gray-800 font-medium text-indigo-500"><?=$row['nuptk_guru']?></td>
                                 <td class="px-6 py-4 dark:bg-gray-800 font-medium"><?=$row['nama_guru']?></td>
                                 <td class="px-6 py-4 dark:bg-gray-800 font-medium"><?=$row['email']?></td>
+                                <td class="px-6 py-4 dark:bg-gray-800 font-medium">
+                                    <?php
+                                        if($row['status'] == 'Online'){
+                                            echo"<span class='bg-green-800 text-center text-green-400 p-2'>".$row['status']."</span>";
+                                        }else{
+                                            echo"<span class='p-2 text-white bg-red-600'>".$row['status']."</span>";
+                                        }
+                                    ?>
+                                </td>
                                 <div class="flex flex-wrap">
                                     <td class="py-4 text-base font-medium uppercase dark:bg-gray-800 cursor-pointer ">
-                                        <a href="dataGuru-edit?id=<?= uniqid($row['id_guru']) ?>"class="p-2 px-2 bg-blue-dark text-indigo-500">
+                                        <a href="dataGuru-edit?id=<?= uniqid($row['id_guru']) ?>"class="p-2 px-2 bg-indigo-500 text-white">
                                             <span>Edit</span>
                                         </a>
                                     <div class="py-4">
-                                        <a href="dataGuru-delete?id=<?= uniqid($row['id_guru']) ?>"onclick="return confirm('Yakin Anda Ingin Menghapus')"class="p-2 px-2 bg-red-700 text-slate-400">
+                                        <a href="dataGuru-delete?id=<?= uniqid($row['id_guru']) ?>"onclick="return confirm('Yakin Anda Ingin Menghapus')"class="p-2 px-2 bg-red-600 text-slate-200">
                                             <span>Hapus</span>
                                         </a>
                                     </div>
@@ -345,25 +425,6 @@ if(!isset($_SESSION['admin'])){
                         }
                         ?>
                         </tbody>
-                        <tfoot class="text-xs text-gray-700 uppercase  dark:bg-gray-700 dark:text-gray-400">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3">
-                                        Id
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        NUPTK GURU
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        NAMA GURU
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        EMAIL
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        ACTION  
-                                    </th>
-                                </tr>
-                        </tfoot>
                     </table>
                 </div>
                 <script>

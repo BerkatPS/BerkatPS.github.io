@@ -5,7 +5,47 @@ if(!isset($_SESSION['user'])){
     header('Location: ../../auth/login?act=notlogin');
     exit();
 }
+?>
 
+<?php
+$time = localtime(time(), true);
+$tanggal = date('Y-m-d H:i:s');
+$hari = date('l');
+
+if(isset($_POST['submitabsen'])){
+    $name = stripslashes(htmlspecialchars(htmlentities($_POST['nama'])));
+    $kelas = stripslashes(htmlspecialchars(htmlentities($_POST['kelas'])));
+    $NIS = stripslashes(htmlspecialchars(htmlentities($_POST['NIS'])));
+    $status = "HADIR";
+
+    if($time['tm_hour'] > 6 &&  $time['tm_hour'] < 7){
+        $statement = mysqli_stmt_init($confg);
+        $insert = "INSERT INTO tbl_absensi_siswa(tanggal,Hari,nis,nama,kelas,status,poin) VALUES($tanggal,$hari,$name,$kelas,$NIS,$status,0)";
+        if(!mysql_query($confg,$insert)){
+            header('Location: absensi-form?act=failAdd');
+        }else if(mysqli_query($confg,$insert)){
+            header('Location: absensi-form?act=successAdd');
+        }else if($insert > 1){
+            header('Location: absensi-form?act=forbiddenSubmit');
+        }else if($time['tm_hour'] > 7 && $time['tm_hour'] < 8){
+            header('Location: absensi-form?act=lateSubmit');
+            $insert = "INSERT INTO tbl_absensi_siswa(tanggal,Hari,nis,nama,kelas,status,poin) VALUES($tanggal,$hari,$name,$kelas,$NIS,'TERLAMBAT',5)";
+        }
+    }else{
+        header('Location: absensi-form?act=closed');
+    }
+}
+$id = isset($_SESSION['userId']);
+$nama = isset($_SESSION['user']);
+$kelas = isset($_SESSION['kelas']);
+$NIS = isset($_SESSION['nis']);
+
+if($time['tm_hour'] > 8){
+    $insert = $confg->query("INSERT INTO tbl_absensi_siswa(id_absensi_siswa,tanggal,Hari,nis,nama,kelas,status,poin) VALUES($id,'$tanggal','$hari','$nama','$kelas','$NIS','ALPHA',10)");
+    if($insert){
+        header('Location: absensi-form?act=alpha');
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,25 +56,22 @@ if(!isset($_SESSION['user'])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../../icons/world-book-day.png"/>
     <script src="../../js/timer.js"></script>
-    
+    <link rel="stylesheet" href="../../assets/blink.css">
     <script src="../../js/sideToggle.js"></script>
     <?php require '../../assets/header.php';?>
     <title>APP KESISWAAN - SISWA</title>
 </head>
 <body class="bg-slate-900 overflow-x-hidden " onload="startTime();">
-<div class="md:flex md:flex-row md:min-h-screen overflow-y-auto">
+<div class="md:flex md:flex-row ">
         <!-- Mobile Menu -->
-        <div class="bg-slate-800 w-72 text-purple-600 font-mono h-screen z-20 px-6 py-9 absolute inset-y-0 left-0 transform -translate-x-full transition duration-500 ease-in-out lg:relative lg:translate-x-0" id="sidebar">
-            <a href="" title="meta icons" class="mb-[rem] font-extrabold text-2xl text-indigo-500 flex items-center space-x-2">
+        <div class="bg-slate-800 w-72 text-purple-600 font-mono focus:outline-none z-20 px-6 py-9 absolute inset-y-0 left-0 transform -translate-x-full transition duration-500 ease-in-out lg:relative lg:translate-x-0" id="sidebar">
+            <button href="" title="meta icons" class="font-extrabold text-2xl text-indigo-500 flex items-center space-x-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" cli p-rule="evenodd" />
+                    <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3  3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" cli p-rule="evenodd" />
                 </svg>
              <span class="">Kesiswaan</span>
-             <div class="hidden lg:bg-black opacity-70 p-2 -right-5 rounded-full"id="row" onclick="">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H6M12 5l-7 7 7 7"/></svg>
-             </div>
-            </a>
-            <nav class="text-slate-400 font-mono text-[1.3rem] pt-7 relative gap-3 md:text-lg">
+             </button>
+             <nav class="text-slate-400 min-h-screen overflow-y-hidden font-mono text-[1.3rem] relative pt-7 gap-3 md:text-lg">
                 <a href="../" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <div class="flex items-center">
                         <img src="../../icons/layout.png" class="h-6 w-6"alt="">
@@ -44,28 +81,39 @@ if(!isset($_SESSION['user'])){
                 <a href="../components/absensi" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 bg-slate-900 rounded-md transition duration-200">
                     <img src="../../icons/calendar.png" class="h-6 w-6" alt="" srcset="">
                 Absensi
+                <p class="text-base ml-8 p-1 px-2 bg-red-600 text-slate-300 rounded-lg" id="blink">New</p>
                 </a>
                 <a href="../components/laporan" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/report.png" class="h-6 w-6" alt=""> 
                 Laporan
+                <p class="text-base ml-8 p-1 px-2 bg-red-600 text-slate-300 rounded-lg" id="blink">New</p>
                 </a>
-                <a href="../pages/User" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200 ">
+                <a href="../pages/user" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200 ">
                     <img src="../../icons/user.png" class="h-6 w-6" alt="">
                 User Profile
                 </a>
-                <a href="mata-pelajaran" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200 ">
+                <a href="../components/mata-pelajaran" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200 ">
                     <img src="../../icons/online-learning.png" class="h-6 w-6" alt="">
                 Pelajaran
                 </a>
-                <a href="forum-chat" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                <a href="../pages/semester" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200 ">
+                    <img src="../../icons/statistics.png" class="h-7 w-7" alt="">
+                Semester
+                </a>
+                <a href="../components/forum-chat" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/chat.png" alt="" class="h-6 w-6" srcset="">
                 Forum Chat
                 </a>
-                <a href="../history" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                <a href="pages/ekstrakurikuler" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    <img src="../../icons/mental-health.png" alt="" class="h-6 w-6" srcset="">
+                Eskul
+                <p class="text-base ml-12 p-1 px-2 bg-red-600 text-slate-300 rounded-lg" id="blink">New</p>
+                </a>
+                <a href="../components/forum-chat" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/history.png" alt="" class="h-6 w-6" srcset="">
                 History
                 </a>
-                <a href="./terms" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                <a href="../components/terms" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/audit.png" alt="Terms" class="h-6 w-6" srcset="">
                 Ketentuan
                 </a>
@@ -116,7 +164,7 @@ if(!isset($_SESSION['user'])){
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                                 </svg>Account</a>
-                                            <a href="../auth/logout" class="hover:bg-blue-600 hover:text-white hover:transition duration-200 flex items-center px-4 py-3 gap-2">
+                                            <a href="../../auth/logout" class="hover:bg-blue-600 hover:text-white hover:transition duration-200 flex items-center px-4 py-3 gap-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                                             </svg>Logout</a>
@@ -148,7 +196,7 @@ if(!isset($_SESSION['user'])){
                     if(isset($_GET['act'])){
                         if($_GET['act'] == "successAdd"){
                     ?>
-                        <div class='w-full p-4 mb-4 text-base text-center flex justify-center bg-blue-dark text-blue-600 rounded-lg' role='alert' id="success">
+                        <div class='w-full p-4 mb-4 text-base text-center flex justify-center bg-green-800 text-green-400 rounded-lg' role='alert' id="success">
                             
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -207,7 +255,11 @@ if(!isset($_SESSION['user'])){
                     }
                 }
                     ?>
-                        <h2 class="font-bold text-2xl sm:text-xl">FORM ABSENSI MAHASISWA</h2>
+                        <h2 class="font-bold text-2xl sm:text-xl">
+                        
+                        <button class="bg-red-600 p-2 text-white font-semibold focus:outline-none flex items-center justify-center gap-2 rounded-md" onclick="window.location.href= 'mata-pelajaran'"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>Kembali Ke ABSESI</button>&nbspFORM ABSENSI MAHASISWA</h2>
                         <div class="relative">
                             <label for="">NAMA SISWA</label>
                             <input type="text" name="nama" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Nama Anda Dengan benar">
@@ -235,37 +287,11 @@ if(!isset($_SESSION['user'])){
                             <input type="text" name="NIS" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan NIS Anda">
                         </div>
                         <div class=""></div>
-                            <button type="submit"name="submitabsen" class="bg-purple-dark text-purple-600 p-2 hover:bg-purple-500 hover:text-white hover:transform duration-300">Simpan Data</button>
+                            <button type="submit"name="submitabsen" class="bg-blue-dark text-blue-600 p-2 hover:bg-blue-600 hover:text-white hover:transform duration-300">Simpan Data</button>
                     </form>
                 </div>
             </div>
     </div>
-    <?php
-
-    if(isset($_POST['submitabsen'])){
-        $tanggal = date('Y-m-d H:i:s');
-        $hari = date('l');
-        $name = stripslashes(htmlspecialchars(htmlentities($_POST['nama'])));
-        $kelas = stripslashes(htmlspecialchars(htmlentities( $_POST['kelas'])));
-        $NIS = stripslashes(htmlspecialchars(htmlentities($_POST['NIS'])));
-        $time = localtime(time(), true);
-        $status = "HADIR";
-        if($time['tm_hour'] > 12 &&  $time['tm_hour'] < 13){
-            $statement = mysqli_stmt_init($confg);
-            $insert = "INSERT INTO tbl_absensi_siswa(tanggal,Hari,nis,nama,kelas,status,poin) VALUES($tanggal,$hari,$name,$kelas,$NIS,$status,0)";
-            if(!mysql_query($confg,$insert)){
-                header('Location: absensi-form?act=failAdd');
-            }else if(mysqli_query($confg,$insert)){
-                header('Location: absensi-form?act=successAdd');
-            }else if($insert > 1){
-                header('Location: absensi-form?act=forbiddenSubmit');
-            }else if($time['tm_hour'] > 7 && $time['tm_hour'] < 8){
-                header('Location: absensi-form?act=lateSubmit');
-            }
-        }else if($time['tm_hour'] < 12){
-            header('Location: absensi-form?act=closed');
-        }
-    }
-    ?>
+    
 </body>
 </html>

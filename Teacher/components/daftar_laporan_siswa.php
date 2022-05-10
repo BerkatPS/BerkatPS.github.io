@@ -8,7 +8,7 @@ if(!isset($_SESSION['Teacher'])){
 
 $id = $_SESSION['id_Teacher'];
 
-$dataLaporan = $confg->query("SELECT tbl_laporan.id , user.id AS id_siswa_laporan, user.name , user.NIS , tbl_laporan.jenis_pelanggaran , user.poin AS poin_siswa , tbl_laporan.date ,tbl_guru.nama_guru AS guru_pelapor , tbl_laporan.keterangan FROM tbl_laporan JOIN user ON (tbl_laporan.id_laporan_siswa = user.id) JOIN tbl_guru ON ( tbl_laporan.id_guru_pelapor = tbl_guru.id_guru ) WHERE tbl_guru.id_guru = $id ");
+$dataLaporan = $confg->query("SELECT tbl_laporan.id , user.id AS id_siswa_laporan, user.name , user.NIS , tbl_laporan.jenis_pelanggaran , tbl_laporan.poin AS poin_siswa , tbl_laporan.date ,tbl_guru.nama_guru AS guru_pelapor , tbl_laporan.keterangan FROM tbl_laporan JOIN user ON (tbl_laporan.id_laporan_siswa = user.id) JOIN tbl_guru ON ( tbl_laporan.id_guru_pelapor = tbl_guru.id_guru ) WHERE tbl_guru.id_guru = $id ORDER BY id DESC");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -68,13 +68,25 @@ $dataLaporan = $confg->query("SELECT tbl_laporan.id , user.id AS id_siswa_lapora
                     <img src="../../icons/online-learning.png" class="h-6 w-6" alt="">
                 Pelajaran
                 </a>
+                <a href="../pages/semester" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200 ">
+                    <img src="../../icons/statistics.png" class="h-6 w-6" alt="">
+                Semester
+                </a>
                 <a href="./forum-chat" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/chat.png" alt="" class="h-6 w-6" srcset="">
                 Forum Chat
                 </a>
+                <a href="../App/Development" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    <img src="../../icons/software-development.png" alt="" class="h-6 w-6" srcset="">
+                Development
+                </a>
                 <a href="../history" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/history.png" alt="" class="h-6 w-6" srcset="">
                 History
+                </a>
+                <a href="./terms" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    <img src="../../icons/audit.png" alt="Terms" class="h-6 w-6" srcset="">
+                Ketentuan
                 </a>
                 <a href="../../auth/Logout" class="flex items-center text-zinc-300 gap-2  py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition-all duration-200 ease-in">
                     <img src="../../icons/logout.png" class="h-6 w-6" alt="" srcset="">
@@ -91,6 +103,13 @@ $dataLaporan = $confg->query("SELECT tbl_laporan.id , user.id AS id_siswa_lapora
                                 <span class="flex pb-1">1</span>
                             </div>
                             <img src="../../icons/notification-bell.png" class="h-8 w-9" alt="" srcset="">
+                        </div>
+                        <div class="flex justify-start items-start content-start">
+                            <?php 
+                            $cekGuruOnline = $confg->query("SELECT * FROM tbl_guru WHERE status = 'Online'");
+                            $countGuruOnline = mysqli_num_rows($cekGuruOnline);
+                            ?>
+                            <span class="p-1 flex border-green-500 border-[0.5px] text-green-500">Guru Online : <?= $countGuruOnline ?></span>
                         </div>
                         <div class="relative">
                         <span id="ct" class="p-1 flex   border-green-500 border-[0.5px] text-green-500"></span>
@@ -150,11 +169,17 @@ $dataLaporan = $confg->query("SELECT tbl_laporan.id , user.id AS id_siswa_lapora
                     side.classList.toggle("-translate-x-full");
                     })
                 </script>
-                <div class="button py-10">
-                <button type="button"type="submit" onclick="window.location.href= 'daftar_laporan'"name="submitabsen" class="flex gap-2 font-medium text-white rounded-md p-2 bg-indigo-500 focus:outline-none hover:shadow-lg shadow-indigo-300/100"><<<< Kembali ke daftar Laporan</button>
                 <div class="py-2"></div>
-                
-                <div class="relative overflow-x-auto shadow-md bg-slate-800 rounded-lg text-gray-400 pt-7">
+                <div class="relative overflow-x-auto shadow-md rounded-lg bg-slate-800 text-gray-400 pt-7">
+                    <div class="relative px-4 pb-5">
+                        <h1 class="font-bold text-lg">TABLE MELAPORKAN SISWA (&nbsp<?= strtoupper($_SESSION['Teacher']) ?>&nbsp)</h1>
+                        <h1 class="font-medium text-sm">Kamu Bisa Melihat Laporan Mu</h1>
+                    </div>
+                    <div class="relative px-4 pb-5">
+                        <button type="button"type="submit" onclick="window.location.href= 'daftar_laporan'"name="submitabsen" class="flex items-center gap-2 font-medium text-white rounded-md p-2 bg-red-600 focus:outline-none hover:shadow-lg shadow-indigo-300/100"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>Kembali ke Daftar Laporan</button>
+                    </div>
                     <table class="w-full text-sm text-gray-500 dark:text-gray-400 rounded-lg"
                         id="example"
                     >
@@ -220,12 +245,20 @@ $dataLaporan = $confg->query("SELECT tbl_laporan.id , user.id AS id_siswa_lapora
                                 ?>
                                 </td>
                                 <td class="px-6 py-4 bg-slate-800 font-medium "><?= $row['date'] ?></td>
-                                <td class="px-6 py-4 bg-slate-800 font-medium "></td>
+                                <td class="">
+                                    <button class="bg-indigo-500 text-white  p-2 uppercase font-mono" onclick="window.location.href= 'add-ttd'">check</button>
+                                </td>
                                 <td class="px-6 py-4 bg-slate-800 font-medium text-indigo-500"><?= $row['guru_pelapor'] ?></td>
-                                <td class="px-6 py-4 bg-slate-800 font-medium "></td>
-                                <td class="px-6 py-4 bg-slate-800 font-medium "></td>
+                                <td class="">
+                                    <button class="bg-indigo-500 text-white  p-2 uppercase font-mono" onclick="window.location.href= 'add-ttd'">check</button>
+                                </td>
+                                <td class="">
+                                    <button class="bg-indigo-500 text-white  p-2 uppercase font-mono" onclick="window.location.href= 'add-ttd'">check</button>
+                                </td>
                                 <td class="px-6 py-4 bg-slate-800 font-medium "><?= $row['keterangan'] ?></td>
-                                <td class="px-6 py-4 bg-slate-800 font-medium "></td>
+                                <td class="">
+                                    <button class="bg-indigo-500 text-white  p-2 uppercase font-mono" onclick="window.location.href= 'add-ttd'">check</button>
+                                </td>
                                 <td class="">
                                     <button class="bg-yellow-dark text-yellow-500 p-2 uppercase font-mono" onclick="window.location.href= 'add-ttd-guru'">edit</button>
                                 </td>
@@ -234,49 +267,6 @@ $dataLaporan = $confg->query("SELECT tbl_laporan.id , user.id AS id_siswa_lapora
                         }
                         ?>
                         </tbody>
-                        <tfoot class="text-xs text-gray-700 uppercase  dark:bg-gray-700 dark:text-gray-400">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3">
-                                        Id
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Nama Siswa
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        NIS
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Jenis Pelanggaran
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Poin
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Tanggal
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        TTD PESERTA DIDIK    
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        NAMA GURU PELAPOR    
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        TTD GURU PIKET    
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        TTD WALI KELAS   
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        KETERANGAN   
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        TTD GURU BK   
-                                    </th>
-                                    <th scope="col" class="">
-                                        ACTION   
-                                    </th>
-                                </tr>
-                        </tfoot>
                     </table>
                 </div>
             </div>

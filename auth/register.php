@@ -27,8 +27,8 @@ require_once('../connection/conf.php');
             if(isset($_GET['act'])){
                 if($_GET['act'] == "success"){
             ?>
-                <div class='p-4 mb-4 text-base text-center text-green-700 bg-green-300 rounded-lg dark:bg-green-200 dark:text-green-800' role='alert' id="success">
-                <span class='font-bold'>SUCCESS DAFTAR!!</span>  Anda Akan Diarahkan ke Dashboard <span class="text-lg" id='waktu'>5</span>
+                <div class='p-4 mb-4 text-base text-center text-green-400 bg-green-800 rounded-lg dark:bg-green-200 dark:text-green-800' role='alert' id="success">
+                <span class='font-bold'>SUCCESS DAFTAR!!</span>  Anda Akan Diarahkan ke Login <span class="text-lg" id='waktu'>5</span>
                 </div>
                 <script type="text/javascript">
                     var waktu = 5;
@@ -45,13 +45,19 @@ require_once('../connection/conf.php');
             <?php
             }elseif($_GET['act'] == "duplikat"){
             ?>
-                <div class="p-4 mb-4  text-base text-center text-red-800 bg-red-400 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+                <div class="p-4 mb-4 font-medium text-base text-center text-white bg-red-600 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
                             <span class="font-bold">GAGAL REGISTER!!</span> Data yang anda Input sudah ada
                 </div>
             <?php
-            }elseif($_GET['act'] == "notvalidint"){
+            }elseif($_GET['act'] == "passnotsix"){
+                ?>
+                    <div class="p-4 mb-4 font-medium text-base text-center text-white bg-red-600 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+                                <span class="font-bold">GAGAL REGISTER!!</span> PASSWORD ANDA MINIMAL 6 KARAKTER
+                    </div>
+                <?php
+                }elseif($_GET['act'] == "notvalidint"){
             ?>
-                <div class="p-4 mb-4 text-base text-center text-red-800 bg-red-400 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+                <div class="p-4 mb-4 font-medium text-base text-center text-white bg-red-600 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
                             <span class="font-bold">GAGAL REGISTER!!</span> Input Nomor Hp atau Nis dengan Benar
                 </div>
             <?php
@@ -170,6 +176,9 @@ require_once('../connection/conf.php');
                     </div>
                 </div>
                     <button type="submit" id="submit" name="submit" class="w-full py-2 rounded-full text-white bg-indigo-500 focus:outline-none hover:bg-indigo-700 transition duration-200">KIRIM</button>
+                    
+                    <div class="relative pt-5"></div>
+                    <a href="javascript:void(0)" onclick="window.location.href ='login'"class="text-md flex items-center justify-center text-blue-500 hover:underline hover:transition duration-200" onMouseOver="window.status=''; return true;"><span class="text-sm"><&nbsp&nbsp</span>  Kembali Ke Login</a>
             </form>
         </div>
     </div>

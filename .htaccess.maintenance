@@ -1,0 +1,11 @@
+<IfModule mod_rewrite.c> 
+
+RewriteEngine On
+RewriteCond %{REMOTE_ADDR} !^192.168.1.5
+RewriteCond %{REQUEST_URI} !^/public/.*$
+RewriteCond %{REQUEST_URI} !^/Teacher/.*$
+RewriteCond %{REQUEST_URI} !^/admin/.*$
+RewriteCond %{REQUEST_URI} !^/maintenance$
+RewriteRule ^(.*)$ https://localhost/Project-Work/maintenance.php [L]
+
+</IfModule>

@@ -39,6 +39,7 @@ if(isset($_POST['submitabsen'])){
     <link rel="stylesheet" href="../css/output.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../../icons/world-book-day.png"/>
+    <link rel="stylesheet" href="../../assets/blink.css">
     <script src="../../js/timer.js"></script>
     
     <script src="../../js/sideToggle.js"></script>
@@ -68,10 +69,12 @@ if(isset($_POST['submitabsen'])){
                 <a href="../components/absensi" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/calendar.png" class="h-6 w-6" alt="" srcset="">
                 Absensi
+                <p class="text-base ml-8 p-1 px-2 text-center bg-red-600 text-slate-300 rounded-lg" id="blink">New</p>
                 </a>
                 <a href="../components/laporan" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 bg-slate-900 rounded-md transition duration-200">
                     <img src="../../icons/report.png" class="h-6 w-6" alt=""> 
                 Laporan
+                <p class="text-base ml-8 p-1 px-2 text-center bg-red-600 text-slate-300 rounded-lg" id="blink">New</p>
                 </a>
                 <a href="../pages/User" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200 ">
                     <img src="../../icons/user.png" class="h-6 w-6" alt="">
@@ -81,9 +84,22 @@ if(isset($_POST['submitabsen'])){
                     <img src="../../icons/online-learning.png" class="h-6 w-6" alt="">
                 Pelajaran
                 </a>
+                <a href="../pages/semester" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200 ">
+                    <img src="../../icons/statistics.png" class="h-7 w-7" alt="">
+                Semester
+                </a>
                 <a href="forum-chat" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/chat.png" alt="" class="h-6 w-6" srcset="">
                 Forum Chat
+                </a>
+                <a href="../pages/ekstrakurikuler" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    <img src="../../icons/mental-health.png" alt="" class="h-6 w-6" srcset="">
+                Eskul
+                <p class="text-base ml-12 p-1 px-2 bg-red-600 text-slate-300 rounded-lg" id="blink">New</p>
+                </a>
+                <a href="../App/Development" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    <img src="../../icons/software-development.png" alt="" class="h-6 w-6" srcset="">
+                Development
                 </a>
                 <a href="../history" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/history.png" alt="" class="h-6 w-6" srcset="">
@@ -102,11 +118,47 @@ if(isset($_POST['submitabsen'])){
         <div class="w-full h-[4rem] m-6 p-4 rounded-lg bg-slate-800 text-zinc-300">
             <div class="container flex justify-end items-center mx-auto">
                     <ul class="flex space-x-5 bottom-0">
-                        <div class="relative cursor-pointer ">
-                            <div class="absolute flex items-center justify-center top-0 right-0 h-5 w-5 bg-red-600 rounded-full">
-                                <span class="flex pb-1">1</span>
-                            </div>
-                            <img src="../../icons/notification-bell.png" class="h-8 w-9" alt="" srcset="">
+                    <div class="relative cursor-pointer" x-data="{ isOpen : false }">
+                            <button
+                            @click= "isOpen = !isOpen"
+                            >
+                                <div class="absolute flex items-center justify-center top-0 right-0 h-5 w-5 bg-red-700 rounded-full">
+                                    <?php $query = $confg->query("SELECT * FROM history_siswa WHERE status = 0 AND id_siswa = $_SESSION[userId]")?>
+                                    <span class="flex pb-1" id="notif-number"><?= mysqli_num_rows($query)?></span>
+                                </div>
+                                <img src="../../icons/notification-bell.png" class="h-8 w-9" alt="" srcset="">
+                            </button>
+                            </script>
+                            <ul
+                            x-show="isOpen"
+                            @click.away="isOpen = false"
+                            x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95"
+                            class="absolute overflow-hidden rounded-md font-normal right-5 z-10 w-60 bg-slate-800 shadow-lg text-zinc-400 shadow-black gap-2">
+                                <span class="px-4 py-4 text-sm">Notification</span>
+                                <?php
+                                $sql = "SELECT * FROM history_siswa WHERE status = 0 AND id_siswa = $_SESSION[userId] ORDER BY history_siswa.id DESC LIMIT 5";
+                                $query = $confg->query($sql);
+                                while($row_history = mysqli_fetch_assoc($query)){
+                                ?>
+                                <li class="font-sans text-sm relative hover:bg-slate-900">
+                                
+                                    <a href="../" class="hover:bg-slate-900">
+                                        <div class="px-3 py-3 text-sm font-medium relative flex justify-center items-center gap-3">
+                                            <a class= ><?= $row_history['msgnotif'] .''. $row_history['username'] ?></a>
+                                            <span class="absolute pt-12 text-sm right-0"><?= $row_history['date_create'] ?></span>
+                                        </div>
+                                    </a>
+                                </li>
+                            <?php } ?>
+
+                            </ul>
+                        </div>  
+                        <div class="flex justify-start items-start content-start">
+                            <?php 
+                            $cekSiswaOnline = $confg->query("SELECT * FROM user WHERE status = 'Online'");
+                            $countSiswaOnline = mysqli_num_rows($cekSiswaOnline)
+                            ?>
+                            <span class="p-1 flex border-green-500 border-[0.5px] text-green-500">Siswa Online : <?= $countSiswaOnline ?></span>
                         </div>
                         <div class="relative">
                         <span id="ct" class="p-1 flex   border-green-500 border-[0.5px] text-green-500"></span>

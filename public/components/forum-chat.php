@@ -1,6 +1,10 @@
 <?php
 require_once('../../connection/conf.php');
 
+
+if(!isset($_SESSION['user'])){
+    header('location: ../../auth/login?act=notlogin');
+}
 ?>
 
 <!DOCTYPE html>
@@ -11,6 +15,7 @@ require_once('../../connection/conf.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/output.css">
     <link rel="icon" type="image/png" href="../../icons/world-book-day.png"/>
+    <link rel="stylesheet" href="../../assets/blink.css">
     <script src="../../js/timer.js"></script>
     <?php require '../../assets/header.php'; ?>
     <title>APP KESISWAAN - FORUM CHAT</title>
@@ -27,7 +32,7 @@ require_once('../../connection/conf.php');
              </button>
             <div class="relative">
                 <nav class="text-slate-400 min-h-screen overflow-y-auto font-mono text-[1.3rem] relative pt-7 gap-3 md:text-lg">
-                <a href="../" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 bg-slate-900 rounded-md transition duration-200">
+                <a href="../" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <div class="flex items-center">
                         <img src="../../icons/layout.png" class="h-6 w-6"alt="">
                     </div>
@@ -36,10 +41,12 @@ require_once('../../connection/conf.php');
                 <a href="absensi" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/calendar.png" class="h-6 w-6" alt="" srcset="">
                 Absensi
+                <p class="text-base ml-8 p-1 px-2 text-center bg-red-600 text-slate-300 rounded-lg" id="blink">New</p>
                 </a>
                 <a href="./laporan" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/report.png" class="h-6 w-6" alt=""> 
                 Laporan
+                <p class="text-base ml-8 p-1 px-2 text-center bg-red-600 text-slate-300 rounded-lg" id="blink">New</p>
                 </a>
                 <a href="../pages/user" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200 ">
                     <img src="../../icons/user.png" class="h-6 w-6" alt="">
@@ -49,9 +56,22 @@ require_once('../../connection/conf.php');
                     <img src="../../icons/online-learning.png" class="h-6 w-6" alt="">
                 Pelajaran
                 </a>
-                <a href="./forum-chat" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                <a href="../pages/semester" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200 ">
+                    <img src="../../icons/statistics.png" class="h-7 w-7" alt="">
+                Semester
+                </a>
+                <a href="./forum-chat" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 bg-slate-900 rounded-md transition duration-200">
                     <img src="../../icons/chat.png" alt="" class="h-6 w-6" srcset="">
                 Forum Chat
+                </a>
+                <a href="../pages/ekstrakurikuler" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    <img src="../../icons/mental-health.png" alt="" class="h-6 w-6" srcset="">
+                Eskul
+                <p class="text-base ml-12 p-1 px-2 bg-red-600 text-slate-300 rounded-lg" id="blink">New</p>
+                </a>
+                <a href="../App/Development" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    <img src="../../icons/software-development.png" alt="" class="h-6 w-6" srcset="">
+                Development
                 </a>
                 <a href="../history" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/history.png" alt="" class="h-6 w-6" srcset="">
@@ -71,31 +91,47 @@ require_once('../../connection/conf.php');
             <div class="w-full h-[4rem]  m-6 p-4 rounded-lg bg-slate-800 dark:text-zinc-300">
                 <div class="container flex justify-end items-center mx-auto">
                     <ul class="flex space-x-5 bottom-0">
-                        <div class="relative cursor-pointer " x-data="{ isOpen : false }">
-                                <button
-                                @click= "isOpen = !isOpen"
-                                class="focus:outline-none"
-                                >
-                                    <div class="absolute flex items-center justify-center top-0 right-0 h-5 w-5 bg-red-700 rounded-full">
-                                        <span class="flex pb-1">3</span>
-                                    </div>
-                                    <img src="../../icons/notification-bell.png" class="h-8 w-9" alt="" srcset="">
-                                </button>
-                                <ul
-                                x-show="isOpen"
-                                @click.away="isOpen = false"
-                                x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95"
-                                class="absolute overflow-hidden rounded-md font-normal right-none md:right-0 z-10 w-60 bg-slate-800 shadow-lg text-zinc-400 shadow-black gap-2">
-                                    <span class="px-4 py-4 text-sm">Notification</span>
-                                    <li class="font-sans text-sm relative hover:bg-slate-900">
-                                        <div class="px-4 py-4 relative flex justify-center items-center gap-3">
-                                            <img src="../../icons/danger.png" class="h-5 w-5" alt="Warning">
-                                            <span>Selamat datang di Website baru Kami!!</span>
-                                            <span class="absolute pt-12 right-0"><?= date('d F Y') ?></span>
+                    <div class="relative cursor-pointer" x-data="{ isOpen : false }">
+                            <button
+                            @click= "isOpen = !isOpen"
+                            >
+                                <div class="absolute flex items-center justify-center top-0 right-0 h-5 w-5 bg-red-700 rounded-full">
+                                    <?php $query = $confg->query("SELECT * FROM history_siswa WHERE id_siswa = $_SESSION[userId] OR id_kelas = '$_SESSION[kelas]' AND action = 'MATA PELAJARAN' OR action = 'STATUS PELAJARAN' OR action = 'PENGUMUMAN' ORDER BY id DESC")?>
+                                    <span class="flex pb-1" id="notif-number"><?= mysqli_num_rows($query)?></span>
+                                </div>
+                                <img src="../../icons/notification-bell.png" class="h-8 w-9" alt="" srcset="">
+                            </button>
+                            </script>
+                            <ul
+                            x-show="isOpen"
+                            @click.away="isOpen = false"
+                            x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95"
+                            class="absolute overflow-hidden rounded-md font-normal right-5 z-10 w-72 bg-slate-800 shadow-lg text-zinc-400 shadow-black gap-2">
+                                <span class="px-4 py-4 text-sm">Notification</span>
+                                <?php
+                                $sql = "SELECT * FROM history_siswa WHERE id_siswa = $_SESSION[userId] OR id_kelas = '$_SESSION[kelas]' AND action = 'MATA PELAJARAN' OR action = 'STATUS PELAJARAN' OR action = 'PENGUMUMAN' ORDER BY id DESC LIMIT 5";
+                                $query = $confg->query($sql);
+                                while($row_history = mysqli_fetch_assoc($query)){
+                                ?>
+                                <li class="font-sans text-sm relative hover:bg-slate-900">
+                                
+                                    <a href="../" class="hover:bg-slate-900">
+                                        <div class="px-3 py-3  font-medium relative flex justify-center items-center gap-3">
+                                            <a class='text-base'><?= $row_history['msgnotif']?><span class="text-red-600 font-semibold"><?= $row_history['username'] ?></span></a>
+                                            <span class="absolute pt-12 text-sm right-0"><?= $row_history['date_create'] ?></span>
                                         </div>
-                                    </li>
-                                </ul>
-                            </div>
+                                    </a>
+                                </li>
+                            <?php } ?>
+                            </ul>
+                        </div>    
+                        <div class="flex justify-start items-start content-start">
+                            <?php 
+                            $cekSiswaOnline = $confg->query("SELECT * FROM user WHERE status = 'Online'");
+                            $countSiswaOnline = mysqli_num_rows($cekSiswaOnline)
+                            ?>
+                            <span class="p-1 flex border-green-500 border-[0.5px] text-green-500">Siswa Online : <?= $countSiswaOnline ?></span>
+                        </div>
                         <div class="relative">
                         <span id="ct" class="p-1 flex  border-green-500 border-[0.5px] text-green-500"></span>
                         </div>
@@ -156,18 +192,166 @@ require_once('../../connection/conf.php');
                     side.classList.toggle("-translate-x-full");
                     })
                 </script>
-                <div class="py-2"></div>
-                <div class="flex flex-wrap items-center justify-center inset-0 gap-5">
-                    <div class="relative">
-                        <button type="submit"class="p-2 bg-indigo-500">Forum Chat Siswa</button>
-                    </div>
-                    <div class="relative">
-                        <button type="submit"class="p-2 bg-indigo-500">Forum Chat GURU</button>
-                    </div>
-                    <div class="relative">
-                        <button type="submit"class="p-2 bg-indigo-500">Forum Chat SEMUA</button>
+            <div class="py-3">
+                    <div class="flex items-center justify-center">
+                            <h2 class="text-2xl font-bold">FORUM CHATTING APPLICATION</h2>
                     </div>
                 </div>
+                <div class="flex md:grid grid-cols-1 justify-center gap-5 focus:outline-none">
+                    
+                    <div class="bg-slate-800 w-80 relative">
+                        <div class="flex items-center justify-center py-5">
+                            <img src="../../icons/recorded-call.png"class="h-10 w-10 flex items center" alt="">
+                        </div>
+                        <div class="px-6 py-2 text-sm">
+                                <li style="list-style-type:none">
+                                    <p class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                    Forum Chat Guru</p>
+                                </li>
+                                <li style="list-style-type:none">
+                                    <p class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                    Aplikasi Aktif Pada Jam Tertentu</p>
+                                </li>
+                                <li style="list-style-type:none">
+                                    <p class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                    Hanya Bisa Diakses Oleh Guru Saja</p>
+                                </li>
+                                <li style="list-style-type:none">
+                                    <p class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                    Jika Status Anda Bukan Guru Maka Anda Tidak bisa Masuk</p>
+                                </li>
+                                <li style="list-style-type:none">
+                                    <p class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                    Menggunakan Key Untuk Masuk Ke Chat</p>
+                                </li>
+                                <li style="list-style-type:none">
+                                    <p class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                    Bisa MengInvite Guru Yang Diinginkan</p>
+                                </li>
+                                <li style="list-style-type:none">
+                                    <p class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                    Forum Chat Hanya Bisa Digunakan Jika Ada Orang Yang Membuat Sebuh Grup</p>
+                                </li>
+                        </div>
+                        <div class="px-6 py-6 flex items-center justify-center">
+                            <button class="w-full p-2 text-green-200  hover:transition duration-300 bg-green-800 hover:text-white" id="blink">Forum Chat Guru</button>
+                        </div>
+                    </div>
+                    <div class="bg-slate-800 w-80 relative">
+                        <div class="flex items-center justify-center py-5">
+                            <img src="../../icons/chat.png"class="h-10 w-10  flex items center" alt="">
+                        </div>
+                        <div class="px-6 py-2 text-sm">
+                                <li style="list-style-type:none">
+                                    <p class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                    Forum Chat Siswa</p>
+                                </li>
+                                <li style="list-style-type:none">
+                                    <p class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                    Aplikasi Aktif Pada Jam Tertentu</p>
+                                </li>
+                                <li style="list-style-type:none">
+                                    <p class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                    Hanya Bisa Diakses Oleh Siswa Saja</p>
+                                </li>
+                                <li style="list-style-type:none">
+                                    <p class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                    Jika Status Anda Bukan Siswa Maka Anda Tidak bisa Masuk</p>
+                                </li>
+                                <li style="list-style-type:none">
+                                    <p class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                    Menggunakan Key Untuk Masuk Ke Chat</p>
+                                </li>
+                                <li style="list-style-type:none">
+                                    <p class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                    Bisa MengInvite Siswa Yang Diinginkan</p>
+                                </li>
+                                <li style="list-style-type:none">
+                                    <p class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                    Forum Chat Hanya Bisa Digunakan Jika Ada Orang Yang Membuat Sebuh Grup</p>
+                                </li>
+                        </div>
+                        <div class="px-6 py-6 flex items-center justify-center">
+                            <button class="w-full p-2 text-green-200  hover:transition duration-300 bg-green-800 hover:text-white" id="blink">Forum Chat Siswa</button>
+                        </div>
+                    </div>
+                    <div class="bg-slate-800 w-80 relative grid-cols-1">
+                        <div class="flex items-center justify-center py-5 grid-cols-1">
+                            <img src="../../icons/chat2.png"class="h-10 w-10 flex items center" alt="">
+                        </div>
+                        <div class="px-6 py-2 text-sm">
+                                <li style="list-style-type:none">
+                                    <p class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                    Forum Chat Semua</p>
+                                </li>
+                                <li style="list-style-type:none">
+                                    <p class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                    Aplikasi Aktif Pada Jam Tertentu</p>
+                                </li>
+                                <li style="list-style-type:none">
+                                    <p class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                    Bisa Diakses Oleh Semua orang. Siswa , Guru , Dll</p>
+                                </li>
+                                <li style="list-style-type:none">
+                                    <p class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                    Menggunakan Key Untuk Masuk Ke Chat</p>
+                                </li>
+                                <li style="list-style-type:none">
+                                    <p class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                    Bisa MengInvite Semua Orang Yang Diinginkan </p>
+                                </li>
+                                <li style="list-style-type:none">
+                                    <p class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                    Forum Chat Bisa Digunakan Jika Ada Orang Yang Membuat Sebuh Grup</p>
+                                </li>
+                        </div>
+                        <div class="px-6 py-8 flex items-center justify-center">
+                            <button class="w-full p-2 text-green-200  hover:transition duration-300 bg-green-800 hover:text-white"id="blink">Forum Chat Semua</button>
+                        </div>
+                    </div>
+                </div>    
+            <span class="text-white flex items-ced">@copyright By Divisi Kesiswaan</span>
+
             </div>
     </div>
 </div>

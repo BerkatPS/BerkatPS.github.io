@@ -8,7 +8,7 @@ if(!isset($_SESSION['Teacher'])){
 
 $id = $_SESSION['id_Teacher'];
 
-$tbl_daftar_laporan = $confg->query("SELECT tbl_laporan_guru.id , tbl_guru.id_guru, tbl_guru.nuptk_guru, tbl_guru.nama_guru, tbl_laporan_guru.keterangan, tbl_laporan_guru.tanggal FROM tbl_laporan_guru JOIN tbl_guru ON(tbl_laporan_guru.id_laporan_guru = tbl_guru.id_guru) WHERE tbl_guru.id_guru = $id");
+$tbl_daftar_laporan = $confg->query("SELECT tbl_laporan_guru.id , tbl_guru.id_guru, tbl_guru.nuptk_guru, tbl_guru.nama_guru, tbl_laporan_guru.keterangan, tbl_laporan_guru.tanggal FROM tbl_laporan_guru JOIN tbl_guru ON(tbl_laporan_guru.id_laporan_guru = tbl_guru.id_guru) WHERE tbl_guru.id_guru = $id ORDER BY id DESC");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,6 +20,7 @@ $tbl_daftar_laporan = $confg->query("SELECT tbl_laporan_guru.id , tbl_guru.id_gu
     <link rel="icon" type="image/png" href="../../icons/world-book-day.png"/>
     <script src="../../js/timer.js"></script>
     <link rel="stylesheet" type="text/css" href="../../admin/css/dataTable.css">
+    <link rel="stylesheet" type="text/css" href="../../assets/blink.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" charset="utf8"
     src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
@@ -30,18 +31,15 @@ $tbl_daftar_laporan = $confg->query("SELECT tbl_laporan_guru.id , tbl_guru.id_gu
 <body class="bg-slate-900 overflow-x-hidden " onload="startTime();">
 <div class="md:flex md:flex-row md:min-h-screen">
         <!-- Mobile Menu -->
-        <div class="bg-slate-800 w-72 text-purple-600 font-mono h-screen z-20 px-6 py-9 absolute inset-y-0 left-0 transform -translate-x-full transition duration-500 ease-in-out lg:relative lg:translate-x-0" id="sidebar">
-            <a href="" title="meta icons" class="mb-[rem] font-extrabold text-2xl text-indigo-500 flex items-center space-x-2">
+        <div class="bg-slate-800 w-72 text-purple-600 font-mono focus:outline-none z-20 px-6 py-9 absolute inset-y-0 overflow-auto left-0 transform -translate-x-full transition duration-500 ease-in-out lg:relative lg:translate-x-0" id="sidebar">
+            <button href="" title="meta icons" class="font-extrabold text-2xl text-indigo-500 flex items-center space-x-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" cli p-rule="evenodd" />
+                    <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3  3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" cli p-rule="evenodd" />
                 </svg>
              <span class="">Kesiswaan</span>
-             <div class="hidden lg:bg-black opacity-70 p-2 -right-5 rounded-full"id="row" onclick="">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H6M12 5l-7 7 7 7"/></svg>
-             </div>
-            </a>
+             </button>
             <div class="relative">
-                <nav class="text-slate-400 min-h-screen overflow-y-auto font-mono text-base relative pt-7 gap-3 md:text-lg">
+            <nav class="text-slate-400 min-h-screen font-mono text-[1.3rem] relative pt-7 gap-3 md:text-lg">
                 <a href="../" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <div class="flex items-center">
                         <img src="../../icons/layout.png" class="h-6 w-6"alt="">
@@ -64,17 +62,29 @@ $tbl_daftar_laporan = $confg->query("SELECT tbl_laporan_guru.id , tbl_guru.id_gu
                     <img src="../../icons/user.png" class="h-6 w-6" alt="">
                 My Profile
                 </a>
-                <a href="./jadwal_mengajar" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200 ">
+                <a href="./jadwal_mengajar" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5  rounded-md hover:bg-indigo-500 transition duration-200 ">
                     <img src="../../icons/online-learning.png" class="h-6 w-6" alt="">
                 Pelajaran
+                </a>
+                <a href="../pages/semester" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200 ">
+                    <img src="../../icons/statistics.png" class="h-6 w-6" alt="">
+                Semester
                 </a>
                 <a href="./forum-chat" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/chat.png" alt="" class="h-6 w-6" srcset="">
                 Forum Chat
                 </a>
+                <a href="../App/Development" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    <img src="../../icons/software-development.png" alt="" class="h-6 w-6" srcset="">
+                Development
+                </a>
                 <a href="../history" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/history.png" alt="" class="h-6 w-6" srcset="">
                 History
+                </a>
+                <a href="./terms" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    <img src="../../icons/audit.png" alt="Terms" class="h-6 w-6" srcset="">
+                Ketentuan
                 </a>
                 <a href="../../auth/Logout" class="flex items-center text-zinc-300 gap-2  py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition-all duration-200 ease-in">
                     <img src="../../icons/logout.png" class="h-6 w-6" alt="" srcset="">
@@ -91,6 +101,13 @@ $tbl_daftar_laporan = $confg->query("SELECT tbl_laporan_guru.id , tbl_guru.id_gu
                                 <span class="flex pb-1">1</span>
                             </div>
                             <img src="../../icons/notification-bell.png" class="h-8 w-9" alt="" srcset="">
+                        </div>
+                        <div class="flex justify-start items-start content-start">
+                            <?php 
+                            $cekGuruOnline = $confg->query("SELECT * FROM tbl_guru WHERE status = 'Online'");
+                            $countGuruOnline = mysqli_num_rows($cekGuruOnline);
+                            ?>
+                            <span class="p-1 flex border-green-500 border-[0.5px] text-green-500">Guru Online : <?= $countGuruOnline ?></span>
                         </div>
                         <div class="relative">
                         <span id="ct" class="p-1 flex   border-green-500 border-[0.5px] text-green-500"></span>
@@ -150,14 +167,21 @@ $tbl_daftar_laporan = $confg->query("SELECT tbl_laporan_guru.id , tbl_guru.id_gu
                     side.classList.toggle("-translate-x-full");
                     })
                 </script>
-                <div class="button py-10">
-                    <div class="md:flex gap-5">
-                        <button type="button"type="submit" onclick="window.location.href= 'buat_laporan'"name="submitabsen" class="flex gap-2 font-medium text-white rounded-md p-2 bg-indigo-500 focus:outline-none hover:shadow-lg shadow-indigo-300/100"><img src="../../icons/plus.png" class="h-5 w-5 " alt="" srcset="">   Buat Laporan</button>
-                        <button type="button"type="submit" onclick="window.location.href= 'daftar_laporan_siswa'"name="submitabsen" class="flex gap-2 font-medium text-white rounded-md p-2 bg-indigo-500 focus:outline-none hover:shadow-lg shadow-indigo-300/100">Daftar Laporan Siswa</button>
-                    </div>
+                    
                 <div class="py-2"></div>
-                <div class="relative overflow-x-auto shadow-md bg-slate-800 rounded-lg text-gray-400 pt-7">
-                    <table class="w-full text-sm text-gray-500 dark:text-gray-400 rounded-lg"
+                <div class="relative overflow-x-auto rounded-lg shadow-md bg-slate-800 text-gray-400 pt-7">
+                    <div class="relative px-4 pb-5">
+                        <h1 class="font-bold text-lg">TABLE LAPORAN (&nbsp<?= strtoupper($_SESSION['Teacher']) ?>&nbsp)</h1>
+                        <h1 class="font-medium text-sm">Kamu Bisa Melihat Laporan Terbaru Milikmu</h1>
+                    </div>
+                    <div class="relative px-4 pb-5">
+                        <h1 class="font-medium text-base text-red-600"id="blink">Jika Kamu Ingin Menambahkan TANDA TANGAN Punya mu <br><b>Klik Edit Dan Anda akan Diarahkan Ke Form, Silahkan File Upload Tanda tangan Anda><br>Klik Check Jika Kamu Ingin Melihat Tanda Tangan Guru , Piket , Atau Wali Kelas<br>Klik Buat Laporan Jika Ada Siswa Yang Melakukan Kesalahan, Dan Isi Form Sesuaikan Dengan Masalahnya</b></h1>
+                    </div>
+                    <div class="md:flex px-4 pb-5 gap-5">
+                        <button type="button"type="submit" onclick="window.location.href= 'buat_laporan'"name="submitabsen" class="flex gap-2 font-medium text-white rounded-md p-2 bg-indigo-500 focus:outline-none hover:shadow-lg shadow-indigo-300/100"><img src="../../icons/plus.png" class="h-5 w-5 " alt="" srcset="">Buat Laporan</button>
+                        <button type="button"type="submit" onclick="window.location.href= 'daftar_laporan_siswa'"name="submitabsen" class="flex items-center gap-2 font-medium text-white rounded-md p-2 bg-indigo-500 focus:outline-none hover:shadow-lg shadow-indigo-300/100"><img src="../../icons/eye.png" class="h-5 w-5 " alt="" srcset="">Daftar Laporan Siswa</button>
+                    </div>
+                    <table class="w-full text-sm text-gray-500 dark:text-gray-400 "
                         id="example"
                     >
                         <thead class="text-xs text-center text-gray-700 uppercase  dark:bg-gray-700 dark:text-gray-400">
@@ -193,25 +217,6 @@ $tbl_daftar_laporan = $confg->query("SELECT tbl_laporan_guru.id , tbl_guru.id_gu
                         }
                         ?>
                         </tbody>
-                        <tfoot class="text-xs text-gray-700 uppercase  dark:bg-gray-700 dark:text-gray-400">
-                            <tr>
-                                 <th scope="col" class="px-6 py-3">
-                                    Id
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Nama Siswa
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    NIS
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Jenis Pelanggaran
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Tanggal
-                                </th>
-                                </tr>
-                        </tfoot>
                     </table>
                 </div>
             </div>

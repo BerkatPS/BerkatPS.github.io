@@ -30,7 +30,7 @@ if(!isset($_SESSION['admin'])){
              <span class="">Kesiswaan</span>
              </button>
              <nav class="text-slate-400 min-h-screen overflow-y-auto top-0 inset-x-0 font-mono text-[1.3rem] relative pt-7 gap-3 md:text-lg">
-                <a href="../../" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                <a href="../" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <div class="flex items-center">
                         <img src="../../icons/layout.png" class="h-6 w-6"alt="">
                     </div>
@@ -93,7 +93,7 @@ if(!isset($_SESSION['admin'])){
                                         Laporan Siswa</a>
                                     </li>
                                     <li>
-                                        <a href="../components/RekapAbsensi-guru" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <a href="../components/RekapLaporan-guru" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                         class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
                                         Laporan Guru</a>
@@ -106,7 +106,7 @@ if(!isset($_SESSION['admin'])){
                     <button
                     @click="isOpen = !isOpen"
                     href="components/absensi" 
-                    class="flex items-center justify-center text-zinc-300 gap-2 py-2 px-3 -inset-x-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    class="flex items-center justify-center text-zinc-300 gap-2 py-2 px-3 -inset-x-5 bg-slate-900 rounded-md transition duration-200">
                     <img src="../../icons/data.png" class="h-6 w-6" alt="">
                     </svg>
                     <span>Data Umum</span>
@@ -195,6 +195,58 @@ if(!isset($_SESSION['admin'])){
                             </ul>
                         <!-- End DropDown Menu -->
                 </div>
+                <a href="../components/add-news" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                        <img src="../../icons/news.png" alt="" class="h-6 w-6" srcset="">
+                    Add News
+                    </a>
+                    <a href="../components/App/Development" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                        <img src="../../icons/software-development.png" alt="" class="h-6 w-6" srcset="">
+                    Development
+                    </a>
+                    <div class="relative" x-data="{ isOpen : false }">
+                        <button
+                        @click="isOpen = !isOpen"
+                        href="components/absensi" 
+                        class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                        <img src="../../icons/exam.png" class="h-6 w-6" alt="">
+                        </svg>
+                        <span>Exam/Ujian</span>
+                        <div class="relative">
+                            <svg fill="currentColor" viewBox="0 0 20 20" :class="{'rotate-180': isOpen, 'rotate-0': !isOpen}" class="inline w-5 h-5 transition-transform duration-200 transform"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        </div>
+                        </button>
+                            <!-- Dropdown Menu -->
+                                <ul
+                                x-show="isOpen"
+                                @click.away="isOpen = false"
+                                class="space-y-2 text-sm px-3 py-2"
+                                x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95">
+                                    <li>
+                                        <a href="../App/soal-ujian" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="group-hover:bg-slate-200 fill-current"width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                        Paket Soal / Ujian</a>
+                                    </li>
+                                    <li>
+                                        <a href="../App/jadwal-Ujian" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                        Jadwal Ujian</a>
+                                    </li>
+                                    <li>
+                                        <a href="../App/rekap-ujian" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                        Data Ruangan</a>
+                                    </li>
+                                    <li>
+                                        <a href="../App/rekap-ujian" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                        Rekap Data Ujian</a>
+                                    </li>
+                                </ul>
+                            <!-- End DropDown Menu -->
+                    </div>
                 <a href="../components/forum-chat" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/chat.png" alt="" class="h-6 w-6" srcset="">
                 Forum Chat

@@ -3,4 +3,11 @@ RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule ^(.*)$ $1.php
+
+ErrorDocument 404 http://localhost/Project-Work/404
+ErrorDocument 403 http://localhost/Project-Work/403
+ErrorDocument 500 http://localhost/Project-Work/500
+
+Options -Indexes
+
 </IfModule>

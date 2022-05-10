@@ -1,0 +1,22 @@
+@keyframes blink {
+	 0% {
+		 opacity: 0;
+	}
+	 20% {
+		 opacity: 0.2;
+	}40% {
+		 opacity: 0.4;
+	}60% {
+		 opacity: 0.6;
+	}80% {
+		 opacity: 0.8;
+	}
+	 100% {
+		 opacity: 1;
+	}
+}
+ #blink {
+	 animation-name: blink;
+	 animation-duration: 2s;
+	 animation-iteration-count: infinite;
+}

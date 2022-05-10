@@ -1,6 +1,33 @@
 <?php
 require_once('../../connection/conf.php');
 
+$selectEditData = $confg->query("SELECT * FROM user WHERE id = $_GET[id]");
+
+if(isset($_POST['submit'])){
+    $nama_siswa = stripcslashes(htmlspecialchars(htmlentities(mysqli_real_escape_string($confg,$_POST['nama']))));
+    $nis_siswa = stripcslashes(htmlspecialchars(htmlentities(mysqli_real_escape_string($confg,$_POST['nis']))));
+    $kelas_siswa = stripcslashes(htmlspecialchars(htmlentities(mysqli_real_escape_string($confg,$_POST['kelas']))));
+    $email_siswa = stripcslashes(htmlspecialchars(htmlentities(mysqli_real_escape_string($confg,$_POST['email']))));
+    $no_hp_siswa = stripcslashes(htmlspecialchars(htmlentities(mysqli_real_escape_string($confg,$_POST['no_hp']))));
+    $walas = stripcslashes(htmlspecialchars(htmlentities(mysqli_real_escape_string($confg,$_POST['walas']))));
+    $jenis_kelamin_siswa = stripcslashes(htmlspecialchars(htmlentities(mysqli_real_escape_string($confg,$_POST['jenis_kelamin']))));
+    $alamat_siswa = stripcslashes(htmlspecialchars(htmlentities(mysqli_real_escape_string($confg,$_POST['alamat']))));
+    $agama_siswa = stripcslashes(htmlspecialchars(htmlentities(mysqli_real_escape_string($confg,$_POST['agama']))));
+    $poin_siswa = stripcslashes(htmlspecialchars(htmlentities(mysqli_real_escape_string($confg,$_POST['poin']))));
+
+    if($nama_siswa != '' OR $nis_siswa != '' OR $kelas_siswa != '' OR $email_siswa != '' OR $no_hp_siswa != '' OR $walas != '' OR $jenis_kelamin_siswa != '' OR $alamat_siswa != '' OR $agama_siswa != '' OR $poin_siswa != ''){
+        $updateDataSiswa = $confg->query("UPDATE user SET name='$nama_siswa' , KELAS='$kelas_siswa' , NIS= '$nis_siswa', email = '$email_siswa' , no_hp = '$no_hp_siswa' , wali_kelas = '$walas' , jenis_kelamin = '$jenis_kelamin_siswa' , alamat= '$alamat_siswa' , agama = '$agama_siswa' ,$poin_siswa = '$poin_siswa'");
+
+        if($updateDataSiswa == TRUE){
+            header('Location: dataSiswa-edit?id='.$_GET['id'].'&act=successUpdate');
+        }else{
+            header('Location: dataSiswa-edit?id='.$_GET['id'].'&act=failUpdate');
+        }
+    }else{
+        header('Location: dataSiswa-edit?id='.$_GET['id'].'&act=empty');
+    }
+    
+}
 ?>
 
 <!DOCTYPE html>
@@ -89,7 +116,7 @@ require_once('../../connection/conf.php');
                                         Laporan Siswa</a>
                                     </li>
                                     <li>
-                                        <a href="../components/RekapAbsensi-guru" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <a href="../components/RekapLaporan-guru" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                         class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
                                         Laporan Guru</a>
@@ -191,6 +218,58 @@ require_once('../../connection/conf.php');
                             </ul>
                         <!-- End DropDown Menu -->
                 </div>
+                <a href="../components/add-news" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                        <img src="../../icons/news.png" alt="" class="h-6 w-6" srcset="">
+                    Add News
+                    </a>
+                    <a href="../components/App/Development" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                        <img src="../../icons/software-development.png" alt="" class="h-6 w-6" srcset="">
+                    Development
+                    </a>
+                    <div class="relative" x-data="{ isOpen : false }">
+                        <button
+                        @click="isOpen = !isOpen"
+                        href="components/absensi" 
+                        class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                        <img src="../../icons/exam.png" class="h-6 w-6" alt="">
+                        </svg>
+                        <span>Exam/Ujian</span>
+                        <div class="relative">
+                            <svg fill="currentColor" viewBox="0 0 20 20" :class="{'rotate-180': isOpen, 'rotate-0': !isOpen}" class="inline w-5 h-5 transition-transform duration-200 transform"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        </div>
+                        </button>
+                            <!-- Dropdown Menu -->
+                                <ul
+                                x-show="isOpen"
+                                @click.away="isOpen = false"
+                                class="space-y-2 text-sm px-3 py-2"
+                                x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95">
+                                    <li>
+                                        <a href="../App/soal-ujian" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="group-hover:bg-slate-200 fill-current"width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                        Paket Soal / Ujian</a>
+                                    </li>
+                                    <li>
+                                        <a href="../App/jadwal-Ujian" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                        Jadwal Ujian</a>
+                                    </li>
+                                    <li>
+                                        <a href="../App/rekap-ujian" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                        Data Ruangan</a>
+                                    </li>
+                                    <li>
+                                        <a href="../App/rekap-ujian" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                        Rekap Data Ujian</a>
+                                    </li>
+                                </ul>
+                            <!-- End DropDown Menu -->
+                    </div>
                 <a href="../components/forum-chat" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/chat.png" alt="" class="h-6 w-6" srcset="">
                 Forum Chat
@@ -270,11 +349,10 @@ require_once('../../connection/conf.php');
                 
                 <div class="py-3">
                     <form action="" class="bg-slate-800 grid grid-cols-1 p-5 py-6 gap-y-12 gap-x-5 mi-h-full relative" method="POST">
-                        <h2 class="font-bold text-2xl sm:text-xl">FORM EDIT DATA SISWA</h2>
+                        <h2 class="font-bold text-2xl sm:text-xl"><button class="px-3 py-1 bg-indigo-500 hover:bg-slate-900" onclick="window.location.href='dataSiswa'"><</button>&nbspFORM EDIT DATA SISWA</h2>
                         <div class="relative">
                             <?php
-                            $sql = $confg->query("SELECT * FROM user");
-                            while($row = mysqli_fetch_array($sql)){
+                            while($row = mysqli_fetch_array($selectEditData)){
                             ?>
                             <label for="">Nama</label>
                             <input type="text" name="nama" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Nama Anda" value="<?= $row['name']; ?>">
@@ -285,10 +363,7 @@ require_once('../../connection/conf.php');
                         </div>
                         <div class="relative">
                             <label for="">KELAS</label>
-                            <select name="kelas" id="" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Kelas Anda" data-mdb-clear-button="true" value="<?= $del['KELAS']; ?>">
-                            <option class="bg-slate-800 hover:bg-indigo-500">Pilih KELAS</option>
-                                <option class="bg-slate-800 hover:bg-indigo-500"value=<?= $color?>><?= $color ?></option> <?php. "\r\n"; ?>
-                        </select>
+                            <input type="text" name="kelas" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Alamat Anda"value="<?= $row['KELAS'] ?>">
                         </div>
                         <div class="relative">
                             <label for="">EMAIL</label>
@@ -300,16 +375,12 @@ require_once('../../connection/conf.php');
                         </div>
                         <div class="relative">
                             <label for="">WALI KELAS</label>
-                            <select name="kelas" id="" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Kelas Anda" data-mdb-clear-button="true" value="<?= $row['wali_kelas']; ?>">
-                            <option class="bg-slate-800 hover:bg-indigo-500">Pilih WALI KELAS</option>
-                                <option class="bg-slate-800 hover:bg-indigo-500"value=></option> <?php. "\r"?><hr><?php. "\n"; ?>
+                            <input type="text" name="walas" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Alamat Anda"value="<?= $row['wali_kelas'] ?>">
                         </select>
                         </div>
                         <div class="relative">
                             <label for="">JENIS KELAMIN</label>
-                            <select name="kelas" id="" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Kelas Anda" data-mdb-clear-button="true" value="<?= $row['jenis_kelamin']; ?>">
-                            <option class="bg-slate-800 hover:bg-indigo-500">Pilih JENIS KELAMIN</option>
-                                <option class="bg-slate-800 hover:bg-indigo-500"value=<?= $row['jenis_kelamin'];?>></option> <?php. "\r\n"; ?>
+                            <input type="text" name="jenis_kelamin" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Alamat Anda"value="<?= $row['jenis_kelamin'] ?>">
                         </select>
                         </div>
                         <div class="relative">
@@ -318,24 +389,17 @@ require_once('../../connection/conf.php');
                         </div>
                         <div class="relative">
                             <label for="">AGAMA</label>
-                            <?php
-                            $sql = "SHOW columns FROM user LIKE 'agama'";
-                            $query = $confg->query($sql);
-                            $row = mysqli_fetch_assoc($query);
-                            
-                            $values = array_map('trim', explode(',', trim(substr($row['Type'], 4), '()')));
-                            $del = str_replace(array("'","\"","&quot;"),"",$values);
-                            ?>
-                            <select name="kelas" id="" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Kelas Anda" data-mdb-clear-button="true" value="<?= $row['agama']; ?>">
-                            <option class="bg-slate-800 hover:bg-indigo-500">Pilih AGAMA</option>
-                                <option class="bg-slate-800 hover:bg-indigo-500"value=<?= $color?>><?= $color ?></option> <?php. "\r\n"; ?>
-                        </select>
+                            <input type="text" name="agama" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Alamat Anda"value="<?= $row['agama'] ?>">
+                        </div>
+                        <div class="relative">
+                            <label for="">POIN</label>
+                            <input type="text" name="poin" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Alamat Anda"value="<?= $row['poin'] ?>">
                         </div>
                         <div class=""></div>
-                            <button type="submit" class="bg-purple-dark text-purple-600 p-2 hover:bg-purple-500 hover:text-white hover:transform duration-300">Simpan Data</button>
-                                <?php
-                                    }
-                                ?>
+                            <button type="submit" name="submit" class="bg-purple-dark text-purple-600 p-2 hover:bg-purple-500 hover:text-white hover:transform duration-300">Simpan Data</button>
+                        <?php
+                            }
+                        ?>
                     </form>
                 </div>
             </div>

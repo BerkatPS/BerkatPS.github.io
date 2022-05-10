@@ -15,11 +15,10 @@ if(isset($_POST['submit'])){
     $date = date('Y-m-d H:i:s');
 
     // cek data yang sama dengan yang di database //
-    $checkSameInput = "SELECT NIS,email,no_hp FROM user WHERE NIS='$nisn',email='$email',no_hp='$no_hp'";
+    $checkSameInput = "SELECT name , NIS , email , wali_kelas FROM user WHERE name = '$nama' , NIS= $nisn ,email='$email', wali_kelas = '$walas'";
     $checkQuery = mysqli_query($confg,$checkSameInput);
-    if($checkQuery > 1){
+    if(($checkQuery) > 0){
         header('location: register?act=duplikat');
-        exit();
     }else if(strlen($pass) < 6){
         header('Location: register?act=passnotsix');
     }
@@ -62,6 +61,7 @@ if(isset($_POST['submit'])){
                     });
                 })'</script>";
                 header('Location: register?act=success');
+                echo $stmt;
                 }
         }else{
             header('Location: register?act=notvalidint');

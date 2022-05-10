@@ -5,9 +5,14 @@ $countData2 = mysqli_num_rows($confg->query("SELECT * FROM tbl_guru"));
 $countData3 = $confg->query("SELECT count(id) as id_list FROM tbl_daftar_pelajaran");
 $fetchListPelajaran = mysqli_fetch_assoc($countData3);
 
-$countLaporan = $confg->query("SELECT * FROM tbl_laporan");
-$countLaporan2 = $confg->query("SELECT * FROM tbl_laporan_guru");
+$countData4 = mysqli_num_rows($confg->query("SELECT * FROM tbl_pelajaran WHERE STATUS = 'BERLANGSUNG'"));
+$countData5 = mysqli_num_rows($confg->query("SELECT * FROM tbl_pelajaran WHERE STATUS = 'MENUNGGU'"));
+$countData6 = mysqli_num_rows($confg->query("SELECT * FROM tbl_pelajaran WHERE STATUS = 'SELESAI'"));
 
+$countLaporan = $confg->query("SELECT * FROM tbl_laporan");
+$countLaporan2 = $confg->query("SELECT * FROM tbl_laporan_guru");   
+
+$selectNews = $confg->query("SELECT * FROM news ORDER BY id DESC");
 if(!isset($_SESSION['admin'])){
     header('Location: ../../auth/login?act=notlogin');
     exit();
@@ -23,13 +28,41 @@ if(!isset($_SESSION['admin'])){
     <title></title>
 </head>
 <body>
-<div class="grid grid-cols-1 pt-7 relative pb-5 gap-5 shadow-xl font-mono md:grid-cols-2 lg:grid-cols-4 lg:text-sm mx-auto">
+<div class="grid grid-cols-1 pt-7 relative pb-5 gap-5 shadow-xl font-mono md:grid-cols-2 lg:grid-cols-3 lg:text-sm mx-auto">
     <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
         <div class="absolute p-3 bg-transparent">
             <img src="../icons/group.png" class="h-7 my-5 w-8" alt="user group all">
         </div>
-        <span class="flex items-end justify-end py-5 mr-3">TOTAL USER SAAT INI</span>
+        <span class="flex items-end justify-end py-5 mr-3">TOTAL SISWA SAAT INI</span>
         <span class="flex flex-row-reverse -my-7 mx-24 text-2xl text-green-500 "><?= $countData;?></span>
+    </div>
+    <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
+        <div class="absolute p-3 bg-transparent">
+            <img src="../icons/group.png" class="h-7 my-5 w-8" alt="user group all">
+        </div>
+        <span class="flex items-end justify-end py-5 mr-3">TOTAL SISWA SAAT INI</span>
+        <span class="flex flex-row-reverse -my-7 mx-24 text-2xl text-green-500 "><?= $countData2;?></span>
+    </div>
+    <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
+        <div class="absolute p-3 bg-transparent">
+            <img src="../icons/online-learning.png" class="h-7 my-5 w-8" alt="user group all">
+        </div>
+        <span class="flex items-end justify-end py-5 mr-3">PELAJARAN SEDANG BERLANGSUNG</span>
+        <span class="flex flex-row-reverse -my-7 mx-24 text-2xl text-green-500 "><?= $countData4;?></span>
+    </div>
+    <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
+        <div class="absolute p-3 bg-transparent">
+            <img src="../icons/online-learning.png" class="h-7 my-5 w-8" alt="user group all">
+        </div>
+        <span class="flex items-end justify-end py-5 mr-3">PELAJARAN PENDING</span>
+        <span class="flex flex-row-reverse -my-7 mx-24 text-2xl text-green-500 "><?= $countData5;?></span>
+    </div>
+    <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
+        <div class="absolute p-3 bg-transparent">
+            <img src="../icons/online-learning.png" class="h-7 my-5 w-8" alt="user group all">
+        </div>
+        <span class="flex items-end justify-end py-5 mr-3">PELAJARAN SELESAI</span>
+        <span class="flex flex-row-reverse -my-7 mx-24 text-2xl text-green-500 "><?= $countData6;?></span>
     </div>
     <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
         <div class="absolute p-3 bg-transparent">
@@ -38,9 +71,9 @@ if(!isset($_SESSION['admin'])){
         <span class="flex items-end justify-end pt-5 mr-3">TOTAL Laporan Siswa</span>
         <?php
         if(mysqli_num_rows($countLaporan) > 0 ){
-            echo'<span class="flex flex-row-reverse -my-2 mx-20 text-2xl text-red-600">'.mysqli_num_rows($countLaporan).'</span>';
+            echo'<span class="flex flex-row-reverse -my-2 mx-24 text-2xl text-red-600">'.mysqli_num_rows($countLaporan).'</span>';
         }else{
-            echo'<span class="flex flex-row-reverse -my-2 mx-20 text-2xl text-green-500">'.mysqli_num_rows($countLaporan).'</span>';
+            echo'<span class="flex flex-row-reverse -my-2 mx-24 text-2xl text-green-500">'.mysqli_num_rows($countLaporan).'</span>';
             
         }
         ?>
@@ -64,41 +97,38 @@ if(!isset($_SESSION['admin'])){
                 <img src="../icons/statistics.png" class="h-8 my-5 w-8 space-x-4" alt="statistics">
             </div>
             <span class="flex items-end justify-end py-5 mr-3">TOTAL PENGUNJUNG</span>
-            <span class="flex flex-row-reverse -my-7 mx-20 text-2xl">0</span>
+            <span class="flex flex-row-reverse -my-7 mx-24 text-2xl">0</span>
     </div>
-</div>
-<div class="grid grid-cols-1 gap-5 shadow-xl font-mono md:grid-cols-2 lg:grid-cols-5">
-    <div class="bg-slate-800 col-span-3 md:col-span-1 sm:col-span-2 self-start row-span-2">
-        <canvas id="Chartjs" class="sm:h-20">
-        </canvas>
     </div>
-    <div class="bg-slate-800 col-span-3 md:col-span-1 sm:col-span-2 self-start row-span-1">
-        <canvas id="Chartjs2" class="sm:h-20">
-        </canvas>
-    </div>
-    <div class="bg-slate-800 w-full col-span-3 row-start-1 md:col-span-3">
-            <span class="p-5">Informasi Hari Ini</span>
+    <div class="grid grid-cols-1 gap-5 shadow-xl font-mono md:grid-cols-2 ">
+        <div class="bg-slate-800 col-span-2 md:col-span-1 sm:col-span-2 self-start row-span-2">
+            <canvas id="Chartjs" class="sm:h-20">
+            </canvas>
+        </div>
+        <div class="bg-slate-800 col-span-2 md:col-span-1 sm:col-span-2 self-start row-span-1">
+            <canvas id="Chartjs2" class="sm:h-20">
+            </canvas>
+        </div>
+        <div class="bg-slate-800 w-full col-span-3 row-start-1 md:col-span-3">
+            <span class="p-5">Mendapatkan 3 Informasi Terbaru</span>
+            <?php
+                while($news = mysqli_fetch_array($selectNews)){
+            ?>
                 <ol class="relative border-l border-gray-200 dark:border-gray-700 px-1 py-7">                  
-                    <li class="mb-10 ml-4">
-                        <div class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
-                        <time class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">February 2022</time>
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Application UI code in Tailwind CSS</h3>
-                        <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">Get access to over 20+ pages including a dashboard layout, charts, kanban board, calendar, and pre-order E-commerce & Marketing pages.</p>
-                        <a href="#" class="inline-flex items-center py-2 px-4 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:outline-none focus:ring-gray-200 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-700">Learn more <svg class="ml-2 w-3 h-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></a>
-                    </li>
-                    <li class="mb-10 ml-4">
-                        <div class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
-                        <time class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">March 2022</time>
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Marketing UI design in Figma</h3>
-                        <p class="text-base font-normal text-gray-500 dark:text-gray-400">All of the pages and components are first designed in Figma and we keep a parity between the two versions even as we update the project.</p>
-                    </li>
-                    <li class="ml-4">
-                        <div class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
-                        <time class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">April 2022</time>
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">E-Commerce UI code in Tailwind CSS</h3>
-                        <p class="text-base font-normal text-gray-500 dark:text-gray-400">Get started with dozens of web components and interactive elements built on top of Tailwind CSS.</p>
+                    <li class="mb-10 ml-4 border border-rose-600 p-2">
+                        <div class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border  dark:bg-gray-700"></div>
+                        <div class="border-2 border-l-blue-600">
+                        <time class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">Publish At <?= $news['tanggal'] ?></time>
+                        <a href="components/news-edit?NewsId=<?= $news['id'] ?>" class="text-blue-600 hover:underline cursor-pointer">Update</a>
+                        <a href="components/news-delete?id=<?= $news['id'] ?>" class="text-red-600 hover:underline cursor-pointer" onclick="return confirm('Anda Yakin Ingin Menghapus News ini !!??')">Delete</a>
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white"><?= $news['title'] ?></h3>
+                        <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400"><?= $news['news'] ?></p>
+                        </div>
                     </li>
                 </ol>
+            <?php
+                }
+            ?>
     </div>
 </div>
     

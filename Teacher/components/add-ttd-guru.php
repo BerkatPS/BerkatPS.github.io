@@ -1,6 +1,10 @@
 <?php
 require_once('../../connection/conf.php');
 
+if(!isset($_SESSION['Teacher'])){
+    header('Location: ../../auth/login?act=notlogin');
+}
+
 if(isset($_POST['submitabsen'])){
     $tanggal = date('Y-m-d H:i:s');
     $hari = date('l');
@@ -80,9 +84,17 @@ if(isset($_POST['submitabsen'])){
                     <img src="../../icons/online-learning.png" class="h-6 w-6" alt="">
                 Pelajaran
                 </a>
+                <a href="../pages/semester" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200 ">
+                    <img src="../../icons/statistics.png" class="h-6 w-6" alt="">
+                Semester
+                </a>
                 <a href="forum-chat" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/chat.png" alt="" class="h-6 w-6" srcset="">
                 Forum Chat
+                </a>
+                <a href="../App/Development" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    <img src="../../icons/software-development.png" alt="" class="h-6 w-6" srcset="">
+                Development
                 </a>
                 <a href="../history" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/history.png" alt="" class="h-6 w-6" srcset="">
@@ -106,6 +118,13 @@ if(isset($_POST['submitabsen'])){
                                 <span class="flex pb-1">1</span>
                             </div>
                             <img src="../../icons/notification-bell.png" class="h-8 w-9" alt="" srcset="">
+                        </div>
+                        <div class="flex justify-start items-start content-start">
+                            <?php 
+                            $cekGuruOnline = $confg->query("SELECT * FROM tbl_guru WHERE status = 'Online'");
+                            $countGuruOnline = mysqli_num_rows($cekGuruOnline);
+                            ?>
+                            <span class="p-1 flex border-green-500 border-[0.5px] text-green-500">Guru Online : <?= $countGuruOnline ?></span>
                         </div>
                         <div class="relative">
                         <span id="ct" class="p-1 flex   border-green-500 border-[0.5px] text-green-500"></span>

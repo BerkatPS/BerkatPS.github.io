@@ -1,6 +1,6 @@
 <?php
 require_once('../../connection/conf.php');
-$id = abs(htmlentities(htmlspecialchars($_GET['id'])));
+$id = abs(htmlentities(htmlspecialchars($_GET['idMengajar'])));
 
 $sql = "DELETE FROM tbl_pelajaran WHERE id = '$id'";
 

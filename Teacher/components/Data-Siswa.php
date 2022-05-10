@@ -26,18 +26,15 @@ if(!isset($_SESSION['Teacher'])){
 <body class="bg-slate-900 overflow-x-hidden " onload="startTime();">
 <div class="md:flex md:flex-row md:min-h-screen">
         <!-- Mobile Menu -->
-        <div class="bg-slate-800 w-72 text-purple-600 font-mono h-screen z-20 px-6 py-9 absolute inset-y-0 left-0 transform -translate-x-full transition duration-500 ease-in-out lg:relative lg:translate-x-0" id="sidebar">
-            <a href="" title="meta icons" class="mb-[rem] font-extrabold text-2xl text-indigo-500 flex items-center space-x-2">
+        <div class="bg-slate-800 w-72 text-purple-600 font-mono focus:outline-none z-20 px-6 py-9 absolute inset-y-0 overflow-auto left-0 transform -translate-x-full transition duration-500 ease-in-out lg:relative lg:translate-x-0" id="sidebar">
+            <button href="" title="meta icons" class="font-extrabold text-2xl text-indigo-500 flex items-center space-x-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" cli p-rule="evenodd" />
+                    <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3  3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" cli p-rule="evenodd" />
                 </svg>
              <span class="">Kesiswaan</span>
-             <div class="hidden lg:bg-black opacity-70 p-2 -right-5 rounded-full"id="row" onclick="">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H6M12 5l-7 7 7 7"/></svg>
-             </div>
-            </a>
+             </button>
             <div class="relative">
-                <nav class="text-slate-400 min-h-screen overflow-y-auto font-mono text-base relative pt-7 gap-3 md:text-lg">
+            <nav class="text-slate-400 min-h-screen font-mono text-[1.3rem] relative pt-7 gap-3 md:text-lg">
                 <a href="../" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <div class="flex items-center">
                         <img src="../../icons/layout.png" class="h-6 w-6"alt="">
@@ -48,7 +45,7 @@ if(!isset($_SESSION['Teacher'])){
                     <img src="../../icons/calendar.png" class="h-6 w-6" alt="" srcset="">
                 Absensi
                 </a>
-                <a href="./daftar_laporan" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                <a href="./daftar_laporan" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5  rounded-md hover:bg-indigo-500 transition duration-200">
                     <img src="../../icons/report.png" class="h-6 w-6" alt=""> 
                 Laporan
                 </a>
@@ -60,17 +57,29 @@ if(!isset($_SESSION['Teacher'])){
                     <img src="../../icons/user.png" class="h-6 w-6" alt="">
                 My Profile
                 </a>
-                <a href="./jadwal_mengajar" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200 ">
+                <a href="./jadwal_mengajar" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5  rounded-md hover:bg-indigo-500 transition duration-200 ">
                     <img src="../../icons/online-learning.png" class="h-6 w-6" alt="">
                 Pelajaran
+                </a>
+                <a href="../pages/semester" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200 ">
+                    <img src="../../icons/statistics.png" class="h-6 w-6" alt="">
+                Semester
                 </a>
                 <a href="./forum-chat" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/chat.png" alt="" class="h-6 w-6" srcset="">
                 Forum Chat
                 </a>
+                <a href="../App/Development" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    <img src="../../icons/software-development.png" alt="" class="h-6 w-6" srcset="">
+                Development
+                </a>
                 <a href="../history" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/history.png" alt="" class="h-6 w-6" srcset="">
                 History
+                </a>
+                <a href="./terms" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    <img src="../../icons/audit.png" alt="Terms" class="h-6 w-6" srcset="">
+                Ketentuan
                 </a>
                 <a href="../../auth/Logout" class="flex items-center text-zinc-300 gap-2  py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition-all duration-200 ease-in">
                     <img src="../../icons/logout.png" class="h-6 w-6" alt="" srcset="">
@@ -87,6 +96,13 @@ if(!isset($_SESSION['Teacher'])){
                                 <span class="flex pb-1">1</span>
                             </div>
                             <img src="../../icons/notification-bell.png" class="h-8 w-9" alt="" srcset="">
+                        </div>
+                        <div class="flex justify-start items-start content-start">
+                            <?php 
+                            $cekGuruOnline = $confg->query("SELECT * FROM tbl_guru WHERE status = 'Online'");
+                            $countGuruOnline = mysqli_num_rows($cekGuruOnline);
+                            ?>
+                            <span class="p-1 flex border-green-500 border-[0.5px] text-green-500">Guru Online : <?= $countGuruOnline ?></span>
                         </div>
                         <div class="relative">
                         <span id="ct" class="p-1 flex   border-green-500 border-[0.5px] text-green-500"></span>
@@ -146,8 +162,12 @@ if(!isset($_SESSION['Teacher'])){
                     side.classList.toggle("-translate-x-full");
                     })
                 </script>
-                <div class="button py-3"></div>
-                <div class="relative overflow-x-auto shadow-md bg-slate-800 rounded-lg text-gray-400 pt-7">
+                <div class="button py-2"></div>
+                <div class="relative overflow-x-auto shadow-md rounded-lg bg-slate-800 text-gray-400 pt-7">
+                    <div class="relative px-4 pb-5">
+                        <h1 class="font-bold text-lg">DATA SISWA</h1>
+                        <h1 class="font-medium text-sm">Kamu Bisa Melihat Data Siswa Terbaru</h1>
+                    </div>
                 <?php 
                     if(isset($_GET['act'])){
                         if($_GET['act'] == "success"){
@@ -171,7 +191,7 @@ if(!isset($_SESSION['Teacher'])){
                     }
                 }
                 ?>
-                    <table class="w-full  text-sm text-gray-500 dark:text-gray-400 rounded-lg"
+                    <table class="w-full text-sm text-gray-500 dark:text-gray-400 "
                         id="example"
                     >
                         <thead class="text-xs text-center text-gray-700 uppercase  dark:bg-gray-700 dark:text-gray-400">
@@ -202,7 +222,7 @@ if(!isset($_SESSION['Teacher'])){
                         ?>
                             <tr class="text-center">
                                 <td class="px-6 py-4 dark:bg-gray-800 font-medium "><?=$row['id']?></td>
-                                <td class="px-6 py-4 dark:bg-gray-800 font-medium text-blue-600"><?=$row['name']?></td>
+                                <td class="px-6 py-4 dark:bg-gray-800 font-medium text-blue-600"><?= strtoupper($row['name'])?></td>
                                 <td class="px-6 py-4 dark:bg-gray-800 font-medium text-blue-600"><?=$row['NIS']?></td>
                                 <td class="px-6 py-4 dark:bg-gray-800 font-medium"><?=$row['KELAS']?></td>
                                 <td class="px-6 py-4 dark:bg-gray-800 font-medium">
@@ -216,7 +236,7 @@ if(!isset($_SESSION['Teacher'])){
                                 </td>
                                 <td class="px-6 py-4 dark:bg-gray-800 font-medium">
                                 <?php
-                                    if($row['status'] != "ACTIVE"){
+                                    if($row['status'] == "Offline"){
                                         echo'<span class="bg-red-600 text-white p-2">'.$row['status'].'</span>';
                                     }else{
                                         echo'<span class="bg-green-800 text-center text-green-400 p-2">'.$row['status'].'</span>';
@@ -228,28 +248,6 @@ if(!isset($_SESSION['Teacher'])){
                         }
                         ?>
                         </tbody>
-                        <tfoot class="text-xs text-gray-700 uppercase  dark:bg-gray-700 dark:text-gray-400">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3">
-                                        Id
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Nama Siswa
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Nis Siswa
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Kelas Siswa
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Poin Siswa
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        STATUS
-                                    </th>
-                                </tr>
-                        </tfoot>
                     </table>
                 </div>
             </div>

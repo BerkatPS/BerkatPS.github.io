@@ -1,7 +1,7 @@
 <?php
 require_once('../../connection/conf.php');
 
-$tbl_absensi_siswa = $confg->query("SELECT * FROM tbl_absensi_siswa ORDER BY id DESC");
+$tbl_absensi_siswa = $confg->query("SELECT * FROM tbl_absensi_siswa ORDER BY tbl_absensi_siswa.id DESC");
 if(!isset($_SESSION['admin'])){
     header('Location: ../../auth/login?act=notlogin');
     exit();
@@ -45,7 +45,7 @@ if(!isset($_SESSION['admin'])){
                         <button
                         @click="isOpen = !isOpen"
                         href="components/absensi" 
-                        class="flex items-center justify-center text-zinc-300 gap-2 py-2 px-3 -inset-x-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                        class="flex items-center justify-center text-zinc-300 gap-2 py-2 px-3 -inset-x-5 bg-slate-900 rounded-md transition duration-200">
                         <img src="../../icons/calendar.png" class="h-6 w-6" alt="" srcset="">
                         </svg>
                         <span>RekapAbsensi</span>
@@ -98,7 +98,7 @@ if(!isset($_SESSION['admin'])){
                                         Laporan Siswa</a>
                                     </li>
                                     <li>
-                                        <a href="../components/RekapAbsensi-guru" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <a href="../components/RekapLaporan-guru" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                         class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
                                         Laporan Guru</a>
@@ -200,6 +200,58 @@ if(!isset($_SESSION['admin'])){
                             </ul>
                         <!-- End DropDown Menu -->
                 </div>
+                <a href="./add-news" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                        <img src="../../icons/news.png" alt="" class="h-6 w-6" srcset="">
+                    Add News
+                    </a>
+                    <a href="../App/Development" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                        <img src="../../icons/software-development.png" alt="" class="h-6 w-6" srcset="">
+                    Development
+                    </a>
+                    <div class="relative" x-data="{ isOpen : false }">
+                        <button
+                        @click="isOpen = !isOpen"
+                        href="components/absensi" 
+                        class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                        <img src="../../icons/exam.png" class="h-6 w-6" alt="">
+                        </svg>
+                        <span>Exam/Ujian</span>
+                        <div class="relative">
+                            <svg fill="currentColor" viewBox="0 0 20 20" :class="{'rotate-180': isOpen, 'rotate-0': !isOpen}" class="inline w-5 h-5 transition-transform duration-200 transform"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        </div>
+                        </button>
+                            <!-- Dropdown Menu -->
+                                <ul
+                                x-show="isOpen"
+                                @click.away="isOpen = false"
+                                class="space-y-2 text-sm px-3 py-2"
+                                x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95">
+                                    <li>
+                                        <a href="../App/soal-ujian" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="group-hover:bg-slate-200 fill-current"width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                        Paket Soal / Ujian</a>
+                                    </li>
+                                    <li>
+                                        <a href="../App/jadwal-Ujian" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                        Jadwal Ujian</a>
+                                    </li>
+                                    <li>
+                                        <a href="../App/rekap-ujian" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                        Data Ruangan</a>
+                                    </li>
+                                    <li>
+                                        <a href="../App/rekap-ujian" class="flex items-center hover:text-indigo-500 gap-2 transition duration-200 p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="group-hover:bg-slate-200 fill-current" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#636e72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>
+                                        Rekap Data Ujian</a>
+                                    </li>
+                                </ul>
+                            <!-- End DropDown Menu -->
+                    </div>
                 <a href="forum-chat" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/chat.png" alt="" class="h-6 w-6" srcset="">
                 Forum Chat
@@ -268,8 +320,35 @@ if(!isset($_SESSION['admin'])){
                         </div>
                     </ul>
                 </div>
-                <button></button>
+                <div class="py-2"></div>
                 <div class="relative overflow-x-auto bg-slate-800 overflow-y-auto shadow-md rounded-lg text-gray-400 pt-5">
+                    <div class="header-table">
+                        <div class="bg-opacity-40">
+                            <h1 class="px-4 pb-5">Data Absensi Siswa Berdasarkan Hari Ini <?= date('d F Y') ?></h1>
+                        </div>
+                <?php 
+                    if(isset($_GET['act'])){
+                        if($_GET['act'] == "success"){
+                    ?>
+                        <div class='p-4 mb-4 text-base text-center flex justify-center bg-green-800 text-green-400 rounded-lg' role='alert' id="success">
+                            
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline text-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg><span class='font-bold '>&nbspSUCCESS HAPUS DATA&nbspAnda Akan Telah menghapus Data ABSENSI SISWA!! </span>
+                        </div>
+                    <?php
+                    }else{
+                    ?>  
+                        <div class='w-full p-4 mb-4 text-base text-center flex justify-center bg-red-700 text-white rounded-lg' role='alert' id="gagal">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-center" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <span class='font-bold'>&nbspGAGAL HAPUS DATA&nbsp</span> Anda GAGAL menghapus Data ABSENSI SISWA!! 
+                        </div>
+                    <?php
+                    }
+                }
+                ?>
                     <table class="w-full text-sm text-center  text-gray-500 dark:text-gray-400 rounded-lg" id="example">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
@@ -280,7 +359,7 @@ if(!isset($_SESSION['admin'])){
                                     Tanggal
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    HARI
+                                    WAKTU KEHADIRAN
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     NIS
@@ -303,13 +382,21 @@ if(!isset($_SESSION['admin'])){
                             </tr>
                         </thead>
                         <tbody>
+                        <div class="md:flex gap-5 px-4 pb-5">
+                            <button class="bg-indigo-500 flex items-center justify-center text-white p-2 rounded-lg gap-2 font-medium " onclick="location.href='../App/Rekapitulasi-absen-siswa'"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>Rekapitulasi Absensi Siswa</button>
+                            <button class="bg-green-800 flex items-center justify-center text-base text-white p-2 rounded-lg gap-2 font-medium " onclick="location.href='../App/Rekapitulasi-absen-siswa'"><img src="../../icons/excel.png" class="h-8 w-8" alt="" srcset="">Print Melalui Microsoft Excel</button>
+                            <button class="bg-red-600 flex items-center justify-center text-base text-white p-2 rounded-lg gap-2 font-medium " onclick="location.href='../App/Rekapitulasi-absen-siswa'"><img src="../../icons/pdf-file.png" class="h-8 w-8" alt="" srcset="">Print Melalui PDF</button>
+                            <button class="bg-blue-dark flex items-center justify-center text-base text-white p-2 rounded-lg gap-2 font-medium hover:bg-blue-600 transition duration-300 " onclick="location.href='../App/Rekapitulasi-absen-siswa'"><img src="../../icons/word.png" class="h-8 w-8" alt="" srcset="">Print Melalui Microsoft Word</button>
+                        </div>
                         <?php
                         while($row = mysqli_fetch_array($tbl_absensi_siswa)){
                         ?>
                             <tr class="text-center relative ">
                                 <td class="px-6 py-4 dark:bg-slate-800 font-medium"><?= $row['id'] ?></td>
                                 <td class="px-6 py-4 dark:bg-slate-800 font-medium"><?= $row['tanggal'] ?></td>
-                                <td class="px-6 py-4 dark:bg-slate-800 font-medium"><?= $row['Hari'] ?></td>
+                                <td class="px-6 py-4 dark:bg-slate-800 font-medium"><?= $row['waktu'] ?></td>
                                 <td class="px-6 py-4 dark:bg-slate-800 font-medium text-indigo-500"><?= $row['nis'] ?></td>
                                 <td class="px-6 py-4 dark:bg-slate-800 font-medium text-indigo-500"><?= $row['nama'] ?></td>
                                 <td class="px-6 py-4 dark:bg-slate-800 font-medium"><?= $row['kelas'] ?></td>
@@ -320,7 +407,7 @@ if(!isset($_SESSION['admin'])){
                                     }else if($row['status'] == 'TERLAMBAT'){
                                     echo'<span class="bg-yellow-dark text-center text-yellow-500 p-2">'.$row['status'].'</span>';    
                                     }else if($row['status'] == "ALPHA"){
-                                    echo'<span class="bg-red-700 text-center p-2">'.$row['status'].'</span>';
+                                    echo'<span class="bg-red-600 text-slate-200 text-center p-2">'.$row['status'].'</span>';
                                     }else{
                                         echo'<span class="bg-purple-dark text-center text-indigo-500 p-2">'.$row['status'].'</span>';
                                     }
@@ -337,11 +424,11 @@ if(!isset($_SESSION['admin'])){
                                 </td>
                                 <div class="flex flex-wrap">
                                     <td class="py-4 text-base font-medium uppercase dark:bg-slate-800 cursor-pointer ">
-                                        <a href="RekapAbsensi-edit?id=<?= uniqid($row['id']) ?>"class="p-2 px-2 bg-blue-dark text-indigo-500">
+                                        <a href="RekapAbsensi-edit?id=<?= $row['id'] ?>"class="p-2 px-2 bg-indigo-500 text-white ">
                                             <span>Edit</span>
                                         </a>
                                     <div class="py-4">
-                                        <a href="RekapAbsensi-delete?id=<?= uniqid($row['id']) ?>"onclick="return confirm('Yakin Anda Ingin Menghapus')"class="p-2 px-2 bg-red-700 text-slate-400">
+                                        <a href="RekapAbsensi-delete?id=<?= $row['id'] ?>"onclick="return confirm('Yakin Anda Ingin Menghapus')"class="p-2 px-2 bg-red-600 text-slate-200">
                                             <span>Hapus</span>
                                         </a>
                                     </div>
@@ -352,36 +439,8 @@ if(!isset($_SESSION['admin'])){
                         }
                         ?>
                         </tbody>
-                        <tfoot class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                <th scope="col" class="px-6 py-3 ">
-                                    Id
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Hari / Tgl
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Jam Absensi
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Nama Siswa
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    KELAS
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Nis
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Status    
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Poin    
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    ACTION
-                                </th>
-                        </tfoot>
                     </table>
+                    </div>
                 </div>
                 <script>
                     const btn = document.querySelector("button.mobile-button");

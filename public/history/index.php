@@ -5,7 +5,7 @@ if(!isset($_SESSION['user'])){
     header('Location: ../../auth/login?act=notlogin');
 }
 
-$dataUser = $confg->query("SELECT * FROM history");
+$dataHistory = $confg->query("SELECT * FROM history_siswa WHERE id_siswa = '$_SESSION[userId]' OR id_kelas = '$_SESSION[kelas]' AND action = 'MATA PELAJARAN' OR action = 'STATUS PELAJARAN'  OR action = 'PENGUMUMAN' ORDER BY date_create DESC");
 ?>
 
 <!DOCTYPE html>
@@ -18,6 +18,11 @@ $dataUser = $confg->query("SELECT * FROM history");
     <link rel="icon" type="image/png" href="../../icons/world-book-day.png"/>
     <script src="../../js/timer.js"></script>
     <script src="../../js/ajax-notif.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../admin/css/dataTable.css">
+    <link rel="stylesheet" href="../../assets/blink.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+    src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
     <?php require '../../assets/header.php'; ?>
     <title></title>
 </head>
@@ -41,10 +46,12 @@ $dataUser = $confg->query("SELECT * FROM history");
                 <a href="../components/absensi" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/calendar.png" class="h-6 w-6" alt="" srcset="">
                 Absensi
+                <p class="text-base ml-8 p-1 px-2 bg-red-600 text-slate-300 rounded-lg" id="blink">New</p>
                 </a>
                 <a href="../components/laporan" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/report.png" class="h-6 w-6" alt=""> 
                 Laporan
+                <p class="text-base ml-8 p-1 px-2 bg-red-600 text-slate-300 rounded-lg" id="blink">New</p>
                 </a>
                 <a href="../pages/user" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200 ">
                     <img src="../../icons/user.png" class="h-6 w-6" alt="">
@@ -54,13 +61,30 @@ $dataUser = $confg->query("SELECT * FROM history");
                     <img src="../../icons/online-learning.png" class="h-6 w-6" alt="">
                 Pelajaran
                 </a>
+                <a href="../pages/semester" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200 ">
+                    <img src="../../icons/statistics.png" class="h-7 w-7" alt="">
+                Semester
+                </a>
                 <a href="../components/forum-chat" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/chat.png" alt="" class="h-6 w-6" srcset="">
                 Forum Chat
                 </a>
+                <a href="../pages/ekstrakurikuler" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    <img src="../../icons/mental-health.png" alt="" class="h-6 w-6" srcset="">
+                Eskul
+                <p class="text-base ml-12 p-1 px-2 bg-red-600 text-slate-300 rounded-lg" id="blink">New</p>
+                </a>
+                <a href="../App/Development" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    <img src="../../icons/software-development.png" alt="" class="h-6 w-6" srcset="">
+                Development
+                </a>
                 <a href="../components/forum-chat" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 bg-slate-900 rounded-md transition duration-200">
                     <img src="../../icons/history.png" alt="" class="h-6 w-6" srcset="">
                 History
+                </a>
+                <a href="../components/terms" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    <img src="../../icons/audit.png" alt="Terms" class="h-6 w-6" srcset="">
+                Ketentuan
                 </a>
                 <a href="../../auth/Logout" class="flex items-center text-zinc-300 gap-2  py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition-all duration-200 ease-in">
                     <img src="../../icons/logout.png" class="h-6 w-6" alt="" srcset="">
@@ -72,48 +96,45 @@ $dataUser = $confg->query("SELECT * FROM history");
                 <div class="container flex justify-end items-center mx-auto">
                     <ul class="flex space-x-5 bottom-0">
                         <div class="relative cursor-pointer" x-data="{ isOpen : false }">
-                            <?php
-                            $sql = "SELECT * FROM history WHERE status ='0'";
-                            $query = $confg->query($sql);
-                            ?>
                             <button
                             @click= "isOpen = !isOpen"
                             >
                                 <div class="absolute flex items-center justify-center top-0 right-0 h-5 w-5 bg-red-700 rounded-full">
+                                    <?php $query = $confg->query("SELECT * FROM history_siswa WHERE id_siswa = $_SESSION[userId] OR id_kelas = '$_SESSION[kelas]' AND action = 'MATA PELAJARAN' OR action = 'STATUS PELAJARAN'  OR action = 'PENGUMUMAN' ORDER BY id DESC")?>
                                     <span class="flex pb-1" id="notif-number"><?= mysqli_num_rows($query)?></span>
                                 </div>
                                 <img src="../../icons/notification-bell.png" class="h-8 w-9" alt="" srcset="">
                             </button>
-                            <script>
-                                function loadNotif() {
-                                    setInterval(function() {
-                                        var xml = new XMLHttpRequest();
-                                        xml.onreadystatechange() = function(){
-                                            if(this.readyState == 4 && this.status == 200){
-                                            document.getElementById("notif-number").innerHTML = this.responseText;
-                                            }
-                                        };
-
-                                        xml.open("GET","notif.php",true);
-                                        xml.send();
-                                    },1000)
-                                    }
-                                    loadNotif();
                             </script>
                             <ul
                             x-show="isOpen"
                             @click.away="isOpen = false"
                             x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95"
-                            class="absolute overflow-hidden rounded-md font-normal right-5 z-10 w-60 bg-slate-800 shadow-lg text-zinc-400 shadow-black gap-2">
+                            class="absolute overflow-hidden rounded-md font-normal right-5 z-10 w-72 bg-slate-800 shadow-lg text-zinc-400 shadow-black gap-2">
                                 <span class="px-4 py-4 text-sm">Notification</span>
+                                <?php
+                                $sql = "SELECT * FROM history_siswa WHERE id_siswa = $_SESSION[userId] OR id_kelas = '$_SESSION[kelas]' AND action = 'MATA PELAJARAN' OR action = 'STATUS PELAJARAN'  OR action = 'PENGUMUMAN' ORDER BY id DESC LIMIT 5";
+                                $query = $confg->query($sql);
+                                while($row_history = mysqli_fetch_assoc($query)){
+                                ?>
                                 <li class="font-sans text-sm relative hover:bg-slate-900">
-                                    <div class="px-4 py-4 relative flex justify-center items-center gap-3">
-                                        <img src="../../icons/danger.png" class="h-5 w-5" alt="Warning">
-                                        <span>Selamat datang di Website baru Kami!!</span>
-                                        <span class="absolute pt-12 right-0">2022-04-06</span>
-                                    </div>
+                                
+                                    <a href="../" class="hover:bg-slate-900">
+                                        <div class="px-3 py-3  font-medium relative flex justify-center items-center gap-3">
+                                            <a class='text-base'><?= $row_history['msgnotif']?><span class="text-red-600 font-semibold"><?= $row_history['username'] ?></span></a>
+                                            <span class="absolute pt-12 text-sm right-0"><?= $row_history['date_create'] ?></span>
+                                        </div>
+                                    </a>
                                 </li>
+                            <?php } ?>
                             </ul>
+                        </div>  
+                        <div class="flex justify-start items-start content-start">
+                            <?php 
+                            $cekSiswaOnline = $confg->query("SELECT * FROM user WHERE status = 'Online'");
+                            $countSiswaOnline = mysqli_num_rows($cekSiswaOnline)
+                            ?>
+                            <span class="p-1 flex border-green-500 border-[0.5px] text-green-500">Siswa Online : <?= $countSiswaOnline ?></span>
                         </div>
                         <div class="relative">
                         <span id="ct" class="p-1 flex border-green-500 border-[0.5px] text-green-500"></span>
@@ -165,8 +186,13 @@ $dataUser = $confg->query("SELECT * FROM history");
                         </div>
                     </ul>
                 </div>
-                <div class="relative overflow-x-auto shadow-md  rounded-lg text-gray-400 pt-7">
-                    <table class="cell-border w-full text-sm text-gray-500 dark:text-gray-400 rounded-lg"
+                <div class="py-2"></div>
+                <div class="relative overflow-x-auto shadow-md bg-slate-800 rounded-lg text-gray-400 pt-7">
+                    <div class="relative px-4 pb-5">
+                        <h1 class="font-bold uppercase text-lg">History Data (<?= strtoupper($_SESSION['user']) ?>)</h1>
+                        <h1 class="font-medium text-sm pt-2">Kamu Bisa Melihat Histoy Terbaru Milikmu</h1>
+                    </div>
+                    <table class=" w-full text-sm text-gray-500 dark:text-gray-400 rounded-lg"
                         id="example"
                     >
                         <thead class="text-xs text-center text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
@@ -175,10 +201,10 @@ $dataUser = $confg->query("SELECT * FROM history");
                                         id
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        ACTION
+                                        USERNAME
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        NAMA
+                                        ACTION
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         INFORMASI
@@ -190,12 +216,12 @@ $dataUser = $confg->query("SELECT * FROM history");
                         </thead>
                         <tbody>
                         <?php
-                        while($row = mysqli_fetch_array($dataUser)){
+                        while($row = mysqli_fetch_array($dataHistory)){
                         ?>
                             <tr class="text-center">
                                 <td class="px-6 py-4 dark:bg-gray-800 font-medium "><?= $row['id']?></td>
-                                <td class="px-6 py-4 dark:bg-gray-800 font-medium"><?= $row['action']?></td>
-                                <td class="px-6 py-4 dark:bg-gray-800 font-medium text-blue-600"><?= $row['Nama']?></td>
+                                <td class="px-6 py-4 dark:bg-gray-800 font-medium"><?= $row['username']?></td>
+                                <td class="px-6 py-4 dark:bg-gray-800 font-medium text-blue-600"><?= $row['action']?></td>
                                 <td class="px-6 py-4 dark:bg-gray-800 font-medium"><?= $row['information']?></td>
                                 <td class="px-6 py-4 dark:bg-gray-800 font-medium"><?= $row['date_create']?></td>
                             </tr>
@@ -203,25 +229,6 @@ $dataUser = $confg->query("SELECT * FROM history");
                         }
                         ?>
                         </tbody>
-                        <tfoot class="text-xs text-gray-700 uppercase  dark:bg-gray-700 dark:text-gray-400">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3">
-                                        id
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        ACTION
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        NAMA
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        INFORMASI
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        TANGGAL DIBUAT  
-                                    </th>
-                                </tr>
-                        </tfoot>
                     </table>
                 </div>
                 <script>
@@ -235,5 +242,13 @@ $dataUser = $confg->query("SELECT * FROM history");
             </div>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+$('#example').DataTable({
+    autoFill: true
+});
+})
+
+</script>
 </body>
 </html> 

@@ -7,7 +7,7 @@ if(!isset($_SESSION['user'])){
 }
 
 $kelas = $_SESSION['kelas'];
-$dataArsip = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_guru.id_guru, tbl_daftar_pelajaran.id, tbl_daftar_pelajaran.list_pelajaran AS daftar_pelajaran, tbl_guru.nama_guru, user.KELAS , tbl_pelajaran.jam_mulai , tbl_pelajaran.jam_akhir, tbl_pelajaran.status FROM tbl_pelajaran JOIN tbl_guru ON (tbl_pelajaran.id_mengajar = tbl_guru.id_guru) JOIN tbl_daftar_pelajaran ON(tbl_pelajaran.id_daftar_pelajaran = tbl_daftar_pelajaran.id) JOIN user ON (tbl_pelajaran.kelas_mengajar = user.KELAS) WHERE user.id = $_SESSION[userId] AND tbl_pelajaran.status = 'SELESAI'");
+$dataArsip = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_guru.id_guru, tbl_daftar_pelajaran.id, tbl_daftar_pelajaran.list_pelajaran AS daftar_pelajaran, tbl_guru.nama_guru, user.KELAS , tbl_pelajaran.link_virtual , tbl_pelajaran.pass_link_virtual , tbl_pelajaran.agenda , tbl_pelajaran.tanggal  , tbl_pelajaran.jam_mulai , tbl_pelajaran.jam_akhir, tbl_pelajaran.status FROM tbl_pelajaran JOIN tbl_guru ON (tbl_pelajaran.id_mengajar = tbl_guru.id_guru) JOIN tbl_daftar_pelajaran ON(tbl_pelajaran.id_daftar_pelajaran = tbl_daftar_pelajaran.id) JOIN user ON (tbl_pelajaran.kelas_mengajar = user.KELAS) WHERE user.id = $_SESSION[userId] AND tbl_pelajaran.status = 'SELESAI'");
 ?>
 
 <!DOCTYPE html>
@@ -20,11 +20,12 @@ $dataArsip = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_
     <link rel="icon" type="image/png" href="../../icons/world-book-day.png"/>
     <script src="../../js/timer.js"></script>
     <link rel="stylesheet" type="text/css" href="../../admin/css/dataTable.css">
+    <link rel="stylesheet" href="../../assets/blink.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" charset="utf8"
     src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
     <?php require '../../assets/header.php'; ?>
-    <title>APP KESISWAAN - SISWA KELAS ANDA</title>
+    <title>APP KESISWAAN - ARSIP PEMBELAJARAN</title>
 </head>
 <body class="bg-slate-900 " onload="startTime();">
 <div class="md:flex md:flex-row md:min-h-screen">
@@ -46,10 +47,12 @@ $dataArsip = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_
                 <a href="./absensi" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/calendar.png" class="h-6 w-6" alt="" srcset="">
                 Absensi
+                <p class="text-base ml-8 p-1 px-2 text-center bg-red-600 text-slate-300 rounded-lg" id="blink">New</p>
                 </a>
                 <a href="./laporan" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/report.png" class="h-6 w-6" alt=""> 
                 Laporan
+                <p class="text-base ml-8 p-1 px-2 text-center bg-red-600 text-slate-300 rounded-lg" id="blink">New</p>
                 </a>
                 <a href="../pages/user" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200 ">
                     <img src="../../icons/user.png" class="h-6 w-6" alt="">
@@ -59,9 +62,22 @@ $dataArsip = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_
                     <img src="../../icons/online-learning.png" class="h-6 w-6" alt="">
                 Pelajaran
                 </a>
+                <a href="../pages/semester" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200 ">
+                    <img src="../../icons/statistics.png" class="h-7 w-7" alt="">
+                Semester
+                </a>
                 <a href="./forum-chat" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/chat.png" alt="" class="h-6 w-6" srcset="">
                 Forum Chat
+                </a>
+                <a href="../pages/ekstrakurikuler" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    <img src="../../icons/mental-health.png" alt="" class="h-6 w-6" srcset="">
+                Eskul
+                <p class="text-base ml-12 p-1 px-2 bg-red-600 text-slate-300 rounded-lg" id="blink">New</p>
+                </a>
+                <a href="../App/Development" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    <img src="../../icons/software-development.png" alt="" class="h-6 w-6" srcset="">
+                Development
                 </a>
                 <a href="../history" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/history.png" alt="" class="h-6 w-6" srcset="">
@@ -80,11 +96,46 @@ $dataArsip = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_
             <div class="w-full h-[4rem] m-6 p-4 rounded-lg bg-slate-800 text-zinc-300">
                 <div class="container flex justify-end items-center mx-auto">
                     <ul class="flex space-x-5 bottom-0">
-                        <div class="relative cursor-pointer">
-                            <div class="absolute  flex items-center justify-center top-0 right-0 h-5 w-5 bg-red-600 rounded-full">
-                                <span class="flex pb-1">1</span>
-                            </div>
-                            <img src="../../icons/notification-bell.png" class="h-8 w-9" alt="" srcset="">
+                    <div class="relative cursor-pointer" x-data="{ isOpen : false }">
+                            <button
+                            @click= "isOpen = !isOpen"
+                            >
+                                <div class="absolute flex items-center justify-center top-0 right-0 h-5 w-5 bg-red-700 rounded-full">
+                                    <?php $query = $confg->query("SELECT * FROM history_siswa WHERE id_siswa = $_SESSION[userId] OR id_kelas = '$_SESSION[kelas]' AND action = 'MATA PELAJARAN' OR action = 'STATUS PELAJARAN' OR action = 'PENGUMUMAN' ORDER BY id DESC")?>
+                                    <span class="flex pb-1" id="notif-number"><?= mysqli_num_rows($query)?></span>
+                                </div>
+                                <img src="../../icons/notification-bell.png" class="h-8 w-9" alt="" srcset="">
+                            </button>
+                            </script>
+                            <ul
+                            x-show="isOpen"
+                            @click.away="isOpen = false"
+                            x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95"
+                            class="absolute overflow-hidden rounded-md font-normal right-5 z-10 w-72 bg-slate-800 shadow-lg text-zinc-400 shadow-black gap-2">
+                                <span class="px-4 py-4 text-sm">Notification</span>
+                                <?php
+                                $sql = "SELECT * FROM history_siswa WHERE id_siswa = $_SESSION[userId] OR id_kelas = '$_SESSION[kelas]' AND action = 'MATA PELAJARAN' OR action = 'STATUS PELAJARAN' OR action = 'PENGUMUMAN' ORDER BY id DESC LIMIT 5";
+                                $query = $confg->query($sql);
+                                while($row_history = mysqli_fetch_assoc($query)){
+                                ?>
+                                <li class="font-sans text-sm relative hover:bg-slate-900">
+                                
+                                    <a href="../" class="hover:bg-slate-900">
+                                        <div class="px-3 py-3  font-medium relative flex justify-center items-center gap-3">
+                                            <a class='text-base'><?= $row_history['msgnotif']?><span class="text-red-600 font-semibold"><?= $row_history['username'] ?></span></a>
+                                            <span class="absolute pt-12 text-sm right-0"><?= $row_history['date_create'] ?></span>
+                                        </div>
+                                    </a>
+                                </li>
+                            <?php } ?>
+                            </ul>
+                        </div>    
+                        <div class="flex justify-start items-start content-start">
+                            <?php 
+                            $cekSiswaOnline = $confg->query("SELECT * FROM user WHERE status = 'Online'");
+                            $countSiswaOnline = mysqli_num_rows($cekSiswaOnline)
+                            ?>
+                            <span class="p-1 flex border-green-500 border-[0.5px] text-green-500">Siswa Online : <?= $countSiswaOnline ?></span>
                         </div>
                         <div class="relative">
                         <span id="ct" class="p-1 flex   border-green-500 border-[0.5px] text-green-500"></span>
@@ -138,15 +189,26 @@ $dataArsip = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_
                         </div>
                     </ul>
                 </div>
-                <div class="py-5"></div>
-                <button class="bg-indigo-500 p-2 focus:outline-none flex gap-2 rounded-md" onclick="window.location.href= 'mata-pelajaran'"><<< Kembali Ke Pelajaran</button>
                 <div class="py-2"></div>
                 <div class="relative overflow-x-auto bg-slate-800 shadow-md rounded-lg text-gray-400 pt-7">
-                    <table class="w-full text-sm text-gray-500 dark:text-gray-400 rounded-lg"
+                    <div class="header-table">
+                        <div class="bg-opacity-40 px-4 pb-5 ">
+                            <h1 class="font-bold text-xl"><b>ARSIP MATA PELAJARAN</b></h1>
+                            <h1 class="">Data Mata Pelajaran Berdasarkan Status Selesai</h1>
+                        </div>
+                        <div class="md:flex gap-5 font-medium px-4 pb-5 ">
+                            <button class="bg-indigo-500 hover:shadow-lg shadow-indigo-500/50 flex text-white p-2 rounded-lg gap-2 font-medium " onclick="location.href='../App/Rekapitulasi-arsip-pelajaran'"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>Rekapitulasi Arsip Pelajaran</button>
+                            <button class="bg-red-600 p-2 focus:outline-none font-semibold text-white flex items-center justify-center gap-2 rounded-md hover:shadow-lg hover:shadow-red-600/50 hover:transition hover:duration-300" onclick="window.location.href= 'mata-pelajaran'"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg> Kembali Ke Pelajaran</button>
+                        </div>
+                    <table class="table-fixed w-full text-sm text-gray-500 dark:text-gray-400 rounded-lg"
                         id="example"
                     >
                         <thead class="text-xs text-center text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
+                                <tr>
                                     <th scope="col" class="px-6 py-3">
                                         id
                                     </th>
@@ -160,10 +222,22 @@ $dataArsip = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_
                                         PENGAJAR
                                     </th>
                                     <th scope="col" class="px-6 py-3">
+                                        LINK VIRTUAL
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        PASSWORD LINK
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        AGENDA
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
                                         JAM MULAI  
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         JAM AKHIR  
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        TANGGAL  
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         STATUS  
@@ -179,8 +253,12 @@ $dataArsip = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_
                                 <td class="px-6 py-4 dark:bg-gray-800 font-medium text-blue-600"><?= $row['KELAS'] ?></td>
                                 <td class="px-6 py-4 dark:bg-gray-800 font-medium"><?= $row['daftar_pelajaran'] ?></td>
                                 <td class="px-6 py-4 dark:bg-gray-800 font-medium"><?= $row['nama_guru'] ?></td>
+                                <td class="px-6 py-4 dark:bg-gray-800 font-medium break-words"><a class="hover:text-indigo-500" target="_blank" href="<?=$row['link_virtual']?>"><?=$row['link_virtual']?></a></td>
+                                <td class="px-6 py-4 dark:bg-gray-800 font-medium"><?= $row['pass_link_virtual'] ?></td>
+                                <td class="px-6 py-4 dark:bg-gray-800 font-medium"><?= $row['agenda'] ?></td>
                                 <td class="px-6 py-4 dark:bg-gray-800 font-medium"><?= $row['jam_mulai'] ?></td>
                                 <td class="px-6 py-4 dark:bg-gray-800 font-medium"><?= $row['jam_akhir'] ?></td>
+                                <td class="px-6 py-4 dark:bg-gray-800 font-medium"><?= $row['tanggal'] ?></td>
                                 <td class="px-6 py-4 dark:bg-gray-800 font-medium">
                                 <?php
                                         if($row['status'] == 'SELESAI'){
@@ -198,31 +276,6 @@ $dataArsip = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_
                         }
                         ?>
                         </tbody>
-                        <tfoot class="text-xs text-gray-700 uppercase  dark:bg-gray-700 dark:text-gray-400">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3">
-                                        id
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        KELAS
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        MATA PELAJARAN
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        PENGAJAR
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        JAM MULAI  
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        JAM AKHIR  
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        STATUS  
-                                    </th>
-                                </tr>
-                        </tfoot>
                     </table>
                 </div>
                 <script>
@@ -235,6 +288,7 @@ $dataArsip = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_
                 </script>
             </div>
     </div>
+    
 </div>
 <script>
 $(document).ready(function(){

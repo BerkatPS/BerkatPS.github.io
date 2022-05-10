@@ -18,6 +18,7 @@ $data = mysqli_fetch_assoc($countData);
     <link rel="icon" type="image/png" href="../../icons/world-book-day.png"/>
     <script src="../../js/timer.js"></script>
     <script src="../../js/eyesToggle.js"></script>
+    <link rel="stylesheet" href="../../assets/blink.css">
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <title>APP KESISWAAN - User Pages</title>
 </head>
@@ -44,10 +45,12 @@ $data = mysqli_fetch_assoc($countData);
                 <a href="../components/absensi" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/calendar.png" class="h-6 w-6" alt="" srcset="">
                 Absensi
+                <p class="text-base ml-8 p-1 px-2 bg-red-600 text-slate-300 rounded-lg" id="blink">New</p>
                 </a>
                 <a href="../components/laporan" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/report.png" class="h-6 w-6" alt=""> 
                 Laporan
+                <p class="text-base ml-8 p-1 px-2 bg-red-600 text-slate-300 rounded-lg" id="blink">New</p>
                 </a>
                 <a href="" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 bg-slate-900 rounded-md transition duration-200 ">
                     <img src="../../icons/user.png" class="h-6 w-6" alt="">
@@ -57,9 +60,22 @@ $data = mysqli_fetch_assoc($countData);
                     <img src="../../icons/online-learning.png" class="h-6 w-6" alt="">
                 Pelajaran
                 </a>
+                <a href="./semester" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200 ">
+                    <img src="../../icons/statistics.png" class="h-7 w-7" alt="">
+                Semester
+                </a>
                 <a href="../components/forum-chat" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/chat.png" alt="" class="h-6 w-6" srcset="">
                 Forum Chat
+                </a>
+                <a href="./ekstrakurikuler" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    <img src="../../icons/mental-health.png" alt="" class="h-6 w-6" srcset="">
+                Eskul
+                <p class="text-base ml-12 p-1 px-2 bg-red-600 text-slate-300 rounded-lg" id="blink">New</p>
+                </a>
+                <a href="../App/Development" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
+                    <img src="../../icons/software-development.png" alt="" class="h-6 w-6" srcset="">
+                Development
                 </a>
                 <a href="../history" class="flex items-center text-zinc-300 gap-2 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <img src="../../icons/history.png" alt="" class="h-6 w-6" srcset="">
@@ -78,14 +94,49 @@ $data = mysqli_fetch_assoc($countData);
             <div class="w-full h-[4rem] m-6 p-4 rounded-lg relative bg-slate-800 text-zinc-300">
                 <div class="container flex justify-end  items-center mx-auto">
                     <ul class="flex space-x-5 bottom-0">
-                        <div class="relative cursor-pointer">
-                            <div class="absolute flex items-center justify-center top-0 right-0 h-5 w-5 bg-red-600 rounded-full">
-                                <span class="flex pb-1">1</span>
-                            </div>
-                            <img src="../../icons/notification-bell.png" class="h-8 w-9" alt="" srcset="">
+                    <div class="relative cursor-pointer" x-data="{ isOpen : false }">
+                            <button
+                            @click= "isOpen = !isOpen"
+                            >
+                                <div class="absolute flex items-center justify-center top-0 right-0 h-5 w-5 bg-red-700 rounded-full">
+                                    <?php $query = $confg->query("SELECT * FROM history_siswa WHERE id_siswa = $_SESSION[userId] OR id_kelas = '$_SESSION[kelas]' AND action = 'MATA PELAJARAN' OR action = 'STATUS PELAJARAN' OR action = 'PENGUMUMAN' ORDER BY id DESC")?>
+                                    <span class="flex pb-1" id="notif-number"><?= mysqli_num_rows($query)?></span>
+                                </div>
+                                <img src="../../icons/notification-bell.png" class="h-8 w-9" alt="" srcset="">
+                            </button>
+                            </script>
+                            <ul
+                            x-show="isOpen"
+                            @click.away="isOpen = false"
+                            x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95"
+                            class="absolute overflow-hidden rounded-md font-normal right-5 z-10 w-72 bg-slate-800 shadow-lg text-zinc-400 shadow-black gap-2">
+                                <span class="px-4 py-4 text-sm">Notification</span>
+                                <?php
+                                $sql = "SELECT * FROM history_siswa WHERE id_siswa = $_SESSION[userId] OR id_kelas = '$_SESSION[kelas]' AND action = 'MATA PELAJARAN' OR action = 'STATUS PELAJARAN' OR action = 'PENGUMUMAN' ORDER BY id DESC LIMIT 5";
+                                $query = $confg->query($sql);
+                                while($row_history = mysqli_fetch_assoc($query)){
+                                ?>
+                                <li class="font-sans text-sm relative hover:bg-slate-900">
+                                
+                                    <a href="../" class="hover:bg-slate-900">
+                                        <div class="px-3 py-3  font-medium relative flex justify-center items-center gap-3">
+                                            <a class='text-base'><?= $row_history['msgnotif']?><span class="text-red-600 font-semibold"><?= $row_history['username'] ?></span></a>
+                                            <span class="absolute pt-12 text-sm right-0"><?= $row_history['date_create'] ?></span>
+                                        </div>
+                                    </a>
+                                </li>
+                            <?php } ?>
+                            </ul>
+                        </div>    
+                        <div class="flex justify-start items-start content-start">
+                            <?php 
+                            $cekSiswaOnline = $confg->query("SELECT * FROM user WHERE status = 'Online'");
+                            $countSiswaOnline = mysqli_num_rows($cekSiswaOnline)
+                            ?>
+                            <span class="p-1 flex border-green-500 border-[0.5px] text-green-500">Siswa Online : <?= $countSiswaOnline ?></span>
                         </div>
                         <div class="relative">
-                        <span id="ct" class="p-1 flex  border-green-500 border-[0.5px] text-green-500"></span>
+                        <span id="ct" class="p-1 flex border-green-500 border-[0.5px] text-green-500"></span>
                         </div>
                         <div class="relative" x-data="{ isOpen : false }">
                             <button
@@ -125,6 +176,7 @@ $data = mysqli_fetch_assoc($countData);
                                 </div>
                             <!-- End Dropdown -->
                         </div>
+                        
                         <div class="relative">
                             <button class="mobile-button bg-blue-dark p-1 focus:outline-none lg:hidden">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -235,7 +287,7 @@ $data = mysqli_fetch_assoc($countData);
                             <img src="https://raw.githubusercontent.com/sefyudem/Responsive-Login-Form/master/img/avatar.svg" class="h-10 w-10" alt="" srcset="">
                             <div class="upload-btn-wrapper overflow-hidden relative inline-block">
                                 <button class="btn text-white bg-indigo-500 p-1 rounded-md text-lg font-bold">Upload file</button>
-                                <input type="file" name="myfile" class="text-lg absolute left-0 top-0 opacity-0" />
+                                <input type="file" name="myfile" class="text-lg left-0 top-0 bg-gray-800" />
                                 <p class="font-mono text-gray-500">Upload File Ext ( jpg,jpeg,png,pjpeg )</p>
                             </div>
                         </div>
@@ -299,7 +351,7 @@ $data = mysqli_fetch_assoc($countData);
                                 <input type="password" name="retypePass" class="absolute flex items-center p-2 w-full bg-transparent border rounded-lg border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500"id="oldPass" placeholder="Retype Password">
                             </div>
                             <div class="relative pt-7 col-span-1 sm:col-span-2 ">
-                                <button type="submit" class="bg-purple-dark text-purple-600 p-2 rounded-lg hover:bg-purple-500 hover:text-white hover:transform duration-300">Simpan Edit Data</button>
+                                <button type="submit" class="bg-blue-dark text-blue-600 p-2 rounded-lg hover:bg-blue-600 hover:text-white hover:transform duration-300">Simpan Edit Data</button>
                             </div>
                         </form>
                     </div>
@@ -327,7 +379,7 @@ $data = mysqli_fetch_assoc($countData);
                                     <input type='text' class='absolute flex items-center p-2 w-full bg-transparent border rounded-lg border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500' placeholder="Add links">
                                 </div>
                                 <div class="relative pt-7 col-span-1 sm:col-span-2 ">
-                                    <button type="submit" class="bg-purple-dark text-purple-600 p-2 rounded-lg hover:bg-purple-500 hover:text-white hover:transform duration-300">Simpan Edit Data</button>
+                                    <button type="submit" class="bg-blue-dark text-blue-600 p-2 rounded-lg hover:bg-blue-600 hover:text-white hover:transform duration-300">Simpan Edit Data</button>
                             </div>
                         </form>
                     </div>
@@ -376,7 +428,7 @@ $data = mysqli_fetch_assoc($countData);
                                 <div class="py-2"></div>
                             </div>
                             <div class="relative pt-7 col-span-1 sm:col-span-2 ">
-                                <button type="submit" class="bg-purple-dark text-purple-600 p-2 rounded-lg hover:bg-purple-500 hover:text-white hover:transform duration-300">Simpan Edit Data</button>
+                                <button type="submit" class="bg-blue-dark text-blue-600 p-2 rounded-lg hover:bg-blue-600 hover:text-white hover:transform duration-300">Simpan Edit Data</button>
                             </div>
                         </form>
                     </div>
@@ -384,7 +436,7 @@ $data = mysqli_fetch_assoc($countData);
                     x-show="openTabs === 'hapus'"
                     class="p-2 bg-slate-800 col-span-3 rounded-md  ">
                             <div class="relative pt-7 ">
-                                <button type="submit" class="bg-purple-dark text-purple-600 p-2 rounded-lg hover:bg-purple-500 hover:text-white hover:transform duration-300">Simpan Edit Data</button>
+                                <button type="submit" class="bg-blue-dark text-blue-600 p-2 rounded-lg hover:bg-blue-600 hover:text-white hover:transform duration-300">Simpan Edit Data</button>
                             </div>
                     </div>
                 </div>
