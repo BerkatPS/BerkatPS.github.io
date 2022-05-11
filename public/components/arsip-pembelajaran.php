@@ -99,19 +99,20 @@ $dataArsip = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_
                     <div class="relative cursor-pointer" x-data="{ isOpen : false }">
                             <button
                             @click= "isOpen = !isOpen"
+                            class=""
                             >
-                                <div class="absolute flex items-center justify-center top-0 right-0 h-5 w-5 bg-red-700 rounded-full">
+                                <div class="absolute flex items-center justify-center top-0 right-0 h-5 w-5 bg-red-700 rounded-full md:ml-2">
                                     <?php $query = $confg->query("SELECT * FROM history_siswa WHERE id_siswa = $_SESSION[userId] OR id_kelas = '$_SESSION[kelas]' AND action = 'MATA PELAJARAN' OR action = 'STATUS PELAJARAN' OR action = 'PENGUMUMAN' ORDER BY id DESC")?>
-                                    <span class="flex pb-1" id="notif-number"><?= mysqli_num_rows($query)?></span>
+                                    <span class="flex pb-1 sm:pt-1 text-sm text-slate-300" id="notif-number"><?= mysqli_num_rows($query)?></span>
                                 </div>
-                                <img src="../../icons/notification-bell.png" class="h-8 w-9" alt="" srcset="">
+                                <img src="../../icons/notification-bell.png" class="h-8 w-9 ml-5" alt="" srcset="">
                             </button>
                             </script>
                             <ul
                             x-show="isOpen"
                             @click.away="isOpen = false"
                             x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95"
-                            class="absolute overflow-hidden rounded-md font-normal right-5 z-10 w-72 bg-slate-800 shadow-lg text-zinc-400 shadow-black gap-2">
+                            class="absolute overflow-hidden rounded-md font-normal right-none md:right-5 z-10 w-72 bg-slate-800 shadow-lg text-zinc-400 shadow-black gap-2">
                                 <span class="px-4 py-4 text-sm">Notification</span>
                                 <?php
                                 $sql = "SELECT * FROM history_siswa WHERE id_siswa = $_SESSION[userId] OR id_kelas = '$_SESSION[kelas]' AND action = 'MATA PELAJARAN' OR action = 'STATUS PELAJARAN' OR action = 'PENGUMUMAN' ORDER BY id DESC LIMIT 5";
@@ -120,7 +121,7 @@ $dataArsip = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_
                                 ?>
                                 <li class="font-sans text-sm relative hover:bg-slate-900">
                                 
-                                    <a href="../" class="hover:bg-slate-900">
+                                    <a href="../history" class="hover:bg-slate-900">
                                         <div class="px-3 py-3  font-medium relative flex justify-center items-center gap-3">
                                             <a class='text-base'><?= $row_history['msgnotif']?><span class="text-red-600 font-semibold"><?= $row_history['username'] ?></span></a>
                                             <span class="absolute pt-12 text-sm right-0"><?= $row_history['date_create'] ?></span>
@@ -135,18 +136,18 @@ $dataArsip = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_
                             $cekSiswaOnline = $confg->query("SELECT * FROM user WHERE status = 'Online'");
                             $countSiswaOnline = mysqli_num_rows($cekSiswaOnline)
                             ?>
-                            <span class="p-1 flex border-green-500 border-[0.5px] text-green-500">Siswa Online : <?= $countSiswaOnline ?></span>
+                            <span class="p-1 hidden md:flex border-green-500 border-[0.5px] text-green-500">Siswa Online : <?= $countSiswaOnline ?></span>
                         </div>
                         <div class="relative">
-                        <span id="ct" class="p-1 flex   border-green-500 border-[0.5px] text-green-500"></span>
+                        <span id="ct" class="p-1 flex  border-green-500 border-[0.5px] text-green-500"></span>
                         </div>
                         <div class="relative" x-data="{ isOpen : false }">
                             <button
                             @click= "isOpen = !isOpen"
                             class="flex items-center pb-2 focus:outline-none ">
                                 <div class="gap-3 relative flex md:text-base">
-                                    <span class="flex space-y-2"><?= strtoupper($_SESSION['user']) .'&nbsp&nbsp'. strtoupper($_SESSION['kelas']);?> </span> 
-                                   <span class="absolute pt-5 pl-1 text-xs items-center">Siswa</span>
+                                    <span class="flex space-y-2 text-slate-300 md:text-sm"><?= strtoupper($_SESSION['user']) .'&nbsp&nbsp'. strtoupper($_SESSION['kelas']);?> </span> 
+                                   <span class="absolute pt-5 pl-1 text-xs items-center text-slate-300">Siswa</span>
                                    <img src="https://raw.githubusercontent.com/sefyudem/Responsive-Login-Form/master/img/avatar.svg" class="rounded-full flex h-10 w-10 gap-2 pl-2" alt="image" srcset="">
                                 </div>
                                 <div class="relative">
@@ -158,25 +159,25 @@ $dataArsip = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_
                             <!-- Dropdown Menu -->
                             <div class="relative">
                                 <ul
-                                    x-show="isOpen"
-                                    @click.away="isOpen = false"
-                                    x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95"
-                                    class="absolute overflow-hidden rounded-md font-normal right-0 z-10 w-40 bg-slate-800 shadow-lg text-zinc-400 shadow-black space-y-4 divide-y-2 divide-indigo-800 gap-2">
-                                            <li class="">
-                                                <a href="../pages/User" class="hover:bg-blue-600 hover:text-white hover:transition duration-200 flex items-center px-4 py-3 gap-2">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
-                                                    </svg>Settings</a>
-                                                <a href=""class="hover:bg-blue-600 hover:text-white hover:transition duration-200 flex items-center px-4 py-3 gap-2">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                                    </svg>Account</a>
-                                                <a href="../../auth/logout" class="hover:bg-blue-600 hover:text-white hover:transition duration-200 flex items-center px-4 py-3 gap-2">
+                                x-show="isOpen"
+                                @click.away="isOpen = false"
+                                x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95"
+                                class="absolute overflow-hidden rounded-md font-normal right-0 z-10 w-40 bg-slate-800 shadow-lg text-zinc-400 shadow-black space-y-4 divide-y-2 divide-indigo-800 gap-2">
+                                        <li class="">
+                                            <a href="../pages/user" class="hover:bg-blue-600 hover:text-white hover:transition duration-200 flex items-center px-4 py-3 gap-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+                                                </svg>Settings</a>
+                                            <a href="../pages/user"class="hover:bg-blue-600 hover:text-white hover:transition duration-200 flex items-center px-4 py-3 gap-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                                                </svg>Logout</a>
-                                            </li>
-                                    </ul>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                </svg>Account</a>
+                                            <a href="../../auth/logout" class="hover:bg-blue-600 hover:text-white hover:transition duration-200 flex items-center px-4 py-3 gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                            </svg>Logout</a>
+                                        </li>
+                                </ul>
                                 </div>
                             <!-- End Dropdown -->
                         </div>
