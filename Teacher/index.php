@@ -120,7 +120,7 @@ if($time['tm_hour'] > 8){
                                 x-show="isOpen"
                                 @click.away="isOpen = false"
                                 x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95"
-                                class="absolute overflow-hidden rounded-md font-normal right-none md:right-0 z-10 w-60 bg-slate-800 shadow-lg text-zinc-400 shadow-black gap-2">
+                                class="absolute overflow-hidden rounded-md font-normal right-5 sm:right-none z-10 w-60 bg-slate-800 shadow-lg text-zinc-400 shadow-black gap-2">
                                     <span class="px-4 py-4 text-sm">Notification</span>
                                     <li class="font-sans text-sm relative hover:bg-slate-900">
                                         <div class="px-4 py-4 relative flex justify-center items-center gap-3">

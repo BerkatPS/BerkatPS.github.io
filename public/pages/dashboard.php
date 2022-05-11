@@ -127,7 +127,7 @@ $selectNews = $confg->query("SELECT * FROM news ORDER BY id DESC LIMIT 3");
 </div>
 <div class="grid grid-cols-1 gap-5 shadow-xl font-mono ">
     <div class="bg-slate-800 w-full pl-3 col-span-2">
-    <span class="p-5">Mendapatkan 3 Informasi Terbaru</span>
+    <span class="p-5 text-slate-400">Mendapatkan 3 Informasi Terbaru</span>
             <?php
                 while($news = mysqli_fetch_array($selectNews)){
             ?>
@@ -136,7 +136,7 @@ $selectNews = $confg->query("SELECT * FROM news ORDER BY id DESC LIMIT 3");
                         <div class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border  dark:bg-gray-700"></div>
                         <div class="">
                         <time class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-slate-300">Publish At <?= $news['tanggal'] ?></time>
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white"><?= $news['title'] ?></h3>
+                        <h3 class="text-lg font-semibold dark:text-slate-400"><?= $news['title'] ?></h3>
                         <p class="mb-4 text-base font-normal text-slate-300 dark:text-gray-400"><?= $news['news'] ?></p>
                         </div>
                     </li>

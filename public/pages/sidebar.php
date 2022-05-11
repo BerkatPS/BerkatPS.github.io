@@ -126,7 +126,7 @@ require_once('../connection/conf.php');
                             $cekSiswaOnline = $confg->query("SELECT * FROM user WHERE status = 'Online'");
                             $countSiswaOnline = mysqli_num_rows($cekSiswaOnline)
                             ?>
-                            <span class="p-1 flex border-green-500 border-[0.5px] text-green-500">Siswa Online : <?= $countSiswaOnline ?></span>
+                            <span class="p-1 hidden md:flex border-green-500 border-[0.5px] text-green-500">Siswa Online : <?= $countSiswaOnline ?></span>
                         </div>
                         <div class="relative">
                         <span id="ct" class="p-1 flex  border-green-500 border-[0.5px] text-green-500"></span>
@@ -136,7 +136,7 @@ require_once('../connection/conf.php');
                             @click= "isOpen = !isOpen"
                             class="flex items-center pb-2 focus:outline-none ">
                                 <div class="gap-3 relative flex md:text-base">
-                                    <span class="flex space-y-2"><?= strtoupper($_SESSION['user']) .'&nbsp&nbsp'. strtoupper($_SESSION['kelas']);?> </span> 
+                                    <span class="flex space-y-2 text-slate-300 md:text-sm"><?= strtoupper($_SESSION['user']) .'&nbsp&nbsp'. strtoupper($_SESSION['kelas']);?> </span> 
                                    <span class="absolute pt-5 pl-1 text-xs items-center">Siswa</span>
                                    <img src="https://raw.githubusercontent.com/sefyudem/Responsive-Login-Form/master/img/avatar.svg" class="rounded-full flex h-10 w-10 gap-2 pl-2" alt="image" srcset="">
                                 </div>
