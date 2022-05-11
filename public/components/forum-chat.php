@@ -31,7 +31,7 @@ if(!isset($_SESSION['user'])){
              <span class="">Kesiswaan</span>
              </button>
             <div class="relative">
-                <nav class="text-slate-400 min-h-screen overflow-y-auto font-mono text-[1.3rem] relative pt-7 gap-3 md:text-lg">
+                <nav class="text-slate-400 min-h-screen overflow-y-auto font-mono text-[1.3rem] relative pt-7 gap-3 text-sm md:text-lg">
                 <a href="../" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <div class="flex items-center">
                         <img src="../../icons/layout.png" class="h-6 w-6"alt="">
@@ -140,9 +140,9 @@ if(!isset($_SESSION['user'])){
                             <button
                             @click= "isOpen = !isOpen"
                             class="flex items-center pb-2 focus:outline-none ">
-                                <div class="gap-3 relative flex md:text-base">
-                                    <span class="flex space-y-2 text-slate-300 md:text-sm"><?= strtoupper($_SESSION['user']) .'&nbsp&nbsp'. strtoupper($_SESSION['kelas']);?> </span> 
-                                   <span class="absolute pt-5 pl-1 text-xs items-center text-slate-300">Siswa</span>
+                                <div class="gap-3 relative flex">
+                                    <span class="flex space-y-2 text-slate-300 text-sm md:text-lg"><?= strtoupper($_SESSION['user']) .'&nbsp&nbsp'. strtoupper($_SESSION['kelas']);?> </span> 
+                                   <span class="absolute pt-5 pl-1 text-xs md:text-sm items-center text-slate-300">Siswa</span>
                                    <img src="https://raw.githubusercontent.com/sefyudem/Responsive-Login-Form/master/img/avatar.svg" class="rounded-full flex h-10 w-10 gap-2 pl-2" alt="image" srcset="">
                                 </div>
                                 <div class="relative">

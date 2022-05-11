@@ -35,7 +35,7 @@ $dataLaporan = $confg->query("SELECT tbl_laporan.id , user.id AS id_siswa_lapora
                 </svg>
              <span class="">Kesiswaan</span>
              </button>
-             <nav class="text-slate-400 min-h-screen overflow-y-hidden font-mono text-[1.3rem] relative pt-7 gap-3 md:text-lg">
+             <nav class="text-slate-400 min-h-screen overflow-y-hidden font-mono text-[1.3rem] relative pt-7 gap-3 text-sm md:text-lg">
                 <a href="../" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <div class="flex items-center">
                         <img src="../../icons/layout.png" class="h-6 w-6"alt="">
@@ -199,8 +199,8 @@ $dataLaporan = $confg->query("SELECT tbl_laporan.id , user.id AS id_siswa_lapora
                 <div class="py-2"></div>
                 <div class="relative overflow-x-auto min-w-min bg-slate-800  rounded-lg text-gray-400 pt-7">
                     <div class="relative px-4 pb-5">
-                        <h1 class="font-bold text-lg">TABLE LAPORAN (&nbsp<?= strtoupper($_SESSION['user']) ?>&nbsp)</h1>
-                        <h1 class="font-medium text-sm">Kamu Bisa Melihat Laporan Terbaru Milikmu</h1>
+                        <h1 class="font-bold text-sm md:text-lg">TABLE LAPORAN (&nbsp<?= strtoupper($_SESSION['user']) ?>&nbsp)</h1>
+                        <h1 class="font-medium text-xs md:text-sm">Kamu Bisa Melihat Laporan Terbaru Milikmu</h1>
                     </div>
                     <div class="relative px-4 pb-5">
                         <h1 class="font-medium text-base">Jika Kamu Ingin Menambahkan TANDA TANGAN Punya mu <br><b>Klik Edit Dan Anda akan Diarahkan Ke Form, Silahkan File Upload Tanda tangan Anda><br>Klik Check Jika Kamu Ingin Melihat Tanda Tangan Guru , Piket , Atau Wali Kelas</b></h1>
@@ -208,7 +208,7 @@ $dataLaporan = $confg->query("SELECT tbl_laporan.id , user.id AS id_siswa_lapora
                     <table class="w-full text-sm text-gray-500 dark:text-gray-400 rounded-lg"
                         id="example"
                     >
-                        <thead class="text-xs text-center text-gray-700 uppercase  dark:bg-gray-700 dark:text-gray-400">
+                        <thead class="text-xs text-center text-gray-700 uppercase bg-gray-50">
                         <tr>
                                     <th scope="col" class="px-6 py-3">
                                         Id
