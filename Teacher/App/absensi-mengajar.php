@@ -40,7 +40,7 @@ if(!isset($_SESSION['Teacher'])){
              <span class="">Kesiswaan</span>
              </button>
             <div class="relative">
-            <nav class="text-slate-400 min-h-screen font-mono text-[1.3rem] relative pt-7 gap-3 md:text-lg">
+            <nav class="text-slate-400 min-h-screen font-mono text-[1.3rem] relative pt-7 gap-3 text-sm md:text-lg">
                 <a href="../" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <div class="flex items-center">
                         <img src="../../icons/layout.png" class="h-6 w-6"alt="">
