@@ -104,7 +104,7 @@ $tbl_daftar_pelajaran = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_s
                             $cekGuruOnline = $confg->query("SELECT * FROM tbl_guru WHERE status = 'Online'");
                             $countGuruOnline = mysqli_num_rows($cekGuruOnline);
                             ?>
-                            <span class="p-1 flex border-green-500 border-[0.5px] text-green-500">Guru Online : <?= $countGuruOnline ?></span>
+                            <span class="p-1 hidden md:flex border-green-500 border-[0.5px] text-green-500">Guru Online : <?= $countGuruOnline ?></span>
                         </div>
                         <div class="relative">
                         <span id="ct" class="p-1 flex   border-green-500 border-[0.5px] text-green-500"></span>
@@ -114,8 +114,8 @@ $tbl_daftar_pelajaran = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_s
                             @click= "isOpen = !isOpen"
                             class="flex items-center pb-2 focus:outline-none ">
                                 <div class="gap-3 relative flex ">
-                                    <span class="flex space-y-2"><?= $_SESSION['Teacher']; ?></span> 
-                                   <span class="absolute pt-5 pl-1 text-xs items-center">TEACHER</span>
+                                    <span class="flex space-y-2 text-sm md:text-lg"><?= $_SESSION['Teacher']; ?></span> 
+                                   <span class="absolute pt-5 pl-1 text-sm md:text-base items-center">TEACHER</span>
                                    <img src="https://raw.githubusercontent.com/sefyudem/Responsive-Login-Form/master/img/avatar.svg" class="rounded-full flex h-10 w-10 gap-2 pl-2" alt="image" srcset="">
                                 </div>
                                     <svg fill="currentColor" viewBox="0 0 20 20"

@@ -120,7 +120,7 @@ $selectNews = $confg->query("SELECT * FROM news ORDER BY id DESC LIMIT 3");
 </div>
 <div class="grid grid-cols-1 gap-5 shadow-xl font-mono ">
     <div class="bg-slate-800 w-full pl-3 col-span-2">
-    <span class="p-5">Mendapatkan 3 Informasi Terbaru</span>
+    <span class="p-5 text-slate-300">Mendapatkan 3 Informasi Terbaru</span>
             <?php
                 while($news = mysqli_fetch_array($selectNews)){
             ?>

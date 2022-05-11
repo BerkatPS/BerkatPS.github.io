@@ -111,8 +111,8 @@ $tbl_daftar_laporan = $confg->query("SELECT tbl_laporan_guru.id , tbl_guru.id_gu
                             @click= "isOpen = !isOpen"
                             class="flex items-center pb-2 focus:outline-none ">
                                 <div class="gap-3 relative flex ">
-                                    <span class="flex space-y-2"><?= $_SESSION['Teacher']; ?></span> 
-                                   <span class="absolute pt-5 pl-1 text-xs items-center">TEACHER</span>
+                                    <span class="flex space-y-2 text-xs md:text-lg"><?= $_SESSION['Teacher']; ?></span> 
+                                   <span class="absolute pt-5 pl-1 text-xs md:text-base items-center">TEACHER</span>
                                    <img src="https://raw.githubusercontent.com/sefyudem/Responsive-Login-Form/master/img/avatar.svg" class="rounded-full flex h-10 w-10 gap-2 pl-2" alt="image" srcset="">
                                 </div>
                                     <svg fill="currentColor" viewBox="0 0 20 20"
