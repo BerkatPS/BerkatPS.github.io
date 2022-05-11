@@ -90,19 +90,20 @@ require_once('../connection/conf.php');
                     <div class="relative cursor-pointer" x-data="{ isOpen : false }">
                             <button
                             @click= "isOpen = !isOpen"
+                            class=""
                             >
-                                <div class="absolute flex items-center justify-center top-0 right-0 h-5 w-5 bg-red-700 rounded-full">
+                                <div class="absolute flex items-center justify-center top-0 right-0 h-5 w-5 bg-red-700 rounded-full md:ml-2">
                                     <?php $query = $confg->query("SELECT * FROM history_siswa WHERE id_siswa = $_SESSION[userId] OR id_kelas = '$_SESSION[kelas]' AND action = 'MATA PELAJARAN' OR action = 'STATUS PELAJARAN' OR action = 'PENGUMUMAN' ORDER BY id DESC")?>
                                     <span class="flex pb-1" id="notif-number"><?= mysqli_num_rows($query)?></span>
                                 </div>
-                                <img src="../icons/notification-bell.png" class="h-8 w-9" alt="" srcset="">
+                                <img src="../icons/notification-bell.png" class="h-8 w-9 ml-10" alt="" srcset="">
                             </button>
                             </script>
                             <ul
                             x-show="isOpen"
                             @click.away="isOpen = false"
                             x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95"
-                            class="absolute overflow-hidden rounded-md font-normal right-5 z-10 w-72 bg-slate-800 shadow-lg text-zinc-400 shadow-black gap-2">
+                            class="absolute overflow-hidden rounded-md font-normal right-none md:right-5 z-10 w-72 bg-slate-800 shadow-lg text-zinc-400 shadow-black gap-2">
                                 <span class="px-4 py-4 text-sm">Notification</span>
                                 <?php
                                 $sql = "SELECT * FROM history_siswa WHERE id_siswa = $_SESSION[userId] OR id_kelas = '$_SESSION[kelas]' AND action = 'MATA PELAJARAN' OR action = 'STATUS PELAJARAN' OR action = 'PENGUMUMAN' ORDER BY id DESC LIMIT 5";
@@ -137,7 +138,7 @@ require_once('../connection/conf.php');
                             class="flex items-center pb-2 focus:outline-none ">
                                 <div class="gap-3 relative flex md:text-base">
                                     <span class="flex space-y-2 text-slate-300 md:text-sm"><?= strtoupper($_SESSION['user']) .'&nbsp&nbsp'. strtoupper($_SESSION['kelas']);?> </span> 
-                                   <span class="absolute pt-5 pl-1 text-xs items-center">Siswa</span>
+                                   <span class="absolute pt-5 pl-1 text-xs items-center text-slate-300">Siswa</span>
                                    <img src="https://raw.githubusercontent.com/sefyudem/Responsive-Login-Form/master/img/avatar.svg" class="rounded-full flex h-10 w-10 gap-2 pl-2" alt="image" srcset="">
                                 </div>
                                 <div class="relative">
