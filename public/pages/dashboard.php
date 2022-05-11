@@ -137,7 +137,7 @@ $selectNews = $confg->query("SELECT * FROM news ORDER BY id DESC LIMIT 3");
                         <div class="">
                         <time class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-slate-300">Publish At <?= $news['tanggal'] ?></time>
                         <h3 class="text-lg font-semibold text-slate-300"><?= $news['title'] ?></h3>
-                        <p class="mb-4 text-base font-normal text-slate-300 dark:text-gray-400"><?= $news['news'] ?></p>
+                        <p class="mb-4 text-base font-normal text-gray-400"><?= $news['news'] ?></p>
                         </div>
                     </li>
                 </ol>

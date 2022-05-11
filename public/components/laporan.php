@@ -202,7 +202,7 @@ $dataLaporan = $confg->query("SELECT tbl_laporan.id , user.id AS id_siswa_lapora
                     <div class="relative px-4 pb-5">
                         <h1 class="font-medium text-base">Jika Kamu Ingin Menambahkan TANDA TANGAN Punya mu <br><b>Klik Edit Dan Anda akan Diarahkan Ke Form, Silahkan File Upload Tanda tangan Anda><br>Klik Check Jika Kamu Ingin Melihat Tanda Tangan Guru , Piket , Atau Wali Kelas</b></h1>
                     </div>
-                    <table class="w-full text-sm text-gray-500 dark:text-gray-400 rounded-lg"
+                    <table class="w-full text-sm text-gray-300 dark:text-gray-400 rounded-lg"
                         id="example"
                     >
                         <thead class="text-xs text-center text-gray-700 uppercase  dark:bg-gray-700 dark:text-gray-400">
