@@ -41,7 +41,7 @@ $selectNews = $confg->query("SELECT * FROM news ORDER BY id DESC LIMIT 3");
     <title></title>
 </head>
 <body>
-<div class="grid grid-cols-1 pt-4 relative pb-5 gap-5 shadow-xl font-mono md:grid-cols-2  lg:text-sm mx-auto">
+<div class="grid grid-cols-1 pt-4 relative pb-5 gap-5 shadow-xl font-mono md:grid-cols-2 text-slate-300  lg:text-sm mx-auto">
     <div class="bg-slate-800 h-20 w-full rounded-md grid-cols-1">
         <div class="absolute p-3 bg-transparent">
             <img src="../icons/group.png" class="h-7 my-5 w-8" alt="user group all">
@@ -135,9 +135,9 @@ $selectNews = $confg->query("SELECT * FROM news ORDER BY id DESC LIMIT 3");
                     <li class="mb-10 ml-4 border border-rose-600 p-2">
                         <div class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border  dark:bg-gray-700"></div>
                         <div class="">
-                        <time class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">Publish At <?= $news['tanggal'] ?></time>
+                        <time class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-slate-300">Publish At <?= $news['tanggal'] ?></time>
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white"><?= $news['title'] ?></h3>
-                        <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400"><?= $news['news'] ?></p>
+                        <p class="mb-4 text-base font-normal text-slate-300 dark:text-gray-400"><?= $news['news'] ?></p>
                         </div>
                     </li>
                 </ol>

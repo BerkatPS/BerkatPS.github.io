@@ -275,13 +275,14 @@ if(isset($_POST['submit'])){
                             $values = array_map('trim', explode(',', trim(substr($row['Type'], 4), '()')));
                             $del = str_replace(array("'","\"","&quot;"),"",$values);
                             ?>
-                            <select name="kelas" id="" class="absolute flex items-center p-2 w-full bg-transparent border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Kelas Anda" data-mdb-clear-button="true" required>
-                            <option class="bg-slate-800 hover:bg-indigo-500">Pilih KELAS</option>
+                            <select name="kelas" class="absolute flex items-center p-2 w-full bg-slate-800 border border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500" placeholder="Masukkan Nama SISWA"required>
+                            <option class="bg-slate-800 hover:bg-indigo-500">Pilih Kelas</option>
                             <?php
-                            foreach($del as $color):?>
-                                <option class="bg-slate-800 hover:bg-indigo-500"><?= $color ?></option> <?php. "\r\n"; ?>
-                            <?php endforeach; ?>
-                        </select>
+                            foreach($del as $color):
+                                echo '<option class="bg-slate-800 hover:bg-indigo-500" value="' . $color . '">' . $color . '</option>' . "\r\n";
+                            endforeach; 
+                            ?>
+                            </select>
                         </div>
                         <div class="relative">
                             <label for="">JENIS PELANGGARAN</label>

@@ -27,7 +27,7 @@ require_once('../connection/conf.php');
              <span class="">Kesiswaan</span>
              </button>
             <div class="relative">
-                <nav class="text-slate-400 min-h-screen overflow-y-auto font-mono text-[1.3rem] relative pt-7 gap-3 md:text-lg">
+                <nav class="text-white min-h-screen overflow-y-auto font-mono text-[1.3rem] relative pt-7 gap-3 md:text-lg sm:text-slate-300">
                 <a href="" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 bg-slate-900 rounded-md transition duration-200">
                     <div class="flex items-center">
                         <img src="../icons/layout.png" class="h-6 w-6"alt="">
