@@ -22,7 +22,7 @@ if(!isset($_SESSION['Teacher'])){
     <title>APP KESISWAAN - FORUM CHAT</title>
 </head>
 <body class="bg-slate-900 overflow-x-hidden " onload="startTime();">
-<div class="md:flex md:flex-row md:min-h-screen overflow-y-auto">
+<div class="md:flex md:flex-row md:min-h-screen">
         <!-- Mobile Menu -->
         <div class="bg-slate-800 w-72 text-purple-600 font-mono focus:outline-none z-20 px-6 py-9 absolute inset-y-0 left-0 transform -translate-x-full transition duration-500 ease-in-out lg:relative lg:translate-x-0" id="sidebar">
             <button href="" title="meta icons" class="font-extrabold text-2xl text-indigo-500 flex items-center space-x-2">
