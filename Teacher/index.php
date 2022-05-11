@@ -136,7 +136,7 @@ if($time['tm_hour'] > 8){
                             $cekGuruOnline = $confg->query("SELECT * FROM tbl_guru WHERE status = 'Online'");
                             $countGuruOnline = mysqli_num_rows($cekGuruOnline);
                             ?>
-                            <span class="p-1 flex border-green-500 border-[0.5px] text-green-500">Guru Online : <?= $countGuruOnline ?></span>
+                            <span class="p-1 hidden md:flex border-green-500 border-[0.5px] text-green-500">Guru Online : <?= $countGuruOnline ?></span>
                         </div>
                         <div class="relative">
                         <span id="ct" class="p-1 flex  border-green-500 border-[0.5px] text-green-500"></span>
