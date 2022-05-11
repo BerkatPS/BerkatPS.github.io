@@ -95,7 +95,7 @@ if($time['tm_hour'] > 8){
              <span class="">Kesiswaan</span>
              </button>
             <div class="relative">
-            <nav class="text-slate-400 min-h-screen font-mono text-[1.3rem] relative pt-7 gap-3 md:text-lg">
+            <nav class="text-slate-400 min-h-screen font-mono text-[1.3rem] text-sm relative pt-7 gap-3 md:text-lg">
                 <a href="../" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <div class="flex items-center">
                         <img src="../../icons/layout.png" class="h-6 w-6"alt="">
@@ -170,7 +170,7 @@ if($time['tm_hour'] > 8){
                             @click= "isOpen = !isOpen"
                             class="flex items-center pb-2 focus:outline-none ">
                                 <div class="gap-3 relative flex md:text-base">
-                                    <span class="flex space-y-2"><?= $_SESSION['Teacher']; ?></span> 
+                                    <span class="flex space-y-2 text-sm"><?= $_SESSION['Teacher']; ?></span> 
                                    <span class="absolute pt-5 pl-1 text-xs items-center">TEACHER</span>
                                    <img src="https://raw.githubusercontent.com/sefyudem/Responsive-Login-Form/master/img/avatar.svg" class="rounded-full flex h-10 w-10 gap-2 pl-2" alt="image" srcset="">
                                 </div>
@@ -268,8 +268,8 @@ if($time['tm_hour'] > 8){
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.b{fill:#e7c930}.c{fill:#864e20}.d{fill:#26a9e0}</style></defs><rect x="1" y="1" width="22" height="22" rx="7.656" style="fill:#f8de40"/><path class="b" d="M23 13.938a14.688 14.688 0 0 1-12.406 6.531c-5.542 0-6.563-1-9.142-2.529A7.66 7.66 0 0 0 8.656 23h6.688A7.656 7.656 0 0 0 23 15.344z"/><path class="c" d="M17.2 12.746c-1.221-1.647-3.789-2.231-5.2-2.231s-3.984.584-5.2 2.231-.188 3.4 1.128 3.293 3.546-.364 4.077-.364 2.762.258 4.077.364 2.345-1.647 1.118-3.293z"/><path class="b" d="M14.505 17.022A12.492 12.492 0 0 0 12 16.638a12.457 12.457 0 0 0-2.5.384c-.376.076-.39.384 0 .332s2.5-.166 2.5-.166 2.119.115 2.505.166.375-.254 0-.332z"/><path class="c" d="M8.907 9.844a.182.182 0 0 1-.331.1 2.016 2.016 0 0 0-.569-.567 1.731 1.731 0 0 0-1.915 0 2.016 2.016 0 0 0-.571.569.182.182 0 0 1-.331-.1 1.632 1.632 0 0 1 .346-1.023 1.927 1.927 0 0 1 3.026 0 1.64 1.64 0 0 1 .345 1.021zM18.81 9.844a.182.182 0 0 1-.331.1 2.026 2.026 0 0 0-.568-.567 1.732 1.732 0 0 0-1.916 0 2.016 2.016 0 0 0-.571.569.182.182 0 0 1-.331-.1 1.632 1.632 0 0 1 .346-1.023 1.927 1.927 0 0 1 3.026 0 1.64 1.64 0 0 1 .345 1.021z"/><path class="d" d="M8.576 9.946a2.016 2.016 0 0 0-.569-.567 1.731 1.731 0 0 0-1.915 0 2.016 2.016 0 0 0-.571.569.175.175 0 0 1-.214.063v11.24A1.747 1.747 0 0 0 7.054 23 1.748 1.748 0 0 0 8.8 21.253V10.005a.176.176 0 0 1-.224-.059zM18.473 9.946a2.026 2.026 0 0 0-.568-.567 1.732 1.732 0 0 0-1.916 0 2.016 2.016 0 0 0-.571.569.175.175 0 0 1-.214.063v11.24A1.748 1.748 0 0 0 16.952 23a1.747 1.747 0 0 0 1.748-1.747V10.005a.176.176 0 0 1-.227-.059z"/></svg>
                         </div>
                     </div>
-                    <table class="table-auto w-full text-sm text-center bg-slate-800 text-gray-500 dark:text-gray-400 " id="example">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <table class="table-auto w-full text-sm text-center bg-slate-800 text-gray-300 dark:text-gray-400 " id="example">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
                                     Id
