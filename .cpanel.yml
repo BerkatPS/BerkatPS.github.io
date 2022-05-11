@@ -2,6 +2,6 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/workkesiswaan/public_html/
-    - /bin/cp index.html $DEPLOYPATH
+    - /bin/cp index.php $DEPLOYPATH
     - /bin/cp style.css $DEPLOYPATH
     - /bin/cp -R icons $DEPLOYPATH
