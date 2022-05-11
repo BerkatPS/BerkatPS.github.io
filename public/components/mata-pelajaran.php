@@ -199,10 +199,10 @@ $dataMapel = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_
                         <button class="bg-indigo-500 p-2 font-medium text-white focus:outline-none flex gap-2 rounded-md" onclick="window.location.href= 'siswa-kelas'"><img src="../../icons/eye.png" class="h-6 w-6 " alt="eye" srcset="">Lihat Siswa Sesuai Kelas Anda</button>
                         <button class="bg-indigo-500 p-2 font-medium text-white focus:outline-none flex gap-2 rounded-md md:gap-2"onclick="window.location.href= 'arsip-pembelajaran'"><img src="../../icons/eye.png" class="h-6 w-6 " alt="eye" srcset="">Lihat Arsip Pembelajaran</button>
                     </div>
-                    <table class="w-full  text-sm text-gray-500 dark:text-gray-400 rounded-lg"
+                    <table class="w-full  text-sm text-gray-400 rounded-lg"
                         id="example"
                     >
-                        <thead class="text-xs text-center text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
+                        <thead class="text-xs text-center bg-slate-900 text-gray-400 uppercase ">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">
                                         id
