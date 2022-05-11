@@ -37,7 +37,7 @@ $semesterActive = $confg->query("SELECT * FROM semester ORDER BY id desc");
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H6M12 5l-7 7 7 7"/></svg>
              </div>
             </a>
-            <nav class="text-slate-400 font-mono min-h-screen text-[1.3rem] pt-7 relative gap-3 md:text-lg">
+            <nav class="text-slate-400 font-mono min-h-screen text-[1.3rem] pt-7 relative gap-3 md:text-sm">
                 <a href="../" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 hover:bg-indigo-500 rounded-md transition duration-200">
                     <div class="flex items-center">
                         <img src="../../icons/layout.png" class="h-6 w-6"alt="">
@@ -166,7 +166,7 @@ $semesterActive = $confg->query("SELECT * FROM semester ORDER BY id desc");
                     <table class="w-full text-sm text-gray-500 dark:text-gray-400 "
                         id="example"
                     >
-                        <thead class="text-xs text-center text-gray-700 uppercase  dark:bg-gray-700 dark:text-gray-400">
+                        <thead class="text-xs text-center text-gray-300 uppercase bg-gray-50">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">
                                         Id
