@@ -201,7 +201,7 @@ $tbl_daftar_pelajaran = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_s
                     <table class="w-full text-sm text-gray-500 dark:text-gray-400 rounded-lg"
                         id="example"
                     >
-                        <thead class="text-xs text-center text-gray-700 uppercase  dark:bg-gray-700 dark:text-gray-400">
+                        <thead class="text-xs text-center text-gray-300 uppercase bg-gray-50">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">
                                         Id

@@ -205,11 +205,11 @@ $dataLaporan = $confg->query("SELECT tbl_laporan.id , user.id AS id_siswa_lapora
                     <div class="relative px-4 pb-5">
                         <h1 class="font-medium text-base">Jika Kamu Ingin Menambahkan TANDA TANGAN Punya mu <br><b>Klik Edit Dan Anda akan Diarahkan Ke Form, Silahkan File Upload Tanda tangan Anda><br>Klik Check Jika Kamu Ingin Melihat Tanda Tangan Guru , Piket , Atau Wali Kelas</b></h1>
                     </div>
-                    <table class="w-full text-sm text-gray-300 dark:text-gray-400 rounded-lg"
+                    <table class="w-full text-sm text-gray-500 dark:text-gray-400 rounded-lg"
                         id="example"
                     >
                         <thead class="text-xs text-center text-gray-700 uppercase  dark:bg-gray-700 dark:text-gray-400">
-                                <tr>
+                        <tr>
                                     <th scope="col" class="px-6 py-3">
                                         Id
                                     </th>
@@ -270,59 +270,22 @@ $dataLaporan = $confg->query("SELECT tbl_laporan.id , user.id AS id_siswa_lapora
                                 ?>
                                 </td>
                                 <td class="px-6 py-4 bg-slate-800 font-medium "><?= $row['date'] ?></td>
-                                <td class="check-ttd-siswa" id="check-ttd-siswa">
-                                    <button class="bg-indigo-500 text-white  p-2 uppercase font-mono" >check</button>
-                                    <script>
-                                        const ttdsiswa = document.querySelector('.check-ttd-siswa');
-                                        const imgLoad = '<img src="../../icons/Pulse-1s-203px.svg"class="h-8 w-8"';
-
-                                        ttdsiswa.addEventListener('click',function(){
-                                            ttdsiswa.innerHTML = imgLoad;
-                                        })
-                                    </script>
+                                <td class="">
+                                    <button class="bg-indigo-500 text-white  p-2 uppercase font-mono" onclick="window.location.href= 'add-ttd'">check</button>
                                 </td>
-                                
                                 <td class="px-6 py-4 bg-slate-800 font-medium text-indigo-500"><?= $row['guru_pelapor'] ?></td>
-                                <td class="check-ttd-piket" id="check-ttd-piket">
-                                    <button class="bg-indigo-500 text-white  p-2 uppercase font-mono"  >check</button>
-                                    <script type="text/javascript">
-                                       const check =  document.querySelector('.check-ttd-piket').addEventListener('click' ()=>{
-                                            const viewTtd = "<a href='view-ttd' class='font-medium text-blue-600 hover:underline cursor-pointer'>Lihat Disini</a>";
-                                            const svgLoad2 = '<img src="../../icons/Pulse-1s-203px.svg" class="" >';
-                                            const time = setTimeout(() => {
-                                                check.
-                                            }, 50);
-                                            if(time == 0){
-                                                clearTimeOut(time);
-                                                console.log(time);
-                                                checking.innerHTML = viewTtd;
-                                            }
-                                        })
-                                    </script>
-                                </td>
-                                <td class="check-ttd-walas" id="check-ttd-walas">
-                                    <button class="bg-indigo-500 text-white  p-2 uppercase font-mono" >check</button>
-                                    <script type="text/javascript">
-                                        document.querySelector('.check-ttd-walas').addEventListener('click' ()=>{
-
-                                            const viewTtd = "<a href='view-ttd' class='font-medium text-blue-600 hover:underline cursor-pointer'>Lihat Disini</a>";
-                                            const svgLoad2 = '<img src="../../icons/Pulse-1s-203px.svg" class="" >';
-                                            const time = setTimeout(() => {
-                                            }, 50);
-                                            if(time == 0){
-                                                clearTimeOut(time);
-                                                console.log(time);
-                                                checking.innerHTML = viewTtd;
-                                            }
-                                        })
-                                    </script>
-                                </td>
-                                <td class="px-6 py-4 bg-slate-800 font-medium "><?= $row['keterangan'] ?></td>
-                                <td class="" id="check-ttd-bk">
-                                    <button class="bg-indigo-500 text-white  p-2 uppercase font-mono" onclick="window.location.href= 'view-ttd'">check</button>
+                                <td class="">
+                                    <button class="bg-indigo-500 text-white  p-2 uppercase font-mono" onclick="window.location.href= 'add-ttd'">check</button>
                                 </td>
                                 <td class="">
-                                    <button class="bg-yellow-dark text-yellow-500 p-2 uppercase font-mono" onclick="window.location.href= '../pages/add-ttd-siswa'">edit</button>
+                                    <button class="bg-indigo-500 text-white  p-2 uppercase font-mono" onclick="window.location.href= 'add-ttd'">check</button>
+                                </td>
+                                <td class="px-6 py-4 bg-slate-800 font-medium "><?= $row['keterangan'] ?></td>
+                                <td class="">
+                                    <button class="bg-indigo-500 text-white  p-2 uppercase font-mono" onclick="window.location.href= 'add-ttd'">check</button>
+                                </td>
+                                <td class="">
+                                    <button class="bg-yellow-dark text-yellow-500 p-2 uppercase font-mono" onclick="window.location.href= 'add-ttd-guru'">edit</button>
                                 </td>
                             </tr>
                         <?php

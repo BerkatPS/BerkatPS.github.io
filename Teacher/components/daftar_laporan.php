@@ -184,7 +184,7 @@ $tbl_daftar_laporan = $confg->query("SELECT tbl_laporan_guru.id , tbl_guru.id_gu
                     <table class="w-full text-sm text-gray-500 dark:text-gray-400 "
                         id="example"
                     >
-                        <thead class="text-xs text-center text-gray-700 uppercase  dark:bg-gray-700 dark:text-gray-400">
+                        <thead class="text-xs text-center text-gray-300 uppercase bg-gray-50">
                             <th scope="col" class="px-6 py-3">
                                     Id
                                 </th>
