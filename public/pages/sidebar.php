@@ -94,9 +94,9 @@ require_once('../connection/conf.php');
                             >
                                 <div class="absolute flex items-center justify-center top-0 right-0 h-5 w-5 bg-red-700 rounded-full md:ml-2">
                                     <?php $query = $confg->query("SELECT * FROM history_siswa WHERE id_siswa = $_SESSION[userId] OR id_kelas = '$_SESSION[kelas]' AND action = 'MATA PELAJARAN' OR action = 'STATUS PELAJARAN' OR action = 'PENGUMUMAN' ORDER BY id DESC")?>
-                                    <span class="flex pb-1" id="notif-number"><?= mysqli_num_rows($query)?></span>
+                                    <span class="flex pb-1 sm:pt-1 text-sm" id="notif-number"><?= mysqli_num_rows($query)?></span>
                                 </div>
-                                <img src="../icons/notification-bell.png" class="h-8 w-9 ml-10" alt="" srcset="">
+                                <img src="../icons/notification-bell.png" class="h-8 w-9 ml-5" alt="" srcset="">
                             </button>
                             </script>
                             <ul
@@ -112,7 +112,7 @@ require_once('../connection/conf.php');
                                 ?>
                                 <li class="font-sans text-sm relative hover:bg-slate-900">
                                 
-                                    <a href="../" class="hover:bg-slate-900">
+                                    <a href="../history" class="hover:bg-slate-900">
                                         <div class="px-3 py-3  font-medium relative flex justify-center items-center gap-3">
                                             <a class='text-base'><?= $row_history['msgnotif']?><span class="text-red-600 font-semibold"><?= $row_history['username'] ?></span></a>
                                             <span class="absolute pt-12 text-sm right-0"><?= $row_history['date_create'] ?></span>
