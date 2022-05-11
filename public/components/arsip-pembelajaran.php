@@ -205,7 +205,7 @@ $dataArsip = $confg->query("SELECT tbl_pelajaran.id AS id_pelajaran_siswa , tbl_
                             <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                             </svg> Kembali Ke Pelajaran</button>
                         </div>
-                    <table class="table-fixed w-full text-sm text-gray-500 dark:text-gray-400 rounded-lg"
+                    <table class="w-full text-sm text-gray-500 dark:text-gray-400 rounded-lg"
                         id="example"
                     >
                         <thead class="text-xs text-center text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
