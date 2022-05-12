@@ -29,75 +29,75 @@ if(!isset($_SESSION['admin'])){
 </head>
 <body>
 <div class="grid grid-cols-1 pt-7 relative pb-5 gap-5 shadow-xl font-mono md:grid-cols-2 lg:grid-cols-3 lg:text-sm mx-auto">
-    <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
+    <div class="bg-slate-800 h-20 w-full rounded-md grid-cols-1">
         <div class="absolute p-3 bg-transparent">
             <img src="../icons/group.png" class="h-7 my-5 w-8" alt="user group all">
         </div>
         <span class="flex items-end justify-end py-5 mr-3">TOTAL SISWA SAAT INI</span>
-        <span class="flex flex-row-reverse -my-7 mx-24 text-2xl text-green-500 "><?= $countData;?></span>
+        <span class="flex flex-row-reverse -my-7 mx-20 text-2xl text-green-500 "><?= $countData;?></span>
     </div>
-    <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
+    <div class="bg-slate-800 h-20 w-full rounded-md grid-cols-1">
         <div class="absolute p-3 bg-transparent">
             <img src="../icons/group.png" class="h-7 my-5 w-8" alt="user group all">
         </div>
         <span class="flex items-end justify-end py-5 mr-3">TOTAL SISWA SAAT INI</span>
-        <span class="flex flex-row-reverse -my-7 mx-24 text-2xl text-green-500 "><?= $countData2;?></span>
+        <span class="flex flex-row-reverse -my-7 mx-20 text-2xl text-green-500 "><?= $countData2;?></span>
     </div>
-    <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
+    <div class="bg-slate-800 h-20 w-full rounded-md grid-cols-1">
         <div class="absolute p-3 bg-transparent">
             <img src="../icons/online-learning.png" class="h-7 my-5 w-8" alt="user group all">
         </div>
         <span class="flex items-end justify-end py-5 mr-3">PELAJARAN SEDANG BERLANGSUNG</span>
-        <span class="flex flex-row-reverse -my-7 mx-24 text-2xl text-green-500 "><?= $countData4;?></span>
+        <span class="flex flex-row-reverse -my-7 mx-20 text-2xl text-green-500 "><?= $countData4;?></span>
     </div>
-    <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
+    <div class="bg-slate-800 h-20 w-full rounded-md grid-cols-1">
         <div class="absolute p-3 bg-transparent">
             <img src="../icons/online-learning.png" class="h-7 my-5 w-8" alt="user group all">
         </div>
         <span class="flex items-end justify-end py-5 mr-3">PELAJARAN PENDING</span>
-        <span class="flex flex-row-reverse -my-7 mx-24 text-2xl text-green-500 "><?= $countData5;?></span>
+        <span class="flex flex-row-reverse -my-7 mx-20 text-2xl text-green-500 "><?= $countData5;?></span>
     </div>
-    <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
+    <div class="bg-slate-800 h-20 w-full rounded-md grid-cols-1">
         <div class="absolute p-3 bg-transparent">
             <img src="../icons/online-learning.png" class="h-7 my-5 w-8" alt="user group all">
         </div>
         <span class="flex items-end justify-end py-5 mr-3">PELAJARAN SELESAI</span>
-        <span class="flex flex-row-reverse -my-7 mx-24 text-2xl text-green-500 "><?= $countData6;?></span>
+        <span class="flex flex-row-reverse -my-7 mx-20 text-2xl text-green-500 "><?= $countData6;?></span>
     </div>
-    <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
+    <div class="bg-slate-800 h-20 w-full rounded-md grid-cols-1">
         <div class="absolute p-3 bg-transparent">
             <img src="../icons/report.png" class="h-7 my-5 w-8" alt="report all">
         </div>
         <span class="flex items-end justify-end pt-5 mr-3">TOTAL Laporan Siswa</span>
         <?php
         if(mysqli_num_rows($countLaporan) > 0 ){
-            echo'<span class="flex flex-row-reverse -my-2 mx-24 text-2xl text-red-600">'.mysqli_num_rows($countLaporan).'</span>';
+            echo'<span class="flex flex-row-reverse -my-2 mx-20 text-2xl text-red-600">'.mysqli_num_rows($countLaporan).'</span>';
         }else{
-            echo'<span class="flex flex-row-reverse -my-2 mx-24 text-2xl text-green-500">'.mysqli_num_rows($countLaporan).'</span>';
+            echo'<span class="flex flex-row-reverse -my-2 mx-20 text-2xl text-green-500">'.mysqli_num_rows($countLaporan).'</span>';
             
         }
         ?>
     </div>
-    <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
+    <div class="bg-slate-800 h-20 w-full rounded-md grid-cols-1">
         <div class="absolute p-3 bg-transparent">
             <img src="../icons/report.png" class="h-8 my-5 w-8" alt="report all">
         </div>
         <span class="flex items-end justify-end py-5 mr-3">TOTAL Laporan Guru</span>
         <?php
         if(mysqli_num_rows($countLaporan2) > 0 ){
-            echo'<span class="flex flex-row-reverse -my-7 mx-24 text-2xl text-red-600">'.mysqli_num_rows($countLaporan2).'</span>';
+            echo'<span class="flex flex-row-reverse -my-7 mx-20 text-2xl text-red-600">'.mysqli_num_rows($countLaporan2).'</span>';
         }else{
-            echo'<span class="flex flex-row-reverse -my-7 mx-24 text-2xl text-green-500">'.mysqli_num_rows($countLaporan2).'</span>';
+            echo'<span class="flex flex-row-reverse -my-7 mx-20 text-2xl text-green-500">'.mysqli_num_rows($countLaporan2).'</span>';
             
         }
         ?>
     </div>
-    <div class="bg-slate-800 h-24 w-full rounded-md grid-cols-1">
+    <div class="bg-slate-800 h-20 w-full rounded-md grid-cols-1">
             <div class="absolute p-3 bg-transparent hover:shadow-none">
                 <img src="../icons/statistics.png" class="h-8 my-5 w-8 space-x-4" alt="statistics">
             </div>
             <span class="flex items-end justify-end py-5 mr-3">TOTAL PENGUNJUNG</span>
-            <span class="flex flex-row-reverse -my-7 mx-24 text-2xl">0</span>
+            <span class="flex flex-row-reverse -my-7 mx-20 text-2xl">0</span>
     </div>
     </div>
     <div class="grid grid-cols-1 gap-5 shadow-xl font-mono md:grid-cols-2 ">
