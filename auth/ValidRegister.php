@@ -2,7 +2,7 @@
 require_once('../connection/conf.php');
 
 if(isset($_POST['submit'])){
-    $nama = stripslashes(trim(htmlspecialchars(htmlentities($_POST['nama']))));
+    $nama = stripslashes(htmlspecialchars(htmlentities($_POST['nama'])));
     $kelas = $_POST['kelas'];
     $nisn = stripslashes(htmlspecialchars(htmlentities($_POST['nisn'])));
     $email = stripslashes(htmlspecialchars(htmlentities($_POST['email'])));
