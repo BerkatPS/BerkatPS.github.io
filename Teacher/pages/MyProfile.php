@@ -224,16 +224,6 @@ if(!isset($_SESSION['Teacher'])){
                         Tambahkan Social Media
                         </a>
                         <a
-                        @click.prevent="openTabs = 'edit'"
-                        :class="{ 'bg-indigo-500': openTabs === 'edit' }"
-                        class="flex items-center gap-2 text-zinc-300 py-3 px-3 hover:text-indigo-500 rounded-md transition duration-200"
-                        >
-                            <div class="flex items-center fill-current">
-                                <img src="../../icons/edit.png" class="fill-current h-6 w-6 text-white" alt="">
-                            </div>
-                        Edit Data
-                        </a>
-                        <a
                         @click.prevent="openTabs = 'hapus'"
                         x-bind:class="{ 'bg-indigo-500': openTabs === 'hapus' }"
                         class="flex items-center gap-2 text-zinc-300 py-3 px-3 hover:text-indigo-500 rounded-md transition duration-200"
@@ -255,43 +245,19 @@ if(!isset($_SESSION['Teacher'])){
                                 <p class="font-mono text-gray-500">Upload File Ext ( jpg,jpeg,png,pjpeg )</p>
                             </div>
                         </div>
-                        <form class="grid grid-cols-1 sm:grid-cols-2 p-5 py-5 gap-y-12 gap-x-5 mi-h-full  relative">
+                        <form class="grid grid-cols-1 pt-5 sm:grid-cols-2 p-5 py-5 gap-y-12 gap-x-5 mi-h-full  relative">
                             <div class="relative ">
                                 <label for="Nama">Nama Kamu: </label>
-                                <input type='text' class='absolute flex items-center p-2 w-full bg-transparent border rounded-lg border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500 ' value=" <?= $_SESSION['user']?>" readonly="readonly">
-                            </div>
-                            <div class="relative   ">
-                                <label for="Nama">Kelas Kamu: </label>
-                                <input type='text' class='absolute flex items-center p-2 w-full bg-transparent border rounded-lg border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500' value=" <?= $_SESSION['kelas']?>" readonly="readonly">
+                                <input type='text' class='absolute flex items-center p-2 w-full bg-transparent border rounded-lg border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500 ' value=" <?= $_SESSION['Teacher']?>" readonly="readonly">
                             </div>
                             <div class="relative gap-y-3 ">
-                                <label for="Nama">Nis Kamu: </label>
-                                <input type='text' class='absolute flex items-center p-2 w-full bg-transparent border rounded-lg border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500' value=" <?= $_SESSION['nis']?>" readonly="readonly">
-                            </div>
-                            <div class="relative  ">
-                                <label for="Nama">Email Kamu: </label>
-                                <input type='text' class='absolute flex items-center p-2 w-full bg-transparent border rounded-lg border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500' value=" <?= $_SESSION['email']?>" readonly="readonly">
-                            </div>
-                            <div class="relative  ">
-                                <label for="Nama">No HP Kamu: </label>
-                                <input type='text' class='absolute flex items-center p-2 w-full bg-transparent border rounded-lg border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500' value=" <?= $_SESSION['no_hp']?>" readonly="readonly">
-                            </div>
-                            <div class="relative  ">
-                                <label for="Nama">Wali Kelas Kamu: </label>
-                                <input type='text' class='absolute flex items-center p-2 w-full bg-transparent border rounded-lg border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500' value=" <?= $_SESSION['wali_kelas']?>" readonly="readonly">
-                            </div>
-                            <div class="relative  ">
-                                <label for="Nama">Alamat Kamu: </label>
-                                <input type='text' class='absolute flex items-center p-2 w-full bg-transparent border rounded-lg border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500' value=" <?= $_SESSION['alamat']?>" readonly="readonly">
-                            </div>
-                            <div class="relative  ">
-                                <label for="Nama">Tanggal dibuat Akun: </label>
-                                <input type='text' class='absolute flex items-center p-2 w-full bg-transparent border rounded-lg border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500' value=" <?= $_SESSION['waktu']?>" readonly="readonly">
+                                <label for="Nama">Nuptk Kamu: </label>
+                                <input type='text' class='absolute flex items-center p-2 w-full bg-transparent border rounded-lg border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500' value=" <?= $_SESSION['Teacher_nuptk']?>" readonly="readonly">
                             </div>
                             <div class="relative ">
-                                <label for="Nama">Agama Kamu </label>
-                                <input type='text' class='absolute flex items-center p-2 w-full bg-transparent border rounded-lg border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500' value=" <?= $_SESSION['agama']?>" readonly="readonly">
-                                <div class="py-2"></div>
+                                <label for="Nama">Email Kamu: </label>
+                                <input type='text' class='absolute flex items-center p-2 w-full bg-transparent border rounded-lg border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500' value=" <?= $_SESSION['Teacher_email']?>" readonly="readonly">
+                                <div class="pt-5"></div>
                             </div>
                         </form>
                     </div>
@@ -344,55 +310,6 @@ if(!isset($_SESSION['Teacher'])){
                                 </div>
                                 <div class="relative pt-7 col-span-1 sm:col-span-2 ">
                                     <button type="submit" class="bg-purple-dark text-purple-600 p-2 rounded-lg hover:bg-purple-500 hover:text-white hover:transform duration-300">Simpan Edit Data</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div
-                    x-show="openTabs === 'edit'"
-                    class="p-2 bg-slate-800 col-span-3 rounded-md  ">
-                    <div class="flex p-5">
-                            <span class="font-bold text-2xl">EDIT DATA</span>
-                        </div>
-                    <form class="grid grid-cols-1 sm:grid-cols-2 p-5 py-5 gap-y-12 gap-x-5 mi-h-full  relative" method="POST">
-                            <div class="relative ">
-                                <label for="Nama">Nama Kamu: </label>
-                                <input type='text' class='absolute flex items-center p-2 w-full bg-transparent border rounded-lg border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500 ' value=" <?= $_SESSION['user']?>">
-                            </div>
-                            <div class="relative   ">
-                                <label for="Nama">Kelas Kamu: </label>
-                                <input type='text' class='absolute flex items-center p-2 w-full bg-transparent border rounded-lg border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500' value=" <?= $_SESSION['kelas']?>">
-                            </div>
-                            <div class="relative gap-y-3 ">
-                                <label for="Nama">Nis Kamu: </label>
-                                <input type='text' class='absolute flex items-center p-2 w-full bg-transparent border rounded-lg border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500' value=" <?= $_SESSION['nis']?>">
-                            </div>
-                            <div class="relative  ">
-                                <label for="Nama">Email Kamu: </label>
-                                <input type='text' class='absolute flex items-center p-2 w-full bg-transparent border rounded-lg border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500' value=" <?= $_SESSION['email']?>">
-                            </div>
-                            <div class="relative  ">
-                                <label for="Nama">No HP Kamu: </label>
-                                <input type='text' class='absolute flex items-center p-2 w-full bg-transparent border rounded-lg border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500' value=" <?= $_SESSION['no_hp']?>">
-                            </div>
-                            <div class="relative  ">
-                                <label for="Nama">Wali Kelas Kamu: </label>
-                                <input type='text' class='absolute flex items-center p-2 w-full bg-transparent border rounded-lg border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500' value=" <?= $_SESSION['wali_kelas']?>">
-                            </div>
-                            <div class="relative  ">
-                                <label for="Nama">Alamat Kamu: </label>
-                                <input type='text' class='absolute flex items-center p-2 w-full bg-transparent border rounded-lg border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500' value=" <?= $_SESSION['alamat']?>">
-                            </div>
-                            <div class="relative  ">
-                                <label for="Nama">Tanggal dibuat Akun: </label>
-                                <input type='disabled' class=' absolute flex items-center p-2 w-full bg-transparent border rounded-lg border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500' value=" <?= $_SESSION['waktu']?>">
-                            </div>
-                            <div class="relative ">
-                                <label for="Nama">Agama Kamu </label>
-                                <input type='text' class='absolute flex items-center p-2 w-full bg-transparent border rounded-lg border-gray-600 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500' value=" <?= $_SESSION['agama']?>">
-                                <div class="py-2"></div>
-                            </div>
-                            <div class="relative pt-7 col-span-1 sm:col-span-2 ">
-                                <button type="submit" class="bg-purple-dark text-purple-600 p-2 rounded-lg hover:bg-purple-500 hover:text-white hover:transform duration-300">Simpan Edit Data</button>
                             </div>
                         </form>
                     </div>
