@@ -2,8 +2,8 @@
 require_once('../connection/conf.php');
 
 if(isset($_POST['submit'])){
-    $email = stripslashes(htmlspecialchars(htmlentities($_POST['user'])));
-    $password = stripslashes(htmlspecialchars(htmlentities($_POST['password'])));
+    $email = stripslashes(htmlspecialchars(htmlentities(mysqli_real_escape_string($confg,$_POST['user']))));
+    $password = stripslashes(htmlspecialchars(htmlentities(mysqli_real_escape_string($confg,$_POST['password']))));
     
     $stmt = mysqli_stmt_init($confg);
     $sqlUser = "SELECT * FROM user WHERE email = ? or NIS = ?";
@@ -33,8 +33,6 @@ if(isset($_POST['submit'])){
             }else{
                 header('Location: login?act=bannedAccount');
             }
-        }else{
-            echo"<script>window.location.href = 'login?act=notfound'</script>";
         }
 
     }else{
@@ -56,8 +54,6 @@ if(isset($_POST['submit'])){
                 }else{
                     header('Location: login?act=passnotvalid');
                 }
-        }else{
-            echo"<script>window.location.href = 'login?act=notfound'</script>";
         }
 
     }else{
