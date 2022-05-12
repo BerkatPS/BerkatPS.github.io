@@ -364,7 +364,7 @@ if(!isset($_SESSION['admin'])){
                     <select name="pengajar" id="" class="flex items-center p-2 w-full bg-transparent border border-slate-500 text-left text-zinc-400 focus:outline-none focus:border-indigo-500 transform translate duration-500">
                         <option class="bg-slate-800"  value="">Pilih Berdasarkan Guru Pengajar</option>
                         <?php
-                            $sql = $confg->query("SELECT * FROM tbl_Guru");
+                            $sql = $confg->query("SELECT nama_guru FROM tbl_Guru");
                             while($pengajar = mysqli_fetch_assoc($sql)){
                         ?>
                         <option class="bg-slate-800"><?= $pengajar['nama_guru'] ?></option>

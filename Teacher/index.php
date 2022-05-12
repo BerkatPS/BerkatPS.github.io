@@ -49,7 +49,7 @@ if($time['tm_hour'] > 8){
              <span class="">Kesiswaan</span>
              </button>
             <div class="relative">
-                <nav class="text-slate-400 min-h-screen overflow-y-auto font-mono text-sm relative pt-7 gap-3 ">
+                <nav class="text-slate-400 min-h-screen overflow-y-auto font-mono text-sm md:text-lg relative pt-7 gap-3 ">
                 <a href="" class="flex items-center gap-2 text-zinc-300 py-2 px-3 my-5 bg-slate-900 rounded-md transition duration-200">
                     <div class="flex items-center">
                         <img src="../icons/layout.png" class="h-6 w-6"alt="">

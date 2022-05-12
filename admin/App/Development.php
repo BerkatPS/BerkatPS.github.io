@@ -362,7 +362,7 @@ if(!isset($_SESSION['admin'])){
                     }
                 }
                 ?>
-                <table class="table-fixed w-full text-sm text-gray-500 dark:text-gray-400 rounded-lg"
+                <table class="w-full text-sm text-gray-500 dark:text-gray-400 rounded-lg"
                     id="example"
                 >
                     <thead class="text-xs text-center text-gray-700 uppercase  dark:bg-gray-700 dark:text-gray-400">
